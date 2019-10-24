@@ -55,17 +55,14 @@ public class Employee {
 		this.user_id = user_id;
 	}
 
-
-	@Override
+	
+	   @Override
 	public String toString() {
-		return "[user_id=" + user_id + ", user_name=" + user_name + ", user_tech=" + user_tech + "]";
+		return "Employee [user_id=" + user_id + ", user_name=" + user_name + ", user_tech=" + user_tech + "]";
 	}
 
 
-	
-
-	
-	   @Override
+	@Override
        public boolean equals(Object o) {
            if (this == o) {
                return true;
