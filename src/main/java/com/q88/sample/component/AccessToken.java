@@ -15,6 +15,8 @@ import org.json.JSONObject;
 public class AccessToken {
 
 	
+	
+	
 	public void getAccessToken() throws Exception {
 		URL url = new URL("https://webapi.q88.com/Authenticate/Login");
 		Map<String,Object> params = new LinkedHashMap<>();

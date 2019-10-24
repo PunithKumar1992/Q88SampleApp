@@ -55,28 +55,13 @@ public class Employee {
 		this.user_id = user_id;
 	}
 
-<<<<<<< HEAD
+
 	
 	   @Override
 	public String toString() {
 		return "Employee [user_id=" + user_id + ", user_name=" + user_name + ", user_tech=" + user_tech + "]";
 	}
 
-
-	@Override
-=======
-
-	@Override
-	public String toString() {
-		return "[user_id=" + user_id + ", user_name=" + user_name + ", user_tech=" + user_tech + "]";
-	}
-
-
-	
-
-	
-	   @Override
->>>>>>> branch 'master' of https://github.com/PunithKumar1992/Q88SampleApp.git
        public boolean equals(Object o) {
            if (this == o) {
                return true;

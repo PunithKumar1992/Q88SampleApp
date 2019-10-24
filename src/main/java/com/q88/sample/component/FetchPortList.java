@@ -3,7 +3,6 @@ package com.q88.sample.component;
 
 
 import java.io.IOException;
-
 import org.apache.commons.configuration.PropertiesConfiguration;
 
 import com.squareup.okhttp.OkHttpClient;
