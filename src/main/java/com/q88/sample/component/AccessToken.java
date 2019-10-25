@@ -9,13 +9,11 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import org.apache.commons.configuration.PropertiesConfiguration;
 import org.json.JSONObject;
+import org.springframework.stereotype.Component;
 
 
-
+@Component(value ="AccessToken")
 public class AccessToken {
-
-	
-	
 	
 	public void getAccessToken() throws Exception {
 		URL url = new URL("https://webapi.q88.com/Authenticate/Login");
@@ -71,10 +69,5 @@ public class AccessToken {
 		
 	}
 	
-	public static void main(String[] args) throws Exception {
-		
-		AccessToken obj = new AccessToken();
-		  obj.getAccessToken();
-	}
 	
 }

@@ -8,18 +8,14 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-
 import org.json.JSONArray;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-
 import com.google.gson.Gson;
 import com.q88.sample.model.Employee;
+import com.q88.sample.service.Q88PortListService;
 import com.q88.sample.service.UserService;
 
 
@@ -27,15 +23,16 @@ import com.q88.sample.service.UserService;
 public class CallTimeTrigger {
 	
 	@Autowired
+	private Q88PortListService portservice;
+	
+	@Autowired
 	private UserService userservice;
-
 	
 	
-	   //@Scheduled(cron = "0/10 * * * * ?")
+		//@Scheduled(cron = "0/10 * * * * ?")
 	   public void trigger() {
 		    
 			URL url;
-			String json1string=null;
 			List<Employee> source = new ArrayList<Employee>();
 			JSONArray json1;
 			try {
@@ -120,7 +117,6 @@ public class CallTimeTrigger {
 		   
 		   
 	   }
-	   
-	
+	  
 
 }

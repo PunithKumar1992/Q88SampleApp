@@ -13,6 +13,7 @@ public class Q88SampleAppApplication {
 
 	public static void main(String[] args) throws Exception {
 		SpringApplication.run(Q88SampleAppApplication.class, args);
+		
 	
 	}
 

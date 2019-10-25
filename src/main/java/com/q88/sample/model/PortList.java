@@ -1,24 +1,49 @@
 package com.q88.sample.model;
 
-import java.sql.Timestamp;
-import java.util.TimeZone;
 
+
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.Table;
 
-
+@Entity
+@Table(name ="Q88_PORTLIST")
 public class PortList {
 	
+	@Id
+	@GeneratedValue
+	@Column(name = "PORTID", unique = true, nullable = false)
 	private int portId;
+	
+	@Column(name = "NAME")
 	private String name;
+	
+	@Column(name = "SHORTNAME")
 	private String shortName;
-	private float lat;
-	private float lon;
+	
+	@Column(name = "LAT")
+	private double lat;
+	
+	@Column(name = "LON")
+	private double lon;
+	
+	@Column(name = "UNCODE")
 	private String unCode;
-	private Timestamp timeZone;
+	
+	@Column(name = "TIMEZONE")
+	private String timeZone;
+	
+	@Column(name = "AREANAME")
 	private String areaName;
+	
+	@Column(name ="ISINACTIVE")
 	private String isInactive ;
-	private Timestamp modifiedDate;
+	
+	@Column(name ="MODIFIEDDATE")
+	private String modifiedDate;
+	
 	public int getPortId() {
 		return portId;
 	}
@@ -37,16 +62,17 @@ public class PortList {
 	public void setShortName(String shortName) {
 		this.shortName = shortName;
 	}
-	public float getLat() {
+	
+	public double getLat() {
 		return lat;
 	}
-	public void setLat(float lat) {
+	public void setLat(double lat) {
 		this.lat = lat;
 	}
-	public float getLon() {
+	public double getLon() {
 		return lon;
 	}
-	public void setLon(float lon) {
+	public void setLon(double lon) {
 		this.lon = lon;
 	}
 	public String getUnCode() {
@@ -55,10 +81,10 @@ public class PortList {
 	public void setUnCode(String unCode) {
 		this.unCode = unCode;
 	}
-	public Timestamp getTimeZone() {
+	public String getTimeZone() {
 		return timeZone;
 	}
-	public void setTimeZone(Timestamp timeZone) {
+	public void setTimeZone(String timeZone) {
 		this.timeZone = timeZone;
 	}
 	public String getAreaName() {
@@ -73,10 +99,10 @@ public class PortList {
 	public void setIsInactive(String isInactive) {
 		this.isInactive = isInactive;
 	}
-	public Timestamp getModifiedDate() {
+	public String getModifiedDate() {
 		return modifiedDate;
 	}
-	public void setModifiedDate(Timestamp modifiedDate) {
+	public void setModifiedDate(String modifiedDate) {
 		this.modifiedDate = modifiedDate;
 	}
 	@Override

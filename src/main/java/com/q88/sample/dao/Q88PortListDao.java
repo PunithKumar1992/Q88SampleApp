@@ -4,8 +4,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import com.q88.sample.model.Employee;
+import com.q88.sample.model.PortList;
 
 @Repository
-public interface UserDao extends JpaRepository<Employee, Integer>{
+public interface Q88PortListDao extends JpaRepository<PortList, Integer> {
 
 }
