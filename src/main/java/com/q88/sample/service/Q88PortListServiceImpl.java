@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.q88.sample.dao.Q88PortListDao;
-import com.q88.sample.model.Employee;
 import com.q88.sample.model.PortList;
 
 @Service

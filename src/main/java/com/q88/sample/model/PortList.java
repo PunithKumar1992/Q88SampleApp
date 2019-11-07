@@ -33,7 +33,7 @@ public class PortList {
 	private String unCode;
 	
 	@Column(name = "TIMEZONE")
-	private String timeZone;
+	private float timeZone;
 	
 	@Column(name = "AREANAME")
 	private String areaName;
@@ -81,10 +81,10 @@ public class PortList {
 	public void setUnCode(String unCode) {
 		this.unCode = unCode;
 	}
-	public String getTimeZone() {
+	public float getTimeZone() {
 		return timeZone;
 	}
-	public void setTimeZone(String timeZone) {
+	public void setTimeZone(float timeZone) {
 		this.timeZone = timeZone;
 	}
 	public String getAreaName() {

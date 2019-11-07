@@ -1,4 +1,4 @@
-package com.q88.sample.component;
+/*package com.q88.sample.component;
 
 
 
@@ -104,7 +104,7 @@ public class CallTimeTrigger {
 			 * -> o2.getUser_id()==(o1.getUser_id()))) .collect(Collectors.toList());
 			 */
 			 
-			  List<Employee> res1 = list1.stream().filter(o1 -> list2.stream().noneMatch(o2
+			  /*List<Employee> res1 = list1.stream().filter(o1 -> list2.stream().noneMatch(o2
 					  -> o2.equals(o1))) .collect(Collectors.toList());
 			
 			  
@@ -120,3 +120,4 @@ public class CallTimeTrigger {
 	  
 
 }
+*/

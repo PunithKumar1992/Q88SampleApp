@@ -3,11 +3,12 @@ package com.q88.sample.component;
 
 
 import java.io.IOException;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
+import java.util.TimeZone;
 import java.util.stream.Collectors;
 
 import org.apache.commons.configuration.PropertiesConfiguration;
@@ -33,19 +34,45 @@ public class Q88APICalls {
 private AccessToken token;
 
 @Autowired
+private RefreshToken refreshtoken;
+
+@Autowired
 private Q88PortListService portService;
 
 	
-		//@Scheduled(cron = "0 */1 * ? * *")
+		@Scheduled(cron = "0 */1 * ? * *")
 		void checkTokenExpires() throws Exception {
+			
 	    	PropertiesConfiguration properties = new PropertiesConfiguration("src/main/resources/token.properties");
-	    	   Date now = new Date();
-			   String systime = new SimpleDateFormat("EEE,d MMM yyyy HH:mm:ss ", Locale.ENGLISH).format(now);
-			   systime = systime.concat("GMT");
-			   String q88Expires = properties.getProperty("q88.token.expires").toString();
-			   
-				   token.getAccessToken();
-				   getPortLists();
+	    	final Date currentTime = new Date();
+			final DateFormat dateformat  = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss");
+			dateformat.setTimeZone(TimeZone.getTimeZone("GMT"));
+			String sysTime = dateformat.format(currentTime);
+			String q88Expires = properties.getProperty("q88.token.expires").toString();
+			String subq88= q88Expires.substring(1, 26);
+			
+			final DateFormat format  = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss");
+			Date sysDate = format.parse(sysTime);
+			Date q88Date = format.parse(subq88);
+			
+			if(sysDate.getDate() == q88Date.getDate()) {
+			
+			if(sysDate.before(q88Date))
+			{
+				//getPortLists();
+			}
+			else if(sysDate.after(q88Date)) {
+				
+				refreshtoken.getAccessTokenByRefreshToken();
+				//getPortLists();
+			}
+				   
+			 }
+			 else {
+				 token.getAccessToken();
+				 //getPortLists();
+				 
+			 }
 			   
 	    }
 	
@@ -66,6 +93,8 @@ private Q88PortListService portService;
 		try {
 			
 			Response response = client.newCall(request).execute();
+			
+			System.out.println(response.code());
 			
 			 if (!response.isSuccessful()){
 	             throw new IOException("Unexpected code " + response);
@@ -101,6 +130,9 @@ private Q88PortListService portService;
 				  -> o2.equals(o1))) .collect(Collectors.toList());
 		      return res1;
    }
-  
+	
+	
+	
+	
 
 }
