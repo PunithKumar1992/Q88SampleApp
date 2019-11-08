@@ -1,9 +1,13 @@
 package com.q88.sample.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
@@ -12,74 +16,76 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "Q88_VOYAGE")
-public class Q88_Voyage {
+public class Q88_Voyage implements Serializable{
 	
 	@Column(name = "VOYAGEID")
 	@Id
-	@GeneratedValue
-	private String voyageid;
+	private String voyageId;
 	@Column(name = "VOYAGENUMBER")
 	@Id
-	@GeneratedValue
-	private String voyagenumber;
+	private String voyageNumber;
 	@Column(name = "VESSELID")
 	@Id
-	@GeneratedValue
-	private String vesselid;
+	private String vesselId;
 	@Column(name = "VERSION")
-	private double version;
+	private Number version;
 	@Column(name = "VESSELNAME")
-	private String vesselname;
+	private String vesselName;
 	@Column(name = "VESSELIMO")
 	private String vesselimo;
 	@Column(name = "STARTDATEUTC")
-	private String startdateutc;
+	private String startDateUtc;
 	@Column(name = "ENDDATEUTC")
-	private String enddateutc;
+	private String endDateUtc;
 	@Column(name = "MODULETYPE")
-	private String moduletype;
+	private String moduleType;
 	@Column(name = "OFFHIREDAYS")
-	private double offhiredays;
+	private Number offhireDays;
 	@Column(name = "TAGS")
 	private String tags;
 	@Column(name = "URL")
 	private String url;
 	@Column(name = "ISESTIMATE")
-	private String isestimate;
+	private String isEstimate;
 	@Column(name = "TCNUMBER")
 	private String tcnumber;
 	@Column(name = "TCOUTIDENCRYPTED")
 	private String tcoutidencrypted;
 
-	@OneToOne(mappedBy = "q88voyageres")
+	@OneToOne(targetEntity =Q88_VoyageResult.class,fetch = FetchType.LAZY,cascade = CascadeType.ALL,mappedBy = "q88voyageres",orphanRemoval = false )
 	private Q88_VoyageResult  results;
 	
-	@OneToOne(mappedBy = "q88voyageresfix")
-	private Q88_VoyageResult  resultsWhenFixed;
+	@OneToOne(targetEntity =Q88_VoyageResultFixed.class,fetch = FetchType.LAZY, cascade = CascadeType.ALL,mappedBy = "q88voyageresfix",orphanRemoval = false)
+	private Q88_VoyageResultFixed  resultsWhenFixed;
 	
 	
-	@OneToMany(mappedBy = "q88voyagefixture")
+	@OneToMany(targetEntity = Q88_Fixture.class,fetch = FetchType.LAZY,cascade = CascadeType.ALL,mappedBy = "q88voyagefixture",orphanRemoval = false)
 	private List<Q88_Fixture> fixtureList = new ArrayList<Q88_Fixture>();
 	
-	@OneToMany(mappedBy = "q88voyageleg")
+	@OneToMany(targetEntity =Q88_Leg.class,fetch = FetchType.LAZY,cascade = CascadeType.ALL ,mappedBy = "q88voyageleg",orphanRemoval = false)
 	private List<Q88_Leg> legList = new ArrayList<Q88_Leg>();
 	
-	@OneToMany(mappedBy = "q88voyagerevenue")
+	@OneToMany(targetEntity =Q88_Revenue.class,fetch = FetchType.LAZY,cascade = CascadeType.ALL ,mappedBy = "q88voyagerevenue",orphanRemoval = false)
 	private List<Q88_Revenue> revenueList = new ArrayList<Q88_Revenue>();
 	
-	@OneToMany(mappedBy = "q88voyageexpense")
+	@OneToMany(targetEntity =Q88_Expense.class,fetch = FetchType.LAZY,cascade = CascadeType.ALL ,mappedBy = "q88voyageexpense",orphanRemoval = false)
 	private List<Q88_Expense> expenseList = new ArrayList<Q88_Expense>();
 	
-	@OneToMany(mappedBy = "q88voyageremark")
+	@OneToMany(targetEntity = Q88_Bunker.class,fetch = FetchType.LAZY,cascade = CascadeType.ALL,mappedBy = "q88voyagebunker",orphanRemoval = false)
+	private List<Q88_Bunker> bunkerList = new ArrayList<Q88_Bunker>();
+	
+	@OneToMany(targetEntity =Q88_Remark.class,fetch = FetchType.LAZY,cascade = CascadeType.ALL,mappedBy = "q88voyageremark",orphanRemoval = false)
 	private List<Q88_Remark> remarkList = new ArrayList<Q88_Remark>();
 	
-	@OneToMany(mappedBy = "q88voyageoffhire")
+	@OneToMany(targetEntity =Q88_Offhire.class,fetch = FetchType.LAZY,cascade = CascadeType.ALL ,mappedBy = "q88voyageoffhire",orphanRemoval = false)
 	private List<Q88_Offhire> offhireList = new ArrayList<Q88_Offhire>();
 	
-	@OneToOne(mappedBy = "q88tcreletdetail")
+	@OneToOne(targetEntity =Q88_TcReletDetail.class,fetch = FetchType.LAZY,cascade = CascadeType.ALL ,mappedBy = "q88tcreletdetail",orphanRemoval = false)
 	private Q88_TcReletDetail  tcReletDetail;
 	
-	@OneToOne(mappedBy = "q88voyagereview")
+	@OneToOne(targetEntity =Q88_VoyageReview.class,fetch = FetchType.LAZY,cascade = CascadeType.ALL ,mappedBy = "q88voyagereview",orphanRemoval = false)
 	private Q88_VoyageReview  review;
+
+	
 	
 }

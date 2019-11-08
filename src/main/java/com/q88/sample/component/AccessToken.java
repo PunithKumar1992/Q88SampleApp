@@ -72,6 +72,13 @@ public class AccessToken {
 		
 	}
 	
+	
+	public static void main(String[] args) throws Exception {
+		
+		AccessToken obj = new AccessToken();
+		obj.getAccessToken();
+		
+	}
 
 	
 	

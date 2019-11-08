@@ -2,6 +2,10 @@ package com.q88.sample.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -10,21 +14,99 @@ import javax.persistence.Table;
 @Table(name = "Q88_FIXTUREPORT")
 public class Q88_FixturePort {
 	
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name = "FIXTUREPORT_SEQID")
+	private Integer fixtureport_seqid;
 	@Column(name = "PORTID")
-	private int portid;
+	private Integer portId;
 	@Column(name = "PORTNAME")
-	private String portname;
+	private String portName;
 	@Column(name = "DISPLAYORDER")
-	private int displayorder;
+	private Integer displayOrder;
 	@Column(name = "ACTIVITYTYPE")
-	private String activitytype;
+	private String activityType;
 	@Column(name = "FIXTUREPORTLINKTOKEN")
-	private String fixtureportlinktoken;
+	private String fixturePortLinkToken;
 	@Column(name = "FIXTURELISTSEQ_ID")
-	private int fixturelistseq_id;
+	private Integer fixturelistseq_id;
 	
-	@ManyToOne
-	@JoinColumn(name="fixturelistseq_id",insertable=false, updatable=false)
+	@ManyToOne(optional = false,fetch = FetchType.LAZY)
+	@JoinColumn(name="fixturelistseq_id",referencedColumnName = "FIXTURELISTSEQ_ID",insertable=false, updatable=false)
 	private Q88_Fixture q88fixtureport;
 
+	public Integer getFixtureport_seqid() {
+		return fixtureport_seqid;
+	}
+
+	public void setFixtureport_seqid(Integer fixtureport_seqid) {
+		this.fixtureport_seqid = fixtureport_seqid;
+	}
+
+	public Integer getPortId() {
+		return portId;
+	}
+
+	public void setPortId(Integer portId) {
+		this.portId = portId;
+	}
+
+	public String getPortName() {
+		return portName;
+	}
+
+	public void setPortName(String portName) {
+		this.portName = portName;
+	}
+
+	public Integer getDisplayOrder() {
+		return displayOrder;
+	}
+
+	public void setDisplayOrder(Integer displayOrder) {
+		this.displayOrder = displayOrder;
+	}
+
+	public String getActivityType() {
+		return activityType;
+	}
+
+	public void setActivityType(String activityType) {
+		this.activityType = activityType;
+	}
+
+	public String getFixturePortLinkToken() {
+		return fixturePortLinkToken;
+	}
+
+	public void setFixturePortLinkToken(String fixturePortLinkToken) {
+		this.fixturePortLinkToken = fixturePortLinkToken;
+	}
+
+	public Integer getFixturelistseq_id() {
+		return fixturelistseq_id;
+	}
+
+	public void setFixturelistseq_id(Integer fixturelistseq_id) {
+		this.fixturelistseq_id = fixturelistseq_id;
+	}
+
+	public Q88_Fixture getQ88fixtureport() {
+		return q88fixtureport;
+	}
+
+	public void setQ88fixtureport(Q88_Fixture q88fixtureport) {
+		this.q88fixtureport = q88fixtureport;
+	}
+
+	@Override
+	public String toString() {
+		return "Q88_FixturePort [fixtureport_seqid=" + fixtureport_seqid + ", portId=" + portId + ", portName="
+				+ portName + ", displayOrder=" + displayOrder + ", activityType=" + activityType
+				+ ", fixturePortLinkToken=" + fixturePortLinkToken + ", fixturelistseq_id=" + fixturelistseq_id
+				+ ", q88fixtureport=" + q88fixtureport + "]";
+	}
+
+	
+	
 }

@@ -2,6 +2,10 @@ package com.q88.sample.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -10,18 +14,78 @@ import javax.persistence.Table;
 @Table(name = "Q88_BUNKERROB")
 public class Q88_BunkerRob {
 	
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name = "BUNKERROB_SEQID")
+	private Integer bunkerrob_seqid;
 	@Column(name = "BUNKERGRADENAME")
-	private String bunkergradename;
+	private String bunkerGradeName;
 	@Column(name = "ARRIVALROBQUANTITY")
-	private int arrivalrobquantity;	
+	private Double arrivalROBQuantity;	
 	@Column(name = "DEPARTUREROBQUANTITY")
-	private int departurerobquantity;
+	private Double departureROBQuantity;
 	@Column(name = "LEGSEQ_ID")
-	private int legseq_id;	
+	private Integer legseq_id;	
 	
-	@ManyToOne
-	@JoinColumn(name="legseq_id",insertable=false, updatable=false)
+	@ManyToOne(optional = false,fetch = FetchType.LAZY)
+	@JoinColumn(name="legseq_id",referencedColumnName = "LEGSEQ_ID",insertable=false, updatable=false)
 	private Q88_Leg q88bunkerrobleg;
 
+	public Integer getBunkerrob_seqid() {
+		return bunkerrob_seqid;
+	}
 
+	public void setBunkerrob_seqid(Integer bunkerrob_seqid) {
+		this.bunkerrob_seqid = bunkerrob_seqid;
+	}
+
+	public String getBunkerGradeName() {
+		return bunkerGradeName;
+	}
+
+	public void setBunkerGradeName(String bunkerGradeName) {
+		this.bunkerGradeName = bunkerGradeName;
+	}
+
+	public Double getArrivalROBQuantity() {
+		return arrivalROBQuantity;
+	}
+
+	public void setArrivalROBQuantity(Double arrivalROBQuantity) {
+		this.arrivalROBQuantity = arrivalROBQuantity;
+	}
+
+	public Double getDepartureROBQuantity() {
+		return departureROBQuantity;
+	}
+
+	public void setDepartureROBQuantity(Double departureROBQuantity) {
+		this.departureROBQuantity = departureROBQuantity;
+	}
+
+	public Integer getLegseq_id() {
+		return legseq_id;
+	}
+
+	public void setLegseq_id(Integer legseq_id) {
+		this.legseq_id = legseq_id;
+	}
+
+	public Q88_Leg getQ88bunkerrobleg() {
+		return q88bunkerrobleg;
+	}
+
+	public void setQ88bunkerrobleg(Q88_Leg q88bunkerrobleg) {
+		this.q88bunkerrobleg = q88bunkerrobleg;
+	}
+
+	@Override
+	public String toString() {
+		return "Q88_BunkerRob [bunkerrob_seqid=" + bunkerrob_seqid + ", bunkerGradeName=" + bunkerGradeName
+				+ ", arrivalROBQuantity=" + arrivalROBQuantity + ", departureROBQuantity=" + departureROBQuantity
+				+ ", legseq_id=" + legseq_id + ", q88bunkerrobleg=" + q88bunkerrobleg + "]";
+	}
+
+	
+	
 }

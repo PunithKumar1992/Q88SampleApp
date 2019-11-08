@@ -2,6 +2,10 @@ package com.q88.sample.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -10,32 +14,163 @@ import javax.persistence.Table;
 @Table(name = "Q88_FIXTUREBILLOFLADING")
 public class Q88_FixtureBillOfLading {
 
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name = "FIXTUREBILL_SEQID")
+	private Integer fixturebill_seqid;
 	@Column(name = "BILLOFLADINGDATE")
-	private String billofladingdate;
+	private String billOfLadingDate ;
 	@Column(name = "DESCRIPTION")
-	private String description;
+	private String description ;
 	@Column(name = "DISPLAYORDER")
-	private int displayorder;
+	private Integer displayOrder ;
 	@Column(name = "FIXTUREGRADENAME")
-	private String fixturegradename;
+	private String fixtureGradeName ;
 	@Column(name = "PORTNAME")
-	private String portname;
+	private String portName ;
 	@Column(name = "PORTID")
-	private int portid;
+	private Integer portId ;
 	@Column(name = "FIXTUREPORTLINKTOKEN")
-	private String fixtureportlinktoken;
+	private String fixturePortLinkToken ;
 	@Column(name = "QUANTITYBBLS")
-	private int quantitybbls;
+	private Number quantityBBLS ;
 	@Column(name = "QUANTITYMT")
-	private int quantitymt;
+	private Number quantityMT ;
 	@Column(name = "SHIPPER")
 	private String shipper;
 	@Column(name = "VOYAGEFIXTUREGRADEDISPLAYORDER")
-	private int voyagefixturegradedisplayorder;
+	private Integer voyageFixtureGradeDisplayOrder ;
 	@Column(name = "FIXTURELISTSEQ_ID")
-	private int fixturelistseq_id;
+	private Integer fixturelistseq_id;
 	
-	@ManyToOne
-	@JoinColumn(name="fixturelistseq_id",insertable=false, updatable=false)
+	@ManyToOne(optional = false,fetch = FetchType.LAZY)
+	@JoinColumn(name="fixturelistseq_id", referencedColumnName ="FIXTURELISTSEQ_ID" ,insertable=false, updatable=false)
 	private Q88_Fixture q88fixturebill;
+
+	public Integer getFixturebill_seqid() {
+		return fixturebill_seqid;
+	}
+
+	public void setFixturebill_seqid(Integer fixturebill_seqid) {
+		this.fixturebill_seqid = fixturebill_seqid;
+	}
+
+	public String getBillOfLadingDate() {
+		return billOfLadingDate;
+	}
+
+	public void setBillOfLadingDate(String billOfLadingDate) {
+		this.billOfLadingDate = billOfLadingDate;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public Integer getDisplayOrder() {
+		return displayOrder;
+	}
+
+	public void setDisplayOrder(Integer displayOrder) {
+		this.displayOrder = displayOrder;
+	}
+
+	public String getFixtureGradeName() {
+		return fixtureGradeName;
+	}
+
+	public void setFixtureGradeName(String fixtureGradeName) {
+		this.fixtureGradeName = fixtureGradeName;
+	}
+
+	public String getPortName() {
+		return portName;
+	}
+
+	public void setPortName(String portName) {
+		this.portName = portName;
+	}
+
+	public Integer getPortId() {
+		return portId;
+	}
+
+	public void setPortId(Integer portId) {
+		this.portId = portId;
+	}
+
+	public String getFixturePortLinkToken() {
+		return fixturePortLinkToken;
+	}
+
+	public void setFixturePortLinkToken(String fixturePortLinkToken) {
+		this.fixturePortLinkToken = fixturePortLinkToken;
+	}
+
+	public Number getQuantityBBLS() {
+		return quantityBBLS;
+	}
+
+	public void setQuantityBBLS(Number quantityBBLS) {
+		this.quantityBBLS = quantityBBLS;
+	}
+
+	public Number getQuantityMT() {
+		return quantityMT;
+	}
+
+	public void setQuantityMT(Number quantityMT) {
+		this.quantityMT = quantityMT;
+	}
+
+	public String getShipper() {
+		return shipper;
+	}
+
+	public void setShipper(String shipper) {
+		this.shipper = shipper;
+	}
+
+	public Integer getVoyageFixtureGradeDisplayOrder() {
+		return voyageFixtureGradeDisplayOrder;
+	}
+
+	public void setVoyageFixtureGradeDisplayOrder(Integer voyageFixtureGradeDisplayOrder) {
+		this.voyageFixtureGradeDisplayOrder = voyageFixtureGradeDisplayOrder;
+	}
+
+	public Integer getFixturelistseq_id() {
+		return fixturelistseq_id;
+	}
+
+	public void setFixturelistseq_id(Integer fixturelistseq_id) {
+		this.fixturelistseq_id = fixturelistseq_id;
+	}
+
+	public Q88_Fixture getQ88fixturebill() {
+		return q88fixturebill;
+	}
+
+	public void setQ88fixturebill(Q88_Fixture q88fixturebill) {
+		this.q88fixturebill = q88fixturebill;
+	}
+
+	@Override
+	public String toString() {
+		return "Q88_FixtureBillOfLading [fixturebill_seqid=" + fixturebill_seqid + ", billOfLadingDate="
+				+ billOfLadingDate + ", description=" + description + ", displayOrder=" + displayOrder
+				+ ", fixtureGradeName=" + fixtureGradeName + ", portName=" + portName + ", portId=" + portId
+				+ ", fixturePortLinkToken=" + fixturePortLinkToken + ", quantityBBLS=" + quantityBBLS + ", quantityMT="
+				+ quantityMT + ", shipper=" + shipper + ", voyageFixtureGradeDisplayOrder="
+				+ voyageFixtureGradeDisplayOrder + ", fixturelistseq_id=" + fixturelistseq_id + ", q88fixturebill="
+				+ q88fixturebill + "]";
+	}
+
+	
+	
+	
 }

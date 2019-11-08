@@ -2,7 +2,12 @@ package com.q88.sample.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -10,22 +15,26 @@ import javax.persistence.Table;
 @Table(name = "Q88_BUNKER")
 public class Q88_Bunker {
 	
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name = "BUNER_SEQID")
+	private Integer buner_seqid;
 	@Column(name = "AVERAGECONSUMPTIONCOST")
-	private double averageconsumptioncost;
+	private Number averageConsumptionCost;
 	@Column(name = "BUNKERGRADENAME")
-	private String bunkergradename;
+	private String bunkerGradeName;
 	@Column(name = "CONSCOST")
-	private double conscost;	
+	private Number consCost;	
 	@Column(name = "CONSTOTAL")
-	private double constotal;
+	private Number consTotal;
 	@Column(name = "DISPLAYORDER")
-	private int displayorder;
+	private Integer displayOrder;
 	@Column(name = "REFILLPRICE")
-	private double refillprice;			
+	private Number refillPrice;			
 	@Column(name = "REMAINDERCONSCOST")
-	private double remainderconscost;	
+	private Number remainderConsCost;	
 	@Column(name = "TOTALCOST")
-	private double totalcost;
+	private Number totalCost;
 	@Column(name = "VOYAGEID")
 	private String voyageid;		
 	@Column(name = "VOYAGENUMBER")
@@ -33,13 +42,128 @@ public class Q88_Bunker {
 	@Column(name = "VESSELID")
 	private String vesselid;		
 	
-	@ManyToOne
-	@JoinColumn(name="voyageid",insertable=false, updatable=false)
-	@JoinColumn(name="voyagenumber",insertable=false, updatable=false)
-	@JoinColumn(name="vesselid",insertable=false, updatable=false)
+	@ManyToOne(optional = false,fetch = FetchType.LAZY)
+	@JoinColumns({
+		@JoinColumn(name="voyageid",referencedColumnName = "VOYAGEID",insertable=false, updatable=false),
+		@JoinColumn(name="voyagenumber",referencedColumnName = "VOYAGENUMBER",insertable=false, updatable=false),
+		@JoinColumn(name="vesselid",referencedColumnName = "VESSELID",insertable=false, updatable=false),
+	})
 	private Q88_Voyage q88voyagebunker;
 
+	public Integer getBuner_seqid() {
+		return buner_seqid;
+	}
 
+	public void setBuner_seqid(Integer buner_seqid) {
+		this.buner_seqid = buner_seqid;
+	}
 
+	public Number getAverageConsumptionCost() {
+		return averageConsumptionCost;
+	}
 
+	public void setAverageConsumptionCost(Number averageConsumptionCost) {
+		this.averageConsumptionCost = averageConsumptionCost;
+	}
+
+	public String getBunkerGradeName() {
+		return bunkerGradeName;
+	}
+
+	public void setBunkerGradeName(String bunkerGradeName) {
+		this.bunkerGradeName = bunkerGradeName;
+	}
+
+	public Number getConsCost() {
+		return consCost;
+	}
+
+	public void setConsCost(Number consCost) {
+		this.consCost = consCost;
+	}
+
+	public Number getConsTotal() {
+		return consTotal;
+	}
+
+	public void setConsTotal(Number consTotal) {
+		this.consTotal = consTotal;
+	}
+
+	public Integer getDisplayOrder() {
+		return displayOrder;
+	}
+
+	public void setDisplayOrder(Integer displayOrder) {
+		this.displayOrder = displayOrder;
+	}
+
+	public Number getRefillPrice() {
+		return refillPrice;
+	}
+
+	public void setRefillPrice(Number refillPrice) {
+		this.refillPrice = refillPrice;
+	}
+
+	public Number getRemainderConsCost() {
+		return remainderConsCost;
+	}
+
+	public void setRemainderConsCost(Number remainderConsCost) {
+		this.remainderConsCost = remainderConsCost;
+	}
+
+	public Number getTotalCost() {
+		return totalCost;
+	}
+
+	public void setTotalCost(Number totalCost) {
+		this.totalCost = totalCost;
+	}
+
+	public String getVoyageid() {
+		return voyageid;
+	}
+
+	public void setVoyageid(String voyageid) {
+		this.voyageid = voyageid;
+	}
+
+	public String getVoyagenumber() {
+		return voyagenumber;
+	}
+
+	public void setVoyagenumber(String voyagenumber) {
+		this.voyagenumber = voyagenumber;
+	}
+
+	public String getVesselid() {
+		return vesselid;
+	}
+
+	public void setVesselid(String vesselid) {
+		this.vesselid = vesselid;
+	}
+
+	public Q88_Voyage getQ88voyagebunker() {
+		return q88voyagebunker;
+	}
+
+	public void setQ88voyagebunker(Q88_Voyage q88voyagebunker) {
+		this.q88voyagebunker = q88voyagebunker;
+	}
+
+	@Override
+	public String toString() {
+		return "Q88_Bunker [buner_seqid=" + buner_seqid + ", averageConsumptionCost=" + averageConsumptionCost
+				+ ", bunkerGradeName=" + bunkerGradeName + ", consCost=" + consCost + ", consTotal=" + consTotal
+				+ ", displayOrder=" + displayOrder + ", refillPrice=" + refillPrice + ", remainderConsCost="
+				+ remainderConsCost + ", totalCost=" + totalCost + ", voyageid=" + voyageid + ", voyagenumber="
+				+ voyagenumber + ", vesselid=" + vesselid + ", q88voyagebunker=" + q88voyagebunker + "]";
+	}
+	
+	
+
+	
 }
