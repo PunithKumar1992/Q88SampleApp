@@ -1,5 +1,7 @@
 package com.q88.sample.model;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -13,13 +15,15 @@ import javax.persistence.Table;
 
 
 @Entity
-@Table(name = "Q88_VOYAGERESULTDETAILFIXED")
-public class Q88_VoyageResultDetailFixed {
+@Table(name = "Q88_VOYAGE_RESULTDETAILFIXED",schema = "CHOPS_WEB")
+public class Q88_VoyageResultDetailFixed  implements Serializable{
+	
+	private static final long serialVersionUID = 1L;
 	
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy=GenerationType.SEQUENCE)
 	@Column(name = "VOYAGERESFIXED_SEQID")
-	private Number voyageresfixed_seqid;
+	private Integer voyageresfixed_seqid;
 	@Column(name = "CLASSIFICATIONNAME")
 	private String classificationName;
 	@Column(name = "CLASSIFICATIONTOTAL")
@@ -31,11 +35,11 @@ public class Q88_VoyageResultDetailFixed {
 	@JoinColumn(name="voyage_resfixed_seqid",referencedColumnName = "VOYAGE_RESFIXED_SEQID",insertable=false, updatable=false)
 	private Q88_VoyageResultFixed q88voyageresultfixed;
 
-	public Number getVoyageresfixed_seqid() {
+	public Integer getVoyageresfixed_seqid() {
 		return voyageresfixed_seqid;
 	}
 
-	public void setVoyageresfixed_seqid(Number voyageresfixed_seqid) {
+	public void setVoyageresfixed_seqid(Integer voyageresfixed_seqid) {
 		this.voyageresfixed_seqid = voyageresfixed_seqid;
 	}
 

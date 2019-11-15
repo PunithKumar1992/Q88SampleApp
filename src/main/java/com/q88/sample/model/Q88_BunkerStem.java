@@ -1,5 +1,7 @@
 package com.q88.sample.model;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -11,19 +13,21 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "Q88_BUNKERSTEM")
-public class Q88_BunkerStem {
+@Table(name = "Q88_BUNKER_STEM",schema = "CHOPS_WEB")
+public class Q88_BunkerStem implements Serializable{
+	
+	private static final long serialVersionUID = 1L;
 	
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy=GenerationType.SEQUENCE)
 	@Column(name = "BUNKERSTEM_SEQID")
-	private int bunkerstem_seqid;
+	private Integer bunkerstem_seqid;
 	@Column(name = "STEMSTATUS")
 	private String stemStatus;	
 	@Column(name = "BUNKERGRADENAME")
 	private String bunkerGradeName;	
 	@Column(name = "QTYPLANNED")
-	private int qtyPlanned;
+	private Number qtyPlanned;
 	@Column(name = "STEMMEDDATE")
 	private String stemmedDate;
 	@Column(name = "STEMNUMBER")
@@ -35,33 +39,33 @@ public class Q88_BunkerStem {
 	@Column(name = "STEMBROKERNAME")
 	private String stemBrokerName;	
 	@Column(name = "PERTONPRICE")
-	private int perTonPrice;
+	private Number perTonPrice;
 	@Column(name = "DELIVERYCOST")
-	private double deliveryCost;
+	private Number deliveryCost;
 	@Column(name = "QTYSTEMMED")
-	private int qtyStemmed;	
+	private Number qtyStemmed;	
 	@Column(name = "QTYRECEIVED")
-	private double qtyReceived;
+	private Number qtyReceived;
 	@Column(name = "DELIVERYDATE")
 	private String deliveryDate;
 	@Column(name = "STEMDUEDATE")
 	private String stemDueDate;	
 	@Column(name = "STEMTOTALCOST")
-	private int stemTotalCost;
+	private Number  stemTotalCost;
 	@Column(name = "TOTALPERTONCOST")
-	private int totalPerTonCost;
+	private Number totalPerTonCost;
 	@Column(name = "LEGSEQ_ID")
-	private int legseq_id;	
+	private Integer legseq_id;	
 	
 	@ManyToOne(optional = false,fetch = FetchType.LAZY)
 	@JoinColumn(name="legseq_id",referencedColumnName = "LEGSEQ_ID",insertable=false, updatable=false)
 	private Q88_Leg q88bunkerleg;
 
-	public int getBunkerstem_seqid() {
+	public Integer getBunkerstem_seqid() {
 		return bunkerstem_seqid;
 	}
 
-	public void setBunkerstem_seqid(int bunkerstem_seqid) {
+	public void setBunkerstem_seqid(Integer bunkerstem_seqid) {
 		this.bunkerstem_seqid = bunkerstem_seqid;
 	}
 
@@ -81,11 +85,11 @@ public class Q88_BunkerStem {
 		this.bunkerGradeName = bunkerGradeName;
 	}
 
-	public int getQtyPlanned() {
+	public Number getQtyPlanned() {
 		return qtyPlanned;
 	}
 
-	public void setQtyPlanned(int qtyPlanned) {
+	public void setQtyPlanned(Number qtyPlanned) {
 		this.qtyPlanned = qtyPlanned;
 	}
 
@@ -129,35 +133,35 @@ public class Q88_BunkerStem {
 		this.stemBrokerName = stemBrokerName;
 	}
 
-	public int getPerTonPrice() {
+	public Number getPerTonPrice() {
 		return perTonPrice;
 	}
 
-	public void setPerTonPrice(int perTonPrice) {
+	public void setPerTonPrice(Number perTonPrice) {
 		this.perTonPrice = perTonPrice;
 	}
 
-	public double getDeliveryCost() {
+	public Number getDeliveryCost() {
 		return deliveryCost;
 	}
 
-	public void setDeliveryCost(double deliveryCost) {
+	public void setDeliveryCost(Number deliveryCost) {
 		this.deliveryCost = deliveryCost;
 	}
 
-	public int getQtyStemmed() {
+	public Number getQtyStemmed() {
 		return qtyStemmed;
 	}
 
-	public void setQtyStemmed(int qtyStemmed) {
+	public void setQtyStemmed(Number qtyStemmed) {
 		this.qtyStemmed = qtyStemmed;
 	}
 
-	public double getQtyReceived() {
+	public Number getQtyReceived() {
 		return qtyReceived;
 	}
 
-	public void setQtyReceived(double qtyReceived) {
+	public void setQtyReceived(Number qtyReceived) {
 		this.qtyReceived = qtyReceived;
 	}
 
@@ -177,27 +181,27 @@ public class Q88_BunkerStem {
 		this.stemDueDate = stemDueDate;
 	}
 
-	public int getStemTotalCost() {
+	public Number getStemTotalCost() {
 		return stemTotalCost;
 	}
 
-	public void setStemTotalCost(int stemTotalCost) {
+	public void setStemTotalCost(Number stemTotalCost) {
 		this.stemTotalCost = stemTotalCost;
 	}
 
-	public int getTotalPerTonCost() {
+	public Number getTotalPerTonCost() {
 		return totalPerTonCost;
 	}
 
-	public void setTotalPerTonCost(int totalPerTonCost) {
+	public void setTotalPerTonCost(Number totalPerTonCost) {
 		this.totalPerTonCost = totalPerTonCost;
 	}
 
-	public int getLegseq_id() {
+	public Integer getLegseq_id() {
 		return legseq_id;
 	}
 
-	public void setLegseq_id(int legseq_id) {
+	public void setLegseq_id(Integer legseq_id) {
 		this.legseq_id = legseq_id;
 	}
 
@@ -220,9 +224,8 @@ public class Q88_BunkerStem {
 				+ ", totalPerTonCost=" + totalPerTonCost + ", legseq_id=" + legseq_id + ", q88bunkerleg=" + q88bunkerleg
 				+ "]";
 	}
-	
-	
 
+	
 	
 
 

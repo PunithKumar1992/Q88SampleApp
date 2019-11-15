@@ -1,10 +1,12 @@
 package com.q88.sample.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Embeddable;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -16,12 +18,16 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
-@Table(name = "Q88_VOYAGERESULTFIXED")
-public class Q88_VoyageResultFixed {
+@Table(name = "Q88_VOYAGE_RESULTFIXED",schema = "CHOPS_WEB")
+public class Q88_VoyageResultFixed implements Serializable{
+	
+	private static final long serialVersionUID = 1L;
 	
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy=GenerationType.SEQUENCE)
 	@Column(name = "VOYAGE_RESFIXED_SEQID")
 	private Integer voyage_resfixed_seqid;
 	@Column(name = "BUNKERS")
@@ -50,21 +56,19 @@ public class Q88_VoyageResultFixed {
 	private Number sailedIn;
 	@Column(name = "TCE")
 	private Number tce;
-	@Column(name = "VOYAGEID")
-	private String  voyageid;
-	@Column(name = "VOYAGENUMBER")
-	private String 	voyagenumber;
-	@Column(name = "VESSELID")
-	private String  vesselid;
 	
 	@OneToMany(targetEntity =Q88_VoyageResultDetailFixed.class,fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "q88voyageresultfixed",orphanRemoval = false)
 	private List<Q88_VoyageResultDetailFixed> resultDetail =new ArrayList<Q88_VoyageResultDetailFixed>();
 	
+	@Column(name = "VOYAGEID")
+	private String  voyageid;
+	@Column(name = "VESSELID")
+	private String  vesselid;
 	
+
 	@OneToOne(optional=false,fetch=FetchType.LAZY)
 	@JoinColumns({
 		@JoinColumn(name="voyageid",referencedColumnName = "VOYAGEID",insertable=false, updatable=false),
-		@JoinColumn(name="voyagenumber",referencedColumnName ="VOYAGENUMBER" ,insertable=false, updatable=false),
 		@JoinColumn(name="vesselid",referencedColumnName = "VESSELID",insertable=false, updatable=false),
 	})
 	private Q88_Voyage q88voyageresfix;
@@ -210,6 +214,16 @@ public class Q88_VoyageResultFixed {
 	}
 
 
+	public List<Q88_VoyageResultDetailFixed> getResultDetail() {
+		return resultDetail;
+	}
+
+
+	public void setResultDetail(List<Q88_VoyageResultDetailFixed> resultDetail) {
+		this.resultDetail = resultDetail;
+	}
+
+
 	public String getVoyageid() {
 		return voyageid;
 	}
@@ -219,17 +233,6 @@ public class Q88_VoyageResultFixed {
 		this.voyageid = voyageid;
 	}
 
-
-	public String getVoyagenumber() {
-		return voyagenumber;
-	}
-
-
-	public void setVoyagenumber(String voyagenumber) {
-		this.voyagenumber = voyagenumber;
-	}
-
-
 	public String getVesselid() {
 		return vesselid;
 	}
@@ -237,16 +240,6 @@ public class Q88_VoyageResultFixed {
 
 	public void setVesselid(String vesselid) {
 		this.vesselid = vesselid;
-	}
-
-
-	public List<Q88_VoyageResultDetailFixed> getResultDetail() {
-		return resultDetail;
-	}
-
-
-	public void setResultDetail(List<Q88_VoyageResultDetailFixed> resultDetail) {
-		this.resultDetail = resultDetail;
 	}
 
 
@@ -266,13 +259,11 @@ public class Q88_VoyageResultFixed {
 				+ ", commission=" + commission + ", days=" + days + ", efficiency=" + efficiency + ", expense="
 				+ expense + ", expenses=" + expenses + ", modifiedByFull=" + modifiedByFull + ", modifiedDate="
 				+ modifiedDate + ", pnl=" + pnl + ", port=" + port + ", revenue=" + revenue + ", sailedIn=" + sailedIn
-				+ ", tce=" + tce + ", voyageid=" + voyageid + ", voyagenumber=" + voyagenumber + ", vesselid="
-				+ vesselid + ", resultDetail=" + resultDetail + ", q88voyageresfix=" + q88voyageresfix + "]";
+				+ ", tce=" + tce + ", resultDetail=" + resultDetail + ", voyageid=" + voyageid 
+				+ ", vesselid=" + vesselid + ", q88voyageresfix=" + q88voyageresfix + "]";
 	}
 
 
-	
-	
 	
 	
 }

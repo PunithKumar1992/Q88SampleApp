@@ -1,5 +1,7 @@
 package com.q88.sample.model;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -12,11 +14,13 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "Q88_VOYAGEREVIEW")
-public class Q88_VoyageReview {
+@Table(name = "Q88_VOYAGE_REVIEW",schema = "CHOPS_WEB")
+public class Q88_VoyageReview implements Serializable{
+	
+	private static final long serialVersionUID = 1L;
 	
 			@Id
-			@GeneratedValue(strategy=GenerationType.IDENTITY)
+			@GeneratedValue(strategy=GenerationType.SEQUENCE)
 			@Column(name = "VOYAGEREVIEW_SEQID")	
 			private Integer  voyagereview_seqid;
 			@Column(name = "REVIEWSTATUS")
@@ -27,16 +31,13 @@ public class Q88_VoyageReview {
 		    private String reviewDate;
 			@Column(name = "VOYAGEID")
 		    private String voyageid;
-			@Column(name = "VOYAGENUMBER")
-		    private String voyagenumber;
 			@Column(name = "VESSELID")
 		    private String vesselid;		
 
 			@OneToOne(optional = false,fetch = FetchType.LAZY)
 			@JoinColumns({
 				@JoinColumn(name="voyageid",referencedColumnName = "VOYAGEID",insertable=false, updatable=false),
-				@JoinColumn(name="voyagenumber",referencedColumnName = "VOYAGENUMBER",insertable=false, updatable=false),
-				@JoinColumn(name="vesselid",referencedColumnName = "VESSELID",insertable=false, updatable=false),
+				@JoinColumn(name="vesselid",referencedColumnName = "VESSELID",insertable=false, updatable=false)
 			})
 			private Q88_Voyage q88voyagereview;
 
@@ -80,14 +81,6 @@ public class Q88_VoyageReview {
 				this.voyageid = voyageid;
 			}
 
-			public String getVoyagenumber() {
-				return voyagenumber;
-			}
-
-			public void setVoyagenumber(String voyagenumber) {
-				this.voyagenumber = voyagenumber;
-			}
-
 			public String getVesselid() {
 				return vesselid;
 			}
@@ -108,7 +101,7 @@ public class Q88_VoyageReview {
 			public String toString() {
 				return "Q88_VoyageReview [voyagereview_seqid=" + voyagereview_seqid + ", reviewStatus=" + reviewStatus
 						+ ", reviewedBy=" + reviewedBy + ", reviewDate=" + reviewDate + ", voyageid=" + voyageid
-						+ ", voyagenumber=" + voyagenumber + ", vesselid=" + vesselid + ", q88voyagereview="
+					    + ", vesselid=" + vesselid + ", q88voyagereview="
 						+ q88voyagereview + "]";
 			}
 

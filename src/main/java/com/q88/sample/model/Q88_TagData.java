@@ -1,5 +1,7 @@
 package com.q88.sample.model;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -11,11 +13,13 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "Q88_TAGDATA")
-public class Q88_TagData {
+@Table(name = "Q88_TAGDATA",schema = "CHOPS_WEB")
+public class Q88_TagData implements Serializable{
+	
+	private static final long serialVersionUID = 1L;
 	
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy=GenerationType.SEQUENCE)
 	@Column(name = "TAGDATA_SEQID")
 	private Integer tagdata_seqid;
 	@Column(name = "CATEGORY")

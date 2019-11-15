@@ -1,5 +1,7 @@
 package com.q88.sample.model;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -12,11 +14,13 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "Q88_BUNKER")
-public class Q88_Bunker {
+@Table(name = "Q88_BUNKER",schema = "CHOPS_WEB")
+public class Q88_Bunker implements Serializable {
+	
+	private static final long serialVersionUID = 1L;
 	
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy=GenerationType.SEQUENCE)
 	@Column(name = "BUNER_SEQID")
 	private Integer buner_seqid;
 	@Column(name = "AVERAGECONSUMPTIONCOST")
@@ -37,16 +41,13 @@ public class Q88_Bunker {
 	private Number totalCost;
 	@Column(name = "VOYAGEID")
 	private String voyageid;		
-	@Column(name = "VOYAGENUMBER")
-	private String voyagenumber;	
 	@Column(name = "VESSELID")
 	private String vesselid;		
 	
 	@ManyToOne(optional = false,fetch = FetchType.LAZY)
 	@JoinColumns({
 		@JoinColumn(name="voyageid",referencedColumnName = "VOYAGEID",insertable=false, updatable=false),
-		@JoinColumn(name="voyagenumber",referencedColumnName = "VOYAGENUMBER",insertable=false, updatable=false),
-		@JoinColumn(name="vesselid",referencedColumnName = "VESSELID",insertable=false, updatable=false),
+		@JoinColumn(name="vesselid",referencedColumnName = "VESSELID",insertable=false, updatable=false)
 	})
 	private Q88_Voyage q88voyagebunker;
 
@@ -130,13 +131,6 @@ public class Q88_Bunker {
 		this.voyageid = voyageid;
 	}
 
-	public String getVoyagenumber() {
-		return voyagenumber;
-	}
-
-	public void setVoyagenumber(String voyagenumber) {
-		this.voyagenumber = voyagenumber;
-	}
 
 	public String getVesselid() {
 		return vesselid;
@@ -159,8 +153,8 @@ public class Q88_Bunker {
 		return "Q88_Bunker [buner_seqid=" + buner_seqid + ", averageConsumptionCost=" + averageConsumptionCost
 				+ ", bunkerGradeName=" + bunkerGradeName + ", consCost=" + consCost + ", consTotal=" + consTotal
 				+ ", displayOrder=" + displayOrder + ", refillPrice=" + refillPrice + ", remainderConsCost="
-				+ remainderConsCost + ", totalCost=" + totalCost + ", voyageid=" + voyageid + ", voyagenumber="
-				+ voyagenumber + ", vesselid=" + vesselid + ", q88voyagebunker=" + q88voyagebunker + "]";
+				+ remainderConsCost + ", totalCost=" + totalCost + ", voyageid=" + voyageid 
+				 + ", vesselid=" + vesselid + ", q88voyagebunker=" + q88voyagebunker + "]";
 	}
 	
 	

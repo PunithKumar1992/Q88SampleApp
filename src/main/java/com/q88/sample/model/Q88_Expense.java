@@ -1,5 +1,7 @@
 package com.q88.sample.model;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -12,11 +14,13 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "Q88_EXPENSE")
-public class Q88_Expense {
+@Table(name = "Q88_EXPENSE",schema = "CHOPS_WEB")
+public class Q88_Expense implements Serializable {
+	
+	private static final long serialVersionUID = 1L;
 	
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy=GenerationType.SEQUENCE)
 	@Column(name = "EXPENSE_SEQID")
 	private Integer expense_seqid;
 	@Column(name = "AMOUNT")
@@ -35,15 +39,12 @@ public class Q88_Expense {
 	private Number total;
 	@Column(name = "VOYAGEID")
 	private String voyageid;	
-	@Column(name = "VOYAGENUMBER")
-	private String voyagenumber;
 	@Column(name = "VESSELID")
 	private String vesselid;	
 	
 	@ManyToOne(optional = false,fetch = FetchType.LAZY)
 	@JoinColumns({
 	@JoinColumn(name="voyageid",insertable=false, updatable=false),
-	@JoinColumn(name="voyagenumber",insertable=false, updatable=false),
 	@JoinColumn(name="vesselid",insertable=false, updatable=false),
 	})
 	private Q88_Voyage q88voyageexpense;
@@ -120,13 +121,6 @@ public class Q88_Expense {
 		this.voyageid = voyageid;
 	}
 
-	public String getVoyagenumber() {
-		return voyagenumber;
-	}
-
-	public void setVoyagenumber(String voyagenumber) {
-		this.voyagenumber = voyagenumber;
-	}
 
 	public String getVesselid() {
 		return vesselid;
@@ -148,8 +142,8 @@ public class Q88_Expense {
 	public String toString() {
 		return "Q88_Expense [expense_seqid=" + expense_seqid + ", amount=" + amount + ", daily=" + daily
 				+ ", displayOrder=" + displayOrder + ", fixtureDisplayOrder=" + fixtureDisplayOrder + ", name=" + name
-				+ ", remark=" + remark + ", total=" + total + ", voyageid=" + voyageid + ", voyagenumber="
-				+ voyagenumber + ", vesselid=" + vesselid + ", q88voyageexpense=" + q88voyageexpense + "]";
+				+ ", remark=" + remark + ", total=" + total + ", voyageid=" + voyageid 
+				+ ", vesselid=" + vesselid + ", q88voyageexpense=" + q88voyageexpense + "]";
 	}
 
 	

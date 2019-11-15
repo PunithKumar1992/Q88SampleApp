@@ -1,5 +1,7 @@
 package com.q88.sample.model;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -12,11 +14,13 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "Q88_REMARK")
-public class Q88_Remark {
+@Table(name = "Q88_REMARK",schema = "CHOPS_WEB")
+public class Q88_Remark implements Serializable{
+	
+	private static final long serialVersionUID = 1L;
 	
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy=GenerationType.SEQUENCE)
 	@Column(name = "REMARK_SEQID")
 	private Integer remark_seqid;
 	@Column(name = "MODIFIEDDATE")
@@ -27,8 +31,6 @@ public class Q88_Remark {
 	private String remark ;		
 	@Column(name = "VOYAGEID")
 	private String voyageid;	
-	@Column(name = "VOYAGENUMBER")
-	private String voyagenumber;	
 	@Column(name = "VESSELID")
 	private String vesselid;		
 	
@@ -36,8 +38,7 @@ public class Q88_Remark {
 	@ManyToOne(optional = false,fetch = FetchType.LAZY)
 	@JoinColumns({
 		@JoinColumn(name="voyageid",referencedColumnName = "VOYAGEID",insertable=false, updatable=false),
-		@JoinColumn(name="voyagenumber",referencedColumnName = "VOYAGENUMBER",insertable=false, updatable=false),
-		@JoinColumn(name="vesselid",referencedColumnName = "VESSELID",insertable=false, updatable=false),	
+		@JoinColumn(name="vesselid",referencedColumnName = "VESSELID",insertable=false, updatable=false)
 	})
 	private Q88_Voyage q88voyageremark;
 
@@ -92,15 +93,6 @@ public class Q88_Remark {
 	}
 
 
-	public String getVoyagenumber() {
-		return voyagenumber;
-	}
-
-
-	public void setVoyagenumber(String voyagenumber) {
-		this.voyagenumber = voyagenumber;
-	}
-
 
 	public String getVesselid() {
 		return vesselid;
@@ -125,7 +117,7 @@ public class Q88_Remark {
 	@Override
 	public String toString() {
 		return "Q88_Remark [remark_seqid=" + remark_seqid + ", modifiedDate=" + modifiedDate + ", modifiedByFull="
-				+ modifiedByFull + ", remark=" + remark + ", voyageid=" + voyageid + ", voyagenumber=" + voyagenumber
+				+ modifiedByFull + ", remark=" + remark + ", voyageid=" + voyageid 
 				+ ", vesselid=" + vesselid + ", q88voyageremark=" + q88voyageremark + "]";
 	}
 

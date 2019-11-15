@@ -1,5 +1,7 @@
 package com.q88.sample.model;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -11,11 +13,13 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "Q88_FIXTUREBILLOFLADING")
-public class Q88_FixtureBillOfLading {
+@Table(name = "Q88_FIXTURE_BILLOFLADING",schema = "CHOPS_WEB")
+public class Q88_FixtureBillOfLading implements Serializable{
+	
+	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy=GenerationType.SEQUENCE)
 	@Column(name = "FIXTUREBILL_SEQID")
 	private Integer fixturebill_seqid;
 	@Column(name = "BILLOFLADINGDATE")

@@ -1,5 +1,7 @@
 package com.q88.sample.model;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -12,11 +14,13 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "Q88_TCRELETDETAIL")
-public class Q88_TcReletDetail {
+@Table(name = "Q88_TC_RELETDETAIL",schema = "CHOPS_WEB")
+public class Q88_TcReletDetail implements Serializable{
+	
+	private static final long serialVersionUID = 1L;
 	
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy=GenerationType.SEQUENCE)
 	@Column(name = "TCRELETDETAIL_SEQID")
 	private Integer tcreletdetail_seqid;
 	@Column(name = "FIXTUREREMARKS")
@@ -35,16 +39,13 @@ public class Q88_TcReletDetail {
 	private String tcReletDurationUnit;	
 	@Column(name = "VOYAGEID")
 	private String voyageid;
-	@Column(name = "VOYAGENUMBER")
-	private String voyagenumber;	
 	@Column(name = "VESSELID")
 	private String vesselid;		
 	
 	@OneToOne(optional = false,fetch = FetchType.LAZY)
 	@JoinColumns({
 		@JoinColumn(name="voyageid",referencedColumnName = "VOYAGEID",insertable=false, updatable=false),
-		@JoinColumn(name="voyagenumber",referencedColumnName = "VOYAGENUMBER",insertable=false, updatable=false),
-		@JoinColumn(name="vesselid",referencedColumnName = "VESSELID",insertable=false, updatable=false),
+		@JoinColumn(name="vesselid",referencedColumnName = "VESSELID",insertable=false, updatable=false)
 	})
 	private Q88_Voyage q88tcreletdetail;
 
@@ -120,14 +121,6 @@ public class Q88_TcReletDetail {
 		this.voyageid = voyageid;
 	}
 
-	public String getVoyagenumber() {
-		return voyagenumber;
-	}
-
-	public void setVoyagenumber(String voyagenumber) {
-		this.voyagenumber = voyagenumber;
-	}
-
 	public String getVesselid() {
 		return vesselid;
 	}
@@ -150,7 +143,7 @@ public class Q88_TcReletDetail {
 				+ ", deliveryDateTimeZ=" + deliveryDateTimeZ + ", deliveryLegName=" + deliveryLegName
 				+ ", redeliveryDateTimeZ=" + redeliveryDateTimeZ + ", redeliveryLegName=" + redeliveryLegName
 				+ ", tcReletDuration=" + tcReletDuration + ", tcReletDurationUnit=" + tcReletDurationUnit
-				+ ", voyageid=" + voyageid + ", voyagenumber=" + voyagenumber + ", vesselid=" + vesselid
+				+ ", voyageid=" + voyageid  + ", vesselid=" + vesselid
 				+ ", q88tcreletdetail=" + q88tcreletdetail + "]";
 	}
 

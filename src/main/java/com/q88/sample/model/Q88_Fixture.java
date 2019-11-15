@@ -1,5 +1,6 @@
 package com.q88.sample.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,13 +17,16 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
-@Table(name = "Q88_FIXTURE")
-public class Q88_Fixture {
+@Table(name = "Q88_FIXTURE",schema = "CHOPS_WEB")
+public class Q88_Fixture implements Serializable{
 	
+	private static final long serialVersionUID = 1L;
 	
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy=GenerationType.SEQUENCE)
 	@Column(name = "FIXTURELISTSEQ_ID")
 	private Integer fixturelistseq_id;
 	@Column(name = "CPDATE")
@@ -51,42 +55,41 @@ public class Q88_Fixture {
 	private Number overage;
 	@Column(name = "TIMEBAR")
 	private Integer timeBar;
-	@Column(name = "TAGS")
-	private String tags;
-	@Column(name = "VOYAGEID")
-	private String voyageid;
-	@Column(name = "VOYAGENUMBER")
-	private String voyagenumber;
-	@Column(name = "VESSELID")
-	private String vesselid;
 	
 	@OneToMany(targetEntity =Q88_FixtureBillOfLading.class,fetch =FetchType.LAZY,cascade =CascadeType.ALL,mappedBy ="q88fixturebill",orphanRemoval = false)
 	private List<Q88_FixtureBillOfLading> fixtureBillsOfLadings = new ArrayList<Q88_FixtureBillOfLading>();
 	
 	@OneToMany(targetEntity =Q88_FixtureCommission.class ,fetch = FetchType.LAZY,cascade = CascadeType.ALL,mappedBy ="q88fixturecommision",orphanRemoval = false )
 	private List<Q88_FixtureCommission> fixtureCommissions = new ArrayList<Q88_FixtureCommission>();
-	
+
 	@OneToMany(targetEntity =Q88_FixtureGrade.class,fetch = FetchType.LAZY,cascade = CascadeType.ALL, mappedBy ="q88fixturegrades",orphanRemoval = false )
 	private List<Q88_FixtureGrade> fixtureGrades = new ArrayList<Q88_FixtureGrade>();
-	
+
 	@OneToMany(targetEntity =Q88_FixturePort.class,fetch = FetchType.LAZY,cascade = CascadeType.ALL ,mappedBy = "q88fixtureport",orphanRemoval = false)
 	private List<Q88_FixturePort> fixturePorts = new ArrayList<Q88_FixturePort>();
-	
+
 	@OneToMany(targetEntity =Q88_FixtureRevenue.class,fetch = FetchType.LAZY,cascade = CascadeType.ALL,mappedBy = "q88fixturerevenue",orphanRemoval = false)
 	private List<Q88_FixtureRevenue> fixtureRevenueList = new ArrayList<Q88_FixtureRevenue>();
-	
+
 	@OneToMany(targetEntity =Q88_FixtureExpense.class,fetch = FetchType.LAZY,cascade = CascadeType.ALL ,mappedBy = "q88fixtureexpense",orphanRemoval = false)
 	private List<Q88_FixtureExpense> fixtureExpenseList = new ArrayList<Q88_FixtureExpense>();
 	
+
+	@Column(name = "TAGS")
+	private String tags;
 	
 	@OneToMany(targetEntity = Q88_TagData.class,fetch = FetchType.LAZY,cascade = CascadeType.ALL,mappedBy = "q88fixturetagdata",orphanRemoval = false)
 	private List<Q88_TagData> tagList;
+
+	@Column(name = "VOYAGEID")
+	private String voyageid;
+	@Column(name = "VESSELID")
+	private String vesselid;
 	
 	@ManyToOne(optional = false,fetch = FetchType.LAZY)
 	@JoinColumns({
 		@JoinColumn(name="voyageid",referencedColumnName = "VOYAGEID",insertable=false, updatable=false),
-		@JoinColumn(name="voyagenumber",referencedColumnName = "VOYAGENUMBER",insertable=false, updatable=false),
-		@JoinColumn(name="vesselid",referencedColumnName = "VESSELID",insertable=false, updatable=false),
+		@JoinColumn(name="vesselid",referencedColumnName = "VESSELID",insertable=false, updatable=false)
 	})
 	private Q88_Voyage q88voyagefixture;
 
@@ -202,38 +205,6 @@ public class Q88_Fixture {
 		this.timeBar = timeBar;
 	}
 
-	public String getTags() {
-		return tags;
-	}
-
-	public void setTags(String tags) {
-		this.tags = tags;
-	}
-
-	public String getVoyageid() {
-		return voyageid;
-	}
-
-	public void setVoyageid(String voyageid) {
-		this.voyageid = voyageid;
-	}
-
-	public String getVoyagenumber() {
-		return voyagenumber;
-	}
-
-	public void setVoyagenumber(String voyagenumber) {
-		this.voyagenumber = voyagenumber;
-	}
-
-	public String getVesselid() {
-		return vesselid;
-	}
-
-	public void setVesselid(String vesselid) {
-		this.vesselid = vesselid;
-	}
-
 	public List<Q88_FixtureBillOfLading> getFixtureBillsOfLadings() {
 		return fixtureBillsOfLadings;
 	}
@@ -282,12 +253,36 @@ public class Q88_Fixture {
 		this.fixtureExpenseList = fixtureExpenseList;
 	}
 
+	public String getTags() {
+		return tags;
+	}
+
+	public void setTags(String tags) {
+		this.tags = tags;
+	}
+
 	public List<Q88_TagData> getTagList() {
 		return tagList;
 	}
 
 	public void setTagList(List<Q88_TagData> tagList) {
 		this.tagList = tagList;
+	}
+
+	public String getVoyageid() {
+		return voyageid;
+	}
+
+	public void setVoyageid(String voyageid) {
+		this.voyageid = voyageid;
+	}
+
+	public String getVesselid() {
+		return vesselid;
+	}
+
+	public void setVesselid(String vesselid) {
+		this.vesselid = vesselid;
 	}
 
 	public Q88_Voyage getQ88voyagefixture() {
@@ -304,12 +299,12 @@ public class Q88_Fixture {
 				+ cpQuantity + ", demurrage=" + demurrage + ", displayOrder=" + displayOrder + ", fixtureNumber="
 				+ fixtureNumber + ", fixtureRemark=" + fixtureRemark + ", grades=" + grades + ", layCanDateEnd="
 				+ layCanDateEnd + ", layCanDateStart=" + layCanDateStart + ", laytime=" + laytime + ", otherTimeBar="
-				+ otherTimeBar + ", overage=" + overage + ", timeBar=" + timeBar + ", tags=" + tags + ", voyageid="
-				+ voyageid + ", voyagenumber=" + voyagenumber + ", vesselid=" + vesselid + ", fixtureBillsOfLadings="
+				+ otherTimeBar + ", overage=" + overage + ", timeBar=" + timeBar + ", fixtureBillsOfLadings="
 				+ fixtureBillsOfLadings + ", fixtureCommissions=" + fixtureCommissions + ", fixtureGrades="
 				+ fixtureGrades + ", fixturePorts=" + fixturePorts + ", fixtureRevenueList=" + fixtureRevenueList
-				+ ", fixtureExpenseList=" + fixtureExpenseList + ", tagList=" + tagList + ", q88voyagefixture="
-				+ q88voyagefixture + "]";
+				+ ", fixtureExpenseList=" + fixtureExpenseList + ", tags=" + tags + ", tagList=" + tagList
+				+ ", voyageid=" + voyageid + ", vesselid=" + vesselid
+				+ ", q88voyagefixture=" + q88voyagefixture + "]";
 	}
 
 	

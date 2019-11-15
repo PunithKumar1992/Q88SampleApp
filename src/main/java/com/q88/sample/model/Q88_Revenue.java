@@ -1,5 +1,7 @@
 package com.q88.sample.model;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -12,11 +14,13 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "Q88_REVENUE")
-public class Q88_Revenue {
+@Table(name = "Q88_REVENUE",schema = "CHOPS_WEB")
+public class Q88_Revenue  implements Serializable{
+	
+	private static final long serialVersionUID = 1L;
 	
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy=GenerationType.SEQUENCE)
 	@Column(name = "REVENUE_SEQID")
 	private Integer revenue_seqid;
 	@Column(name = "ACCRUAL")
@@ -43,16 +47,13 @@ public class Q88_Revenue {
 	private Number ws;			
 	@Column(name = "VOYAGEID")
 	private String  voyageid;	
-	@Column(name = "VOYAGENUMBER")
-	private String  voyagenumber;
 	@Column(name = "VESSELID")
 	private String  vesselid;	
 	
 	@ManyToOne(optional = false,fetch = FetchType.LAZY)
 	@JoinColumns({
 		@JoinColumn(name="voyageid",referencedColumnName ="VOYAGEID" ,insertable=false, updatable=false),
-		@JoinColumn(name="voyagenumber",referencedColumnName = "VOYAGENUMBER",insertable=false, updatable=false),
-		@JoinColumn(name="vesselid",referencedColumnName = "VESSELID",insertable=false, updatable=false),
+		@JoinColumn(name="vesselid",referencedColumnName = "VESSELID",insertable=false, updatable=false)
 	})
 	private Q88_Voyage q88voyagerevenue;
 
@@ -160,13 +161,7 @@ public class Q88_Revenue {
 		this.voyageid = voyageid;
 	}
 
-	public String getVoyagenumber() {
-		return voyagenumber;
-	}
-
-	public void setVoyagenumber(String voyagenumber) {
-		this.voyagenumber = voyagenumber;
-	}
+	
 
 	public String getVesselid() {
 		return vesselid;
@@ -189,8 +184,8 @@ public class Q88_Revenue {
 		return "Q88_Revenue [revenue_seqid=" + revenue_seqid + ", accrual=" + accrual + ", displayOrder=" + displayOrder
 				+ ", fixtureDisplayOrder=" + fixtureDisplayOrder + ", flatRate=" + flatRate + ", isCommission="
 				+ isCommission + ", name=" + name + ", quantity=" + quantity + ", remark=" + remark + ", total=" + total
-				+ ", totalAccrued=" + totalAccrued + ", ws=" + ws + ", voyageid=" + voyageid + ", voyagenumber="
-				+ voyagenumber + ", vesselid=" + vesselid + ", q88voyagerevenue=" + q88voyagerevenue + "]";
+				+ ", totalAccrued=" + totalAccrued + ", ws=" + ws + ", voyageid=" + voyageid 
+				 + ", vesselid=" + vesselid + ", q88voyagerevenue=" + q88voyagerevenue + "]";
 	}
 
 	

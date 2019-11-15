@@ -1,5 +1,7 @@
 package com.q88.sample.model;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -12,14 +14,15 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "Q88_VOYAGERESULTDETAIL")
-public class Q88_VoyageResultDetail {
+@Table(name = "Q88_VOYAGE_RESULTDETAIL",schema = "CHOPS_WEB")
+public class Q88_VoyageResultDetail implements Serializable {
 	
+	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy=GenerationType.SEQUENCE)
 	@Column(name = "VOYAGERESULTDTL_SEQID")
-	private Number voyageresultdtl_seqid;
+	private Integer voyageresultdtl_seqid;
 	@Column(name = "CLASSIFICATIONNAME")
 	private String classificationName;
 	@Column(name = "CLASSIFICATIONTOTAL")
@@ -31,11 +34,11 @@ public class Q88_VoyageResultDetail {
 	@JoinColumn(name="voyage_res_seqid",referencedColumnName ="VOYAGE_RES_SEQID",insertable=false, updatable=false)
 	private Q88_VoyageResult q88voyageresult;
 
-	public Number getVoyageresultdtl_seqid() {
+	public Integer getVoyageresultdtl_seqid() {
 		return voyageresultdtl_seqid;
 	}
 
-	public void setVoyageresultdtl_seqid(Number voyageresultdtl_seqid) {
+	public void setVoyageresultdtl_seqid(Integer voyageresultdtl_seqid) {
 		this.voyageresultdtl_seqid = voyageresultdtl_seqid;
 	}
 

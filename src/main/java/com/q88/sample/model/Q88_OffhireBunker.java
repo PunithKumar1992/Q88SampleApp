@@ -1,5 +1,7 @@
 package com.q88.sample.model;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -11,11 +13,13 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "Q88_OFFHIREBUNKER")
-public class Q88_OffhireBunker {
+@Table(name = "Q88_OFFHIRE_BUNKER",schema = "CHOPS_WEB")
+public class Q88_OffhireBunker implements Serializable{
+	
+	private static final long serialVersionUID = 1L;
 	
 	  @Id
-	  @GeneratedValue(strategy=GenerationType.IDENTITY)
+	  @GeneratedValue(strategy=GenerationType.SEQUENCE)
 	  @Column(name = "OFFHIREBUNKER_SEQID	")
 	  private Integer offhirebunker_seqid;
 	  @Column(name = "GRADENAME")
