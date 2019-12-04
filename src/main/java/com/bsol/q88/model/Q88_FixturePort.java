@@ -1,4 +1,4 @@
-package com.bsol.q88.model;
+/*package com.bsol.q88.model;
 
 import java.io.Serializable;
 
@@ -8,11 +8,16 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.bsol.q88.model.cpk.Q88_FixturePortCPK;
+
 @Entity
+@IdClass(Q88_FixturePortCPK.class)
 @Table(name = "Q88_FIXTURE_PORT",schema = "CHOPS_WEB")
 public class Q88_FixturePort implements Serializable {
 	
@@ -35,8 +40,21 @@ public class Q88_FixturePort implements Serializable {
 	@Column(name = "FIXTURELISTSEQ_ID")
 	private Integer fixturelistseq_id;
 	
+	@Id 
+	@Column(name = "VOYAGEID")
+	private String voyageid;
+	
+	@Id
+	@Column(name = "VESSELID")
+	private String vesselid;
+	
 	@ManyToOne(optional = false,fetch = FetchType.LAZY)
-	@JoinColumn(name="fixturelistseq_id",referencedColumnName = "FIXTURELISTSEQ_ID",insertable=false, updatable=false)
+	@JoinColumns({
+		@JoinColumn(name="fixturelistseq_id",referencedColumnName = "FIXTURELISTSEQ_ID",insertable=false, updatable=false),
+		@JoinColumn(name="voyageid",referencedColumnName = "VOYAGEID",insertable=false, updatable=false),
+		@JoinColumn(name="vesselid",referencedColumnName = "VESSELID",insertable=false, updatable=false)
+	})
+	
 	private Q88_Fixture q88fixtureport;
 
 	public Integer getFixtureport_seqid() {
@@ -95,6 +113,22 @@ public class Q88_FixturePort implements Serializable {
 		this.fixturelistseq_id = fixturelistseq_id;
 	}
 
+	public String getVoyageid() {
+		return voyageid;
+	}
+
+	public void setVoyageid(String voyageid) {
+		this.voyageid = voyageid;
+	}
+
+	public String getVesselid() {
+		return vesselid;
+	}
+
+	public void setVesselid(String vesselid) {
+		this.vesselid = vesselid;
+	}
+
 	public Q88_Fixture getQ88fixtureport() {
 		return q88fixtureport;
 	}
@@ -108,9 +142,10 @@ public class Q88_FixturePort implements Serializable {
 		return "Q88_FixturePort [fixtureport_seqid=" + fixtureport_seqid + ", portId=" + portId + ", portName="
 				+ portName + ", displayOrder=" + displayOrder + ", activityType=" + activityType
 				+ ", fixturePortLinkToken=" + fixturePortLinkToken + ", fixturelistseq_id=" + fixturelistseq_id
-				+ ", q88fixtureport=" + q88fixtureport + "]";
+				+ ", voyageid=" + voyageid + ", vesselid=" + vesselid + "]";
 	}
 
 	
 	
 }
+*/

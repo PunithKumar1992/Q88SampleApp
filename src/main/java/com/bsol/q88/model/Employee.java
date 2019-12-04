@@ -1,6 +1,7 @@
 package com.bsol.q88.model;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -25,7 +26,7 @@ public class Employee implements Serializable{
 	private String name;
 	
 	@Column(name = "AMOUNT")
-	private Number amount;
+	private BigDecimal amount;
 
 	public Integer getSeq_no() {
 		return seq_no;
@@ -43,11 +44,11 @@ public class Employee implements Serializable{
 		this.name = name;
 	}
 
-	public Number getAmount() {
+	public BigDecimal getAmount() {
 		return amount;
 	}
 
-	public void setAmount(Number amount) {
+	public void setAmount(BigDecimal amount) {
 		this.amount = amount;
 	}
 

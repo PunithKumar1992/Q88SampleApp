@@ -1,4 +1,4 @@
-package com.bsol.q88.model;
+/*package com.bsol.q88.model;
 
 import java.io.Serializable;
 
@@ -8,14 +8,25 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
+import com.bsol.q88.model.cpk.Q88_VoyageResultDetailFixedCPK;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
 
 @Entity
+@IdClass(Q88_VoyageResultDetailFixedCPK.class)
 @Table(name = "Q88_VOYAGE_RESULTDETAILFIXED",schema = "CHOPS_WEB")
+@JsonInclude(Include.NON_NULL)
 public class Q88_VoyageResultDetailFixed  implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
@@ -27,13 +38,28 @@ public class Q88_VoyageResultDetailFixed  implements Serializable{
 	@Column(name = "CLASSIFICATIONNAME")
 	private String classificationName;
 	@Column(name = "CLASSIFICATIONTOTAL")
-	private Number classificationTotal;
+	private Double classificationTotal;
+	
 	@Column(name = "VOYAGE_RESFIXED_SEQID")
-	private Number voyage_resfixed_seqid;
+	private Integer voyage_resfixed_seqid;
+	
 	
 	@ManyToOne(optional=false,fetch=FetchType.LAZY)
-	@JoinColumn(name="voyage_resfixed_seqid",referencedColumnName = "VOYAGE_RESFIXED_SEQID",insertable=false, updatable=false)
+	@JoinColumns({
+		@JoinColumn(name="voyage_resfixed_seqid",referencedColumnName = "VOYAGE_RESFIXED_SEQID",insertable=false, updatable=false),
+		@JoinColumn(name="voyageid",referencedColumnName = "VOYAGEID",insertable=false, updatable=false),
+		@JoinColumn(name="vesselid",referencedColumnName = "VESSELID",insertable=false, updatable=false)
+	})
+	
 	private Q88_VoyageResultFixed q88voyageresultfixed;
+
+	@Id
+	@Column(name = "VOYAGEID")
+	private String  voyageid;
+	
+	@Id
+	@Column(name = "VESSELID")
+	private String  vesselid;
 
 	public Integer getVoyageresfixed_seqid() {
 		return voyageresfixed_seqid;
@@ -51,19 +77,19 @@ public class Q88_VoyageResultDetailFixed  implements Serializable{
 		this.classificationName = classificationName;
 	}
 
-	public Number getClassificationTotal() {
+	public Double getClassificationTotal() {
 		return classificationTotal;
 	}
 
-	public void setClassificationTotal(Number classificationTotal) {
+	public void setClassificationTotal(Double classificationTotal) {
 		this.classificationTotal = classificationTotal;
 	}
 
-	public Number getVoyage_resfixed_seqid() {
+	public Integer getVoyage_resfixed_seqid() {
 		return voyage_resfixed_seqid;
 	}
 
-	public void setVoyage_resfixed_seqid(Number voyage_resfixed_seqid) {
+	public void setVoyage_resfixed_seqid(Integer voyage_resfixed_seqid) {
 		this.voyage_resfixed_seqid = voyage_resfixed_seqid;
 	}
 
@@ -75,14 +101,34 @@ public class Q88_VoyageResultDetailFixed  implements Serializable{
 		this.q88voyageresultfixed = q88voyageresultfixed;
 	}
 
+	public String getVoyageid() {
+		return voyageid;
+	}
+
+	public void setVoyageid(String voyageid) {
+		this.voyageid = voyageid;
+	}
+
+	public String getVesselid() {
+		return vesselid;
+	}
+
+	public void setVesselid(String vesselid) {
+		this.vesselid = vesselid;
+	}
+
 	@Override
 	public String toString() {
 		return "Q88_VoyageResultDetailFixed [voyageresfixed_seqid=" + voyageresfixed_seqid + ", classificationName="
 				+ classificationName + ", classificationTotal=" + classificationTotal + ", voyage_resfixed_seqid="
-				+ voyage_resfixed_seqid + ", q88voyageresultfixed=" + q88voyageresultfixed + "]";
+				+ voyage_resfixed_seqid + ", voyageid=" + voyageid + ", vesselid=" + vesselid + "]";
 	}
+	
+	
+
 
 	
 	
 	
 }
+*/

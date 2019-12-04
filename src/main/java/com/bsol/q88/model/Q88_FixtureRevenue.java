@@ -1,4 +1,4 @@
-package com.bsol.q88.model;
+/*package com.bsol.q88.model;
 
 import java.io.Serializable;
 
@@ -8,11 +8,16 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.bsol.q88.model.cpk.Q88_FixtureRevenueCPK;
+
 @Entity
+@IdClass(Q88_FixtureRevenueCPK.class)
 @Table(name = "Q88_FIXTURE_REVENUE",schema = "CHOPS_WEB")
 public class Q88_FixtureRevenue implements Serializable{
 	
@@ -23,32 +28,46 @@ public class Q88_FixtureRevenue implements Serializable{
 	@Column(name = "FIXTUREREVENUE_SEQID")
 	private Integer fixturerevenue_seqid;
 	@Column(name = "ACCRUAL")
-	private Number accrual	;	
+	private Double accrual	;	
 	@Column(name = "DISPLAYORDER")
 	private Integer displayOrder;		
 	@Column(name = "FIXTUREDISPLAYORDER")
 	private Integer fixtureDisplayOrder;	
 	@Column(name = "FLATRATE")
-	private Number flatRate;		
+	private Double flatRate;		
 	@Column(name = "ISCOMMISSION")
 	private String isCommission;		
 	@Column(name = "NAME")
 	private String name;
 	@Column(name = "QUANTITY")
-	private Number quantity;			
+	private Double quantity;			
 	@Column(name = "REMARK")
 	private String remark;	
 	@Column(name = "TOTAL")
-	private Number total;	
+	private Double total;	
 	@Column(name = "TOTALACCRUED")
-	private Number totalAccrued;	
+	private Double totalAccrued;	
 	@Column(name = "WS")
-	private Number ws;		
+	private Double ws;		
 	@Column(name = "FIXTURELISTSEQ_ID")
 	private int fixturelistseq_id;			
 	
+	@Id 
+	@Column(name = "VOYAGEID")
+	private String voyageid;
+	
+	@Id
+	@Column(name = "VESSELID")
+	private String vesselid;
+	
 	@ManyToOne(optional = false,fetch = FetchType.LAZY)
-	@JoinColumn(name="fixturelistseq_id",referencedColumnName = "FIXTURELISTSEQ_ID",insertable=false, updatable=false)
+	@JoinColumns({
+		@JoinColumn(name="fixturelistseq_id",referencedColumnName = "FIXTURELISTSEQ_ID",insertable=false, updatable=false),
+		@JoinColumn(name="voyageid",referencedColumnName = "VOYAGEID",insertable=false, updatable=false),
+		@JoinColumn(name="vesselid",referencedColumnName = "VESSELID",insertable=false, updatable=false)
+
+	})
+	
 	private Q88_Fixture q88fixturerevenue;
 
 	public Integer getFixturerevenue_seqid() {
@@ -59,11 +78,11 @@ public class Q88_FixtureRevenue implements Serializable{
 		this.fixturerevenue_seqid = fixturerevenue_seqid;
 	}
 
-	public Number getAccrual() {
+	public Double getAccrual() {
 		return accrual;
 	}
 
-	public void setAccrual(Number accrual) {
+	public void setAccrual(Double accrual) {
 		this.accrual = accrual;
 	}
 
@@ -83,11 +102,11 @@ public class Q88_FixtureRevenue implements Serializable{
 		this.fixtureDisplayOrder = fixtureDisplayOrder;
 	}
 
-	public Number getFlatRate() {
+	public Double getFlatRate() {
 		return flatRate;
 	}
 
-	public void setFlatRate(Number flatRate) {
+	public void setFlatRate(Double flatRate) {
 		this.flatRate = flatRate;
 	}
 
@@ -107,11 +126,11 @@ public class Q88_FixtureRevenue implements Serializable{
 		this.name = name;
 	}
 
-	public Number getQuantity() {
+	public Double getQuantity() {
 		return quantity;
 	}
 
-	public void setQuantity(Number quantity) {
+	public void setQuantity(Double quantity) {
 		this.quantity = quantity;
 	}
 
@@ -123,27 +142,27 @@ public class Q88_FixtureRevenue implements Serializable{
 		this.remark = remark;
 	}
 
-	public Number getTotal() {
+	public Double getTotal() {
 		return total;
 	}
 
-	public void setTotal(Number total) {
+	public void setTotal(Double total) {
 		this.total = total;
 	}
 
-	public Number getTotalAccrued() {
+	public Double getTotalAccrued() {
 		return totalAccrued;
 	}
 
-	public void setTotalAccrued(Number totalAccrued) {
+	public void setTotalAccrued(Double totalAccrued) {
 		this.totalAccrued = totalAccrued;
 	}
 
-	public Number getWs() {
+	public Double getWs() {
 		return ws;
 	}
 
-	public void setWs(Number ws) {
+	public void setWs(Double ws) {
 		this.ws = ws;
 	}
 
@@ -153,6 +172,22 @@ public class Q88_FixtureRevenue implements Serializable{
 
 	public void setFixturelistseq_id(int fixturelistseq_id) {
 		this.fixturelistseq_id = fixturelistseq_id;
+	}
+
+	public String getVoyageid() {
+		return voyageid;
+	}
+
+	public void setVoyageid(String voyageid) {
+		this.voyageid = voyageid;
+	}
+
+	public String getVesselid() {
+		return vesselid;
+	}
+
+	public void setVesselid(String vesselid) {
+		this.vesselid = vesselid;
 	}
 
 	public Q88_Fixture getQ88fixturerevenue() {
@@ -169,10 +204,10 @@ public class Q88_FixtureRevenue implements Serializable{
 				+ ", displayOrder=" + displayOrder + ", fixtureDisplayOrder=" + fixtureDisplayOrder + ", flatRate="
 				+ flatRate + ", isCommission=" + isCommission + ", name=" + name + ", quantity=" + quantity
 				+ ", remark=" + remark + ", total=" + total + ", totalAccrued=" + totalAccrued + ", ws=" + ws
-				+ ", fixturelistseq_id=" + fixturelistseq_id + ", q88fixturerevenue=" + q88fixturerevenue + "]";
+				+ ", fixturelistseq_id=" + fixturelistseq_id + ", voyageid=" + voyageid + ", vesselid=" + vesselid
+				+ "]";
 	}
 
 	
 	
-	
-}
+}*/

@@ -4,21 +4,22 @@ import javax.validation.constraints.NotNull;
 
 import org.springframework.stereotype.Component;
 
-import com.bsol.q88.mapper.CustomTcOutMapper;
+import com.bsol.q88.mapper.CustomTcOutListMapper;
 import com.bsol.q88.model.Q88_TcOutList;
-import com.bsol.q88.model.Q88_TcReview;
+import com.bsol.q88.model.Q88_TcoutListReview;
 
-@Component(value ="TcOutListDataTransferImpl")
+@Component
 public class TcOutListDataTransferImpl implements TcOutListDataTransfer{
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public <T> T getTcOutList(Q88_TcOutList q88tcOutlist, @NotNull Class<T> type) {
-		CustomTcOutMapper custom = new CustomTcOutMapper(q88tcOutlist);
+	public <T> T getTcOutList(@NotNull Q88_TcOutList tcOutList, Class<T> type) {
+		CustomTcOutListMapper custom = new CustomTcOutListMapper(tcOutList);
+		
 		 if(type == Q88_TcOutList.class) {
-			  return (T) custom.getTcoutList();
-		  }else if(type == Q88_TcReview.class) {
-			  return (T) custom.getTcoutReview();
+			  return (T) custom.getTcOutList();
+		  }else if(type == Q88_TcoutListReview.class) {
+			  return (T) custom.getTcOutListReview();
 		  }
 		  else{
 			  throw new IllegalArgumentException("Class type argument is not valid");

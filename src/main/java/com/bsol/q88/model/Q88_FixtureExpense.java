@@ -1,4 +1,4 @@
-package com.bsol.q88.model;
+/*package com.bsol.q88.model;
 
 import java.io.Serializable;
 
@@ -8,22 +8,27 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.bsol.q88.model.cpk.Q88_FixtureExpenseCPK;
+
 @Entity
-@Table(name = "Q88_FIXTURE_REVENUE",schema = "CHOPS_WEB")
+@IdClass(Q88_FixtureExpenseCPK.class)
+@Table(name = "Q88_FIXTURE_EXPENSE",schema = "CHOPS_WEB")
 public class Q88_FixtureExpense implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.SEQUENCE)
-	@Column(name = "FIXTUREREVENUE_SEQID")
-	private Integer fixturerevenue_seqid;
+	@Column(name = "FIXTUREEXPENSE_SEQID")
+	private Integer fixtureExpense_seqid;
 	@Column(name = "AMOUNT")
-	private Number amount;
+	private Double amount;
 	@Column(name = "DAILY")
 	private String daily;
 	@Column(name = "DISPLAYORDER")
@@ -35,27 +40,41 @@ public class Q88_FixtureExpense implements Serializable{
 	@Column(name = "REMARK")
 	private String remark;
 	@Column(name = "TOTAL")
-	private Number total;
+	private Double total;
 	@Column(name = "FIXTURELISTSEQ_ID")
 	private Integer fixturelistseq_id;
 	
+	@Id 
+	@Column(name = "VOYAGEID")
+	private String voyageid;
+	
+	@Id
+	@Column(name = "VESSELID")
+	private String vesselid;
+	
 	@ManyToOne(optional = false,fetch = FetchType.LAZY)
-	@JoinColumn(name="fixturelistseq_id",referencedColumnName = "FIXTURELISTSEQ_ID",insertable=false, updatable=false)
+	@JoinColumns({
+		@JoinColumn(name="fixturelistseq_id",referencedColumnName = "FIXTURELISTSEQ_ID",insertable=false, updatable=false),
+		@JoinColumn(name="voyageid",referencedColumnName = "VOYAGEID",insertable=false, updatable=false),
+		@JoinColumn(name="vesselid",referencedColumnName = "VESSELID",insertable=false, updatable=false)
+	})
+	
 	private Q88_Fixture q88fixtureexpense;
 
-	public Integer getFixturerevenue_seqid() {
-		return fixturerevenue_seqid;
+
+	public Integer getFixtureExpense_seqid() {
+		return fixtureExpense_seqid;
 	}
 
-	public void setFixturerevenue_seqid(Integer fixturerevenue_seqid) {
-		this.fixturerevenue_seqid = fixturerevenue_seqid;
+	public void setFixtureExpense_seqid(Integer fixtureExpense_seqid) {
+		this.fixtureExpense_seqid = fixtureExpense_seqid;
 	}
 
-	public Number getAmount() {
+	public Double getAmount() {
 		return amount;
 	}
 
-	public void setAmount(Number amount) {
+	public void setAmount(Double amount) {
 		this.amount = amount;
 	}
 
@@ -99,11 +118,11 @@ public class Q88_FixtureExpense implements Serializable{
 		this.remark = remark;
 	}
 
-	public Number getTotal() {
+	public Double getTotal() {
 		return total;
 	}
 
-	public void setTotal(Number total) {
+	public void setTotal(Double total) {
 		this.total = total;
 	}
 
@@ -113,6 +132,22 @@ public class Q88_FixtureExpense implements Serializable{
 
 	public void setFixturelistseq_id(Integer fixturelistseq_id) {
 		this.fixturelistseq_id = fixturelistseq_id;
+	}
+
+	public String getVoyageid() {
+		return voyageid;
+	}
+
+	public void setVoyageid(String voyageid) {
+		this.voyageid = voyageid;
+	}
+
+	public String getVesselid() {
+		return vesselid;
+	}
+
+	public void setVesselid(String vesselid) {
+		this.vesselid = vesselid;
 	}
 
 	public Q88_Fixture getQ88fixtureexpense() {
@@ -125,12 +160,15 @@ public class Q88_FixtureExpense implements Serializable{
 
 	@Override
 	public String toString() {
-		return "Q88_FixtureExpense [fixturerevenue_seqid=" + fixturerevenue_seqid + ", amount=" + amount + ", daily="
+		return "Q88_FixtureExpense [fixtureExpense_seqid=" + fixtureExpense_seqid + ", amount=" + amount + ", daily="
 				+ daily + ", displayOrder=" + displayOrder + ", fixtureDisplayOrder=" + fixtureDisplayOrder + ", name="
 				+ name + ", remark=" + remark + ", total=" + total + ", fixturelistseq_id=" + fixturelistseq_id
-				+ ", q88fixtureexpense=" + q88fixtureexpense + "]";
+				+ ", voyageid=" + voyageid + ", vesselid=" + vesselid + "]";
 	}
+
 
 	
 	
+	
 }
+*/

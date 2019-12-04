@@ -1,4 +1,4 @@
-package com.bsol.q88.model;
+/*package com.bsol.q88.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -11,86 +11,104 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
+import com.bsol.q88.model.cpk.Q88_FixtureCPK;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-@Table(name = "Q88_FIXTURE",schema = "CHOPS_WEB")
-public class Q88_Fixture implements Serializable{
-	
+@IdClass(Q88_FixtureCPK.class)
+@Table(name = "Q88_FIXTURE", schema = "CHOPS_WEB")
+public class Q88_Fixture implements Serializable {
+
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
-	@GeneratedValue(strategy=GenerationType.SEQUENCE)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	@Column(name = "FIXTURELISTSEQ_ID")
 	private Integer fixturelistseq_id;
 	@Column(name = "CPDATE")
 	private String cpDate;
 	@Column(name = "CPQUANTITY")
-	private Number cpQuantity;
+	private Double cpQuantity;
 	@Column(name = "DEMURRAGE")
-	private Number  demurrage;
+	private Double demurrage;
 	@Column(name = "DISPLAYORDER")
 	private Integer displayOrder;
 	@Column(name = "FIXTURENUMBER")
 	private String fixtureNumber;
 	@Column(name = "FIXTUREREMARK")
-	private String  fixtureRemark;
+	private String fixtureRemark;
 	@Column(name = "GRADES")
-	private String  grades;
+	private String grades;
 	@Column(name = "LAYCANDATEEND")
-	private String	layCanDateEnd;
+	private String layCanDateEnd;
 	@Column(name = "LAYCANDATESTART")
-	private String	layCanDateStart;
+	private String layCanDateStart;
 	@Column(name = "LAYTIME")
 	private Integer laytime;
 	@Column(name = "OTHERTIMEBAR")
 	private Integer otherTimeBar;
 	@Column(name = "OVERAGE")
-	private Number overage;
+	private Double overage;
 	@Column(name = "TIMEBAR")
 	private Integer timeBar;
-	
-	@OneToMany(targetEntity =Q88_FixtureBillOfLading.class,fetch =FetchType.LAZY,cascade =CascadeType.ALL,mappedBy ="q88fixturebill",orphanRemoval = false)
+
+	@OneToMany(targetEntity = Q88_FixtureBillOfLading.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "q88fixturebill", orphanRemoval = false)
+	@Fetch(value = FetchMode.SUBSELECT)
 	private List<Q88_FixtureBillOfLading> fixtureBillsOfLadings = new ArrayList<Q88_FixtureBillOfLading>();
-	
-	@OneToMany(targetEntity =Q88_FixtureCommission.class ,fetch = FetchType.LAZY,cascade = CascadeType.ALL,mappedBy ="q88fixturecommision",orphanRemoval = false )
+
+	@OneToMany(targetEntity = Q88_FixtureCommission.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "q88fixturecommision", orphanRemoval = false)
+	@Fetch(value = FetchMode.SUBSELECT)
 	private List<Q88_FixtureCommission> fixtureCommissions = new ArrayList<Q88_FixtureCommission>();
 
-	@OneToMany(targetEntity =Q88_FixtureGrade.class,fetch = FetchType.LAZY,cascade = CascadeType.ALL, mappedBy ="q88fixturegrades",orphanRemoval = false )
+	@OneToMany(targetEntity = Q88_FixtureGrade.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "q88fixturegrades", orphanRemoval = false)
+	@Fetch(value = FetchMode.SUBSELECT)
 	private List<Q88_FixtureGrade> fixtureGrades = new ArrayList<Q88_FixtureGrade>();
-
-	@OneToMany(targetEntity =Q88_FixturePort.class,fetch = FetchType.LAZY,cascade = CascadeType.ALL ,mappedBy = "q88fixtureport",orphanRemoval = false)
+	
+	@OneToMany(targetEntity = Q88_FixturePort.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "q88fixtureport", orphanRemoval = false)
+	@Fetch(value = FetchMode.SUBSELECT)
 	private List<Q88_FixturePort> fixturePorts = new ArrayList<Q88_FixturePort>();
 
-	@OneToMany(targetEntity =Q88_FixtureRevenue.class,fetch = FetchType.LAZY,cascade = CascadeType.ALL,mappedBy = "q88fixturerevenue",orphanRemoval = false)
+	@OneToMany(targetEntity = Q88_FixtureRevenue.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "q88fixturerevenue", orphanRemoval = false)
+	@Fetch(value = FetchMode.SUBSELECT)
 	private List<Q88_FixtureRevenue> fixtureRevenueList = new ArrayList<Q88_FixtureRevenue>();
 
-	@OneToMany(targetEntity =Q88_FixtureExpense.class,fetch = FetchType.LAZY,cascade = CascadeType.ALL ,mappedBy = "q88fixtureexpense",orphanRemoval = false)
+	@OneToMany(targetEntity = Q88_FixtureExpense.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "q88fixtureexpense", orphanRemoval = false)
+	@Fetch(value = FetchMode.SUBSELECT)
 	private List<Q88_FixtureExpense> fixtureExpenseList = new ArrayList<Q88_FixtureExpense>();
-	
+
+	@OneToMany(targetEntity = Q88_FixtureTagData.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "q88fixturetagdata", orphanRemoval = false)
+	@Fetch(value = FetchMode.SUBSELECT)
+	private List<Q88_FixtureTagData> tagList;
 
 	@Column(name = "TAGS")
 	private String tags;
-	
-	@OneToMany(targetEntity = Q88_TagData.class,fetch = FetchType.LAZY,cascade = CascadeType.ALL,mappedBy = "q88fixturetagdata",orphanRemoval = false)
-	private List<Q88_TagData> tagList;
 
+	@Id
 	@Column(name = "VOYAGEID")
 	private String voyageid;
+
+	@Id
 	@Column(name = "VESSELID")
 	private String vesselid;
-	
-	@ManyToOne(optional = false,fetch = FetchType.LAZY)
+
+	@Column(name = "VOYAGE_TRANS_ID")
+	private Integer voyage_Trans_Id;
+
+	@ManyToOne(optional = false, fetch = FetchType.EAGER)
 	@JoinColumns({
-		@JoinColumn(name="voyageid",referencedColumnName = "VOYAGEID",insertable=false, updatable=false),
-		@JoinColumn(name="vesselid",referencedColumnName = "VESSELID",insertable=false, updatable=false)
-	})
+			@JoinColumn(name = "voyageid", referencedColumnName = "VOYAGEID", insertable = false, updatable = false),
+			@JoinColumn(name = "vesselid", referencedColumnName = "VESSELID", insertable = false, updatable = false),
+			@JoinColumn(name="voyage_Trans_Id",nullable = false,referencedColumnName ="VOYAGE_TRANS_ID",insertable=false, updatable=false)})
 	private Q88_Voyage q88voyagefixture;
 
 	public Integer getFixturelistseq_id() {
@@ -109,19 +127,19 @@ public class Q88_Fixture implements Serializable{
 		this.cpDate = cpDate;
 	}
 
-	public Number getCpQuantity() {
+	public Double getCpQuantity() {
 		return cpQuantity;
 	}
 
-	public void setCpQuantity(Number cpQuantity) {
+	public void setCpQuantity(Double cpQuantity) {
 		this.cpQuantity = cpQuantity;
 	}
 
-	public Number getDemurrage() {
+	public Double getDemurrage() {
 		return demurrage;
 	}
 
-	public void setDemurrage(Number demurrage) {
+	public void setDemurrage(Double demurrage) {
 		this.demurrage = demurrage;
 	}
 
@@ -189,11 +207,11 @@ public class Q88_Fixture implements Serializable{
 		this.otherTimeBar = otherTimeBar;
 	}
 
-	public Number getOverage() {
+	public Double getOverage() {
 		return overage;
 	}
 
-	public void setOverage(Number overage) {
+	public void setOverage(Double overage) {
 		this.overage = overage;
 	}
 
@@ -205,6 +223,49 @@ public class Q88_Fixture implements Serializable{
 		this.timeBar = timeBar;
 	}
 
+	public String getTags() {
+		return tags;
+	}
+
+	public void setTags(String tags) {
+		this.tags = tags;
+	}
+
+	public String getVoyageid() {
+		return voyageid;
+	}
+
+	public void setVoyageid(String voyageid) {
+		this.voyageid = voyageid;
+	}
+
+	public String getVesselid() {
+		return vesselid;
+	}
+
+	public void setVesselid(String vesselid) {
+		this.vesselid = vesselid;
+	}
+
+	public Q88_Voyage getQ88voyagefixture() {
+		return q88voyagefixture;
+	}
+
+	public void setQ88voyagefixture(Q88_Voyage q88voyagefixture) {
+		this.q88voyagefixture = q88voyagefixture;
+	}
+
+	
+	
+	public Integer getVoyage_Trans_Id() {
+		return voyage_Trans_Id;
+	}
+
+	public void setVoyage_Trans_Id(Integer voyage_Trans_Id) {
+		this.voyage_Trans_Id = voyage_Trans_Id;
+	}
+
+	
 	public List<Q88_FixtureBillOfLading> getFixtureBillsOfLadings() {
 		return fixtureBillsOfLadings;
 	}
@@ -212,7 +273,9 @@ public class Q88_Fixture implements Serializable{
 	public void setFixtureBillsOfLadings(List<Q88_FixtureBillOfLading> fixtureBillsOfLadings) {
 		this.fixtureBillsOfLadings = fixtureBillsOfLadings;
 	}
-
+	
+	
+	
 	public List<Q88_FixtureCommission> getFixtureCommissions() {
 		return fixtureCommissions;
 	}
@@ -253,44 +316,12 @@ public class Q88_Fixture implements Serializable{
 		this.fixtureExpenseList = fixtureExpenseList;
 	}
 
-	public String getTags() {
-		return tags;
-	}
-
-	public void setTags(String tags) {
-		this.tags = tags;
-	}
-
-	public List<Q88_TagData> getTagList() {
+	public List<Q88_FixtureTagData> getTagList() {
 		return tagList;
 	}
 
-	public void setTagList(List<Q88_TagData> tagList) {
+	public void setTagList(List<Q88_FixtureTagData> tagList) {
 		this.tagList = tagList;
-	}
-
-	public String getVoyageid() {
-		return voyageid;
-	}
-
-	public void setVoyageid(String voyageid) {
-		this.voyageid = voyageid;
-	}
-
-	public String getVesselid() {
-		return vesselid;
-	}
-
-	public void setVesselid(String vesselid) {
-		this.vesselid = vesselid;
-	}
-
-	public Q88_Voyage getQ88voyagefixture() {
-		return q88voyagefixture;
-	}
-
-	public void setQ88voyagefixture(Q88_Voyage q88voyagefixture) {
-		this.q88voyagefixture = q88voyagefixture;
 	}
 
 	@Override
@@ -302,12 +333,9 @@ public class Q88_Fixture implements Serializable{
 				+ otherTimeBar + ", overage=" + overage + ", timeBar=" + timeBar + ", fixtureBillsOfLadings="
 				+ fixtureBillsOfLadings + ", fixtureCommissions=" + fixtureCommissions + ", fixtureGrades="
 				+ fixtureGrades + ", fixturePorts=" + fixturePorts + ", fixtureRevenueList=" + fixtureRevenueList
-				+ ", fixtureExpenseList=" + fixtureExpenseList + ", tags=" + tags + ", tagList=" + tagList
-				+ ", voyageid=" + voyageid + ", vesselid=" + vesselid
-				+ ", q88voyagefixture=" + q88voyagefixture + "]";
+				+ ", fixtureExpenseList=" + fixtureExpenseList + ", tagList=" + tagList + ", tags=" + tags
+				+ ", voyageid=" + voyageid + ", vesselid=" + vesselid + ", voyage_Trans_Id=" + voyage_Trans_Id + "]";
 	}
-
-	
 	
 }
-
+*/

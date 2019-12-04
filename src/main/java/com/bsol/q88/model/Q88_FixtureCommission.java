@@ -1,4 +1,4 @@
-package com.bsol.q88.model;
+/*package com.bsol.q88.model;
 
 import java.io.Serializable;
 
@@ -8,11 +8,16 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.bsol.q88.model.cpk.Q88_FixtureCommissionCPK;
+
 @Entity
+@IdClass(Q88_FixtureCommissionCPK.class)
 @Table(name = "Q88_FIXTURE_COMMISSION",schema = "CHOPS_WEB")
 public class Q88_FixtureCommission implements Serializable{
 	
@@ -31,12 +36,25 @@ public class Q88_FixtureCommission implements Serializable{
 	@Column(name = "ORGANIZATIONEXTERNALID")
 	private String organizationExternalId;
 	@Column(name = "RATE")
-	private Number rate;
+	private Double rate;
 	@Column(name = "FIXTURELISTSEQ_ID")
 	private Integer fixturelistseq_id;
 	
+	@Id 
+	@Column(name = "VOYAGEID")
+	private String voyageid;
+	
+	@Id
+	@Column(name = "VESSELID")
+	private String vesselid;
+	
 	@ManyToOne(optional =false, fetch = FetchType.LAZY)
-	@JoinColumn(name="fixturelistseq_id", referencedColumnName ="FIXTURELISTSEQ_ID",insertable=false, updatable=false)
+	@JoinColumns({
+		@JoinColumn(name="voyageid",referencedColumnName = "VOYAGEID",insertable=false, updatable=false),
+		@JoinColumn(name="vesselid",referencedColumnName = "VESSELID",insertable=false, updatable=false),
+		@JoinColumn(name="fixturelistseq_id", referencedColumnName ="FIXTURELISTSEQ_ID",insertable=false, updatable=false)
+	})
+	
 	private Q88_Fixture q88fixturecommision;
 
 	public Integer getFixturecommission_seqid() {
@@ -79,11 +97,11 @@ public class Q88_FixtureCommission implements Serializable{
 		this.organizationExternalId = organizationExternalId;
 	}
 
-	public Number getRate() {
+	public Double getRate() {
 		return rate;
 	}
 
-	public void setRate(Number rate) {
+	public void setRate(Double rate) {
 		this.rate = rate;
 	}
 
@@ -93,6 +111,22 @@ public class Q88_FixtureCommission implements Serializable{
 
 	public void setFixturelistseq_id(Integer fixturelistseq_id) {
 		this.fixturelistseq_id = fixturelistseq_id;
+	}
+
+	public String getVoyageid() {
+		return voyageid;
+	}
+
+	public void setVoyageid(String voyageid) {
+		this.voyageid = voyageid;
+	}
+
+	public String getVesselid() {
+		return vesselid;
+	}
+
+	public void setVesselid(String vesselid) {
+		this.vesselid = vesselid;
 	}
 
 	public Q88_Fixture getQ88fixturecommision() {
@@ -108,9 +142,11 @@ public class Q88_FixtureCommission implements Serializable{
 		return "Q88_FixtureCommission [fixturecommission_seqid=" + fixturecommission_seqid + ", commissionType="
 				+ commissionType + ", organizationGroupName=" + organizationGroupName + ", organizationName="
 				+ organizationName + ", organizationExternalId=" + organizationExternalId + ", rate=" + rate
-				+ ", fixturelistseq_id=" + fixturelistseq_id + ", q88fixturecommision=" + q88fixturecommision + "]";
+				+ ", fixturelistseq_id=" + fixturelistseq_id + ", voyageid=" + voyageid + ", vesselid=" + vesselid
+				+ "]";
 	}
-
+	
 	
 	
 }
+*/

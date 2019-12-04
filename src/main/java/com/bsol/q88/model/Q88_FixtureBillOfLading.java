@@ -1,4 +1,4 @@
-package com.bsol.q88.model;
+/*package com.bsol.q88.model;
 
 import java.io.Serializable;
 
@@ -8,11 +8,16 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.bsol.q88.model.cpk.Q88_FixtureBillOfLadingCPK;
+
 @Entity
+@IdClass(Q88_FixtureBillOfLadingCPK.class)
 @Table(name = "Q88_FIXTURE_BILLOFLADING",schema = "CHOPS_WEB")
 public class Q88_FixtureBillOfLading implements Serializable{
 	
@@ -37,7 +42,7 @@ public class Q88_FixtureBillOfLading implements Serializable{
 	@Column(name = "FIXTUREPORTLINKTOKEN")
 	private String fixturePortLinkToken ;
 	@Column(name = "QUANTITYBBLS")
-	private Number quantityBBLS ;
+	private Double quantityBBLS ;
 	@Column(name = "QUANTITYMT")
 	private Number quantityMT ;
 	@Column(name = "SHIPPER")
@@ -47,8 +52,20 @@ public class Q88_FixtureBillOfLading implements Serializable{
 	@Column(name = "FIXTURELISTSEQ_ID")
 	private Integer fixturelistseq_id;
 	
+	@Id 
+	@Column(name = "VOYAGEID")
+	private String voyageid;
+	
+	@Id
+	@Column(name = "VESSELID")
+	private String vesselid;
+	
 	@ManyToOne(optional = false,fetch = FetchType.LAZY)
-	@JoinColumn(name="fixturelistseq_id", referencedColumnName ="FIXTURELISTSEQ_ID" ,insertable=false, updatable=false)
+	@JoinColumns({
+		@JoinColumn(name="fixturelistseq_id", referencedColumnName ="FIXTURELISTSEQ_ID" ,insertable=false, updatable=false),
+		@JoinColumn(name="voyageid",referencedColumnName = "VOYAGEID",insertable=false, updatable=false),
+		@JoinColumn(name="vesselid",referencedColumnName = "VESSELID",insertable=false, updatable=false)
+	})
 	private Q88_Fixture q88fixturebill;
 
 	public Integer getFixturebill_seqid() {
@@ -115,11 +132,11 @@ public class Q88_FixtureBillOfLading implements Serializable{
 		this.fixturePortLinkToken = fixturePortLinkToken;
 	}
 
-	public Number getQuantityBBLS() {
+	public Double getQuantityBBLS() {
 		return quantityBBLS;
 	}
 
-	public void setQuantityBBLS(Number quantityBBLS) {
+	public void setQuantityBBLS(Double quantityBBLS) {
 		this.quantityBBLS = quantityBBLS;
 	}
 
@@ -155,6 +172,22 @@ public class Q88_FixtureBillOfLading implements Serializable{
 		this.fixturelistseq_id = fixturelistseq_id;
 	}
 
+	public String getVoyageid() {
+		return voyageid;
+	}
+
+	public void setVoyageid(String voyageid) {
+		this.voyageid = voyageid;
+	}
+
+	public String getVesselid() {
+		return vesselid;
+	}
+
+	public void setVesselid(String vesselid) {
+		this.vesselid = vesselid;
+	}
+
 	public Q88_Fixture getQ88fixturebill() {
 		return q88fixturebill;
 	}
@@ -170,11 +203,14 @@ public class Q88_FixtureBillOfLading implements Serializable{
 				+ ", fixtureGradeName=" + fixtureGradeName + ", portName=" + portName + ", portId=" + portId
 				+ ", fixturePortLinkToken=" + fixturePortLinkToken + ", quantityBBLS=" + quantityBBLS + ", quantityMT="
 				+ quantityMT + ", shipper=" + shipper + ", voyageFixtureGradeDisplayOrder="
-				+ voyageFixtureGradeDisplayOrder + ", fixturelistseq_id=" + fixturelistseq_id + ", q88fixturebill="
-				+ q88fixturebill + "]";
+				+ voyageFixtureGradeDisplayOrder + ", fixturelistseq_id=" + fixturelistseq_id + ", voyageid=" + voyageid
+				+ ", vesselid=" + vesselid + "]";
 	}
+
+	
 
 	
 	
 	
 }
+*/

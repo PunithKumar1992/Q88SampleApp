@@ -1,22 +1,19 @@
 package com.bsol.q88.model;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.Type;
-
+import com.bsol.q88.model.cpk.Q88_VoyageCPK;
 
 @Entity
 @IdClass(Q88_VoyageCPK.class)
@@ -24,13 +21,18 @@ import org.hibernate.annotations.Type;
 public class Q88_Voyage implements Serializable {
 
 	private static final long serialVersionUID = 1L;
+	
+	@Id
+	@GeneratedValue(strategy=GenerationType.SEQUENCE)
+	@Column(name = "VOYAGE_TRANS_ID")
+	private Integer voyageTrans_Id;
 
 	@Id
-	@Column(name = "VOYAGEID")
+	@Column(name = "VOYAGE_ID")
 	private String voyageId;
 	
 	@Id
-	@Column(name = "VESSELID")
+	@Column(name = "VESSEL_ID")
 	private String vesselId;
 	
 	@Column(name = "VERSION")
@@ -74,7 +76,15 @@ public class Q88_Voyage implements Serializable {
 	
 	@OneToOne(targetEntity =Q88_VoyageResult.class,fetch = FetchType.LAZY,cascade = CascadeType.ALL,mappedBy = "q88voyageres",orphanRemoval = false )
 	private Q88_VoyageResult  results;
+		
+			
 	
+	public Integer getVoyageTrans_Id() {
+		return voyageTrans_Id;
+	}
+	public void setVoyageTrans_Id(Integer voyageTrans_Id) {
+		this.voyageTrans_Id = voyageTrans_Id;
+	}
 	public String getVoyageId() {
 		return voyageId;
 	}
@@ -169,16 +179,27 @@ public class Q88_Voyage implements Serializable {
 	public Q88_VoyageResult getResults() {
 		return results;
 	}
+
 	public void setResults(Q88_VoyageResult results) {
+		if(results == null) {
+			if(this.results !=null) {
+				this.results.setQ88voyageres(null);
+			}
+		}
+		else {
+			results.setQ88voyageres(this);
+		}
 		this.results = results;
 	}
+
 	@Override
 	public String toString() {
-		return "Q88_Voyage [voyageId=" + voyageId + ", vesselId=" + vesselId + ", version=" + version
-				+ ", voyageNumber=" + voyageNumber + ", vesselName=" + vesselName + ", vesselimo=" + vesselimo
-				+ ", startDateUtc=" + startDateUtc + ", endDateUtc=" + endDateUtc + ", moduleType=" + moduleType
-				+ ", offhireDays=" + offhireDays + ", tags=" + tags + ", url=" + url + ", isEstimate=" + isEstimate
-				+ ", tcnumber=" + tcnumber + ", tcoutidencrypted=" + tcoutidencrypted + ", results=" + results + "]";
+		return "Q88_Voyage [voyageTrans_Id=" + voyageTrans_Id + ", voyageId=" + voyageId + ", vesselId=" + vesselId
+				+ ", version=" + version + ", voyageNumber=" + voyageNumber + ", vesselName=" + vesselName
+				+ ", vesselimo=" + vesselimo + ", startDateUtc=" + startDateUtc + ", endDateUtc=" + endDateUtc
+				+ ", moduleType=" + moduleType + ", offhireDays=" + offhireDays + ", tags=" + tags + ", url=" + url
+				+ ", isEstimate=" + isEstimate + ", tcnumber=" + tcnumber + ", tcoutidencrypted=" + tcoutidencrypted
+				+ ", results=" + results + "]";
 	}
 	
 	
@@ -186,18 +207,16 @@ public class Q88_Voyage implements Serializable {
 	
 	
 
-
- 	
  	/*
- 	@OneToOne(targetEntity =Q88_VoyageResultFixed.class,fetch = FetchType.LAZY, cascade = CascadeType.ALL,mappedBy = "q88voyageresfix",orphanRemoval = false)
+ 	 @OneToOne(targetEntity =Q88_VoyageResultFixed.class,fetch = FetchType.LAZY, cascade = CascadeType.ALL,mappedBy = "q88voyageresfix",orphanRemoval = false)
 	private Q88_VoyageResultFixed  resultsWhenFixed;
 	
-	@OneToMany(targetEntity = Q88_Fixture.class,fetch = FetchType.LAZY,cascade = CascadeType.ALL,mappedBy = "q88voyagefixture",orphanRemoval = false)
+	@OneToMany(targetEntity = Q88_Fixture.class,fetch = FetchType.EAGER,cascade = CascadeType.ALL,mappedBy = "q88voyagefixture",orphanRemoval = false)
 	private List<Q88_Fixture> fixtureList = new ArrayList<Q88_Fixture>();
-	
-	@OneToMany(targetEntity =Q88_Leg.class,fetch = FetchType.LAZY,cascade = CascadeType.ALL ,mappedBy = "q88voyageleg",orphanRemoval = false)
+
+ 	 @OneToMany(targetEntity =Q88_Leg.class,fetch = FetchType.LAZY,cascade = CascadeType.ALL ,mappedBy = "q88voyageleg",orphanRemoval = false)
 	private List<Q88_Leg> legList = new ArrayList<Q88_Leg>();
-	
+
 	@OneToMany(targetEntity =Q88_Revenue.class,fetch = FetchType.LAZY,cascade = CascadeType.ALL ,mappedBy = "q88voyagerevenue",orphanRemoval = false)
 	private List<Q88_Revenue> revenueList = new ArrayList<Q88_Revenue>();
 	

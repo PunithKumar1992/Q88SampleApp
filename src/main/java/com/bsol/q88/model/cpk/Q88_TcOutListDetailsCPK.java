@@ -1,13 +1,22 @@
-package com.bsol.q88.model;
+package com.bsol.q88.model.cpk;
 
 import java.io.Serializable;
 
-public class Q88_TcOutListCPK implements Serializable{
+
+
+public class Q88_TcOutListDetailsCPK implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 	
-	private String tcOutIdEncrypted;
-	private String vesselIdEncrypted;
+	  private String tcOutDetail_SeqId;
+	  private String tcOutIdEncrypted;
+	  private String vesselIdEncrypted;
+	public String getTcOutDetail_SeqId() {
+		return tcOutDetail_SeqId;
+	}
+	public void setTcOutDetail_SeqId(String tcOutDetail_SeqId) {
+		this.tcOutDetail_SeqId = tcOutDetail_SeqId;
+	}
 	public String getTcOutIdEncrypted() {
 		return tcOutIdEncrypted;
 	}
@@ -24,6 +33,7 @@ public class Q88_TcOutListCPK implements Serializable{
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((tcOutDetail_SeqId == null) ? 0 : tcOutDetail_SeqId.hashCode());
 		result = prime * result + ((tcOutIdEncrypted == null) ? 0 : tcOutIdEncrypted.hashCode());
 		result = prime * result + ((vesselIdEncrypted == null) ? 0 : vesselIdEncrypted.hashCode());
 		return result;
@@ -36,7 +46,12 @@ public class Q88_TcOutListCPK implements Serializable{
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Q88_TcOutListCPK other = (Q88_TcOutListCPK) obj;
+		Q88_TcOutListDetailsCPK other = (Q88_TcOutListDetailsCPK) obj;
+		if (tcOutDetail_SeqId == null) {
+			if (other.tcOutDetail_SeqId != null)
+				return false;
+		} else if (!tcOutDetail_SeqId.equals(other.tcOutDetail_SeqId))
+			return false;
 		if (tcOutIdEncrypted == null) {
 			if (other.tcOutIdEncrypted != null)
 				return false;
@@ -49,6 +64,7 @@ public class Q88_TcOutListCPK implements Serializable{
 			return false;
 		return true;
 	}
-	
-	
+	  
+	  
+
 }

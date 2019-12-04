@@ -1,32 +1,42 @@
 package com.bsol.q88.service;
 
 import java.util.List;
+import javax.transaction.Transactional;
 
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.bsol.q88.dao.Q88TcOutListDao;
+import com.bsol.q88.dto.Q88_TcOutListDTO;
+import com.bsol.q88.dto.Q88_TcoutListReviewDTO;
+import com.bsol.q88.mapper.CustomTcOutListMapper;
 import com.bsol.q88.model.Q88_TcOutList;
-import com.bsol.q88.model.Q88_TcReview;
+import com.bsol.q88.model.Q88_TcoutListReview;
 import com.bsol.q88.util.dataconvertor.TcOutListDataTransfer;
+
 
 @Service
 public class Q88TcOutListServiceImpl implements Q88TcOutListService {
 	
-	@Autowired
-	private TcOutListDataTransfer tcouTransfer;
 	
 	@Autowired
 	private Q88TcOutListDao tcoutdao;
+	
+	@Autowired 
+	private TcOutListDataTransfer tcOutListTransfer; 
 
 	@Override
-	public void saveTcOutList(Q88_TcOutList tcoutList) {
+	@Transactional
+	public void saveTcOutList(Q88_TcOutList tcOutList) {
 		
-		Q88_TcOutList q88TcoutList = tcouTransfer.getTcOutList(tcoutList, Q88_TcOutList.class);
-		Q88_TcReview  q88TcoutReview = tcouTransfer.getTcOutList(tcoutList, Q88_TcReview.class);
-		q88TcoutList.setReview(q88TcoutReview);
-		tcoutdao.save(q88TcoutList);
-
+		Integer tcoutListId = tcoutdao.getNextTcOutLisId();
+		tcOutList.setTcout_SeqId(tcoutListId);
+		Q88_TcOutList q88tcOutList = tcOutListTransfer.getTcOutList(tcOutList, Q88_TcOutList.class);
+		Q88_TcoutListReview  q88tcOutListReview = tcOutListTransfer.getTcOutList(tcOutList, Q88_TcoutListReview.class);
+		q88tcOutList.setReview(q88tcOutListReview);
+		tcoutdao.save(q88tcOutList);
 	}
 
 	@Override
@@ -35,8 +45,30 @@ public class Q88TcOutListServiceImpl implements Q88TcOutListService {
 	}
 
 	@Override
-	public Q88_TcOutList getVoyageobject(String voyageId, String vesselId) {
+	public Q88_TcOutList getVoyageobject( String voyageId , String vesselId) {
 		return tcoutdao.getVoyageobject(voyageId, vesselId);
+	}
+
+	@Override
+	public String getLastRuntime(String api) {
+		return tcoutdao.getLastRuntime(api);
+	}
+
+	@Override
+	@Transactional
+	public void updateLastRuntime(String updateTime, String api) {
+		tcoutdao.updateLastRuntime(updateTime, api);
+		
+	}
+
+	@Override
+	public Integer getNextTcOutLisId() {
+		return tcoutdao.getNextTcOutLisId();
+	}
+
+	@Override
+	public List<String> getTcOutEncryptedId() {
+		return tcoutdao.getTcOutEncryptedId();
 	}
 
 }

@@ -16,6 +16,7 @@ import org.springframework.stereotype.Component;
 public class AccessToken {
 	
 	public int getAccessToken() throws Exception {
+		
 		URL url = new URL("https://webapi.q88.com/Authenticate/Login");
 		Map<String,Object> params = new LinkedHashMap<>();
         params.put("client_id", "WebApiVmsProduction");

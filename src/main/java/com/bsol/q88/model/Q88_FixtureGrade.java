@@ -1,4 +1,4 @@
-package com.bsol.q88.model;
+/*package com.bsol.q88.model;
 
 import java.io.Serializable;
 
@@ -8,11 +8,16 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.bsol.q88.model.cpk.Q88_FixtureGradeCPK;
+
 @Entity
+@IdClass(Q88_FixtureGradeCPK.class)
 @Table(name = "Q88_FIXTURE_GRADE",schema = "CHOPS_WEB")
 public class Q88_FixtureGrade implements Serializable {
 	
@@ -29,8 +34,20 @@ public class Q88_FixtureGrade implements Serializable {
 	@Column(name = "FIXTURELISTSEQ_ID")
 	private Integer fixturelistseq_id;
 	
+	@Id 
+	@Column(name = "VOYAGEID")
+	private String voyageid;
+	
+	@Id
+	@Column(name = "VESSELID")
+	private String vesselid;
+	
 	@ManyToOne(optional = false,fetch = FetchType.LAZY)
-	@JoinColumn(name="fixturelistseq_id",referencedColumnName = "FIXTURELISTSEQ_ID",insertable=false, updatable=false)
+	@JoinColumns({
+		@JoinColumn(name="fixturelistseq_id",referencedColumnName = "FIXTURELISTSEQ_ID",insertable=false, updatable=false),
+		@JoinColumn(name="voyageid",referencedColumnName = "VOYAGEID",insertable=false, updatable=false),
+		@JoinColumn(name="vesselid",referencedColumnName = "VESSELID",insertable=false, updatable=false)	
+	})
 	private Q88_Fixture q88fixturegrades;
 
 	public Integer getFixturegrade_seqid() {
@@ -65,6 +82,22 @@ public class Q88_FixtureGrade implements Serializable {
 		this.fixturelistseq_id = fixturelistseq_id;
 	}
 
+	public String getVoyageid() {
+		return voyageid;
+	}
+
+	public void setVoyageid(String voyageid) {
+		this.voyageid = voyageid;
+	}
+
+	public String getVesselid() {
+		return vesselid;
+	}
+
+	public void setVesselid(String vesselid) {
+		this.vesselid = vesselid;
+	}
+
 	public Q88_Fixture getQ88fixturegrades() {
 		return q88fixturegrades;
 	}
@@ -76,11 +109,12 @@ public class Q88_FixtureGrade implements Serializable {
 	@Override
 	public String toString() {
 		return "Q88_FixtureGrade [fixturegrade_seqid=" + fixturegrade_seqid + ", displayOrder=" + displayOrder
-				+ ", gradeName=" + gradeName + ", fixturelistseq_id=" + fixturelistseq_id + ", q88fixturegrades="
-				+ q88fixturegrades + "]";
+				+ ", gradeName=" + gradeName + ", fixturelistseq_id=" + fixturelistseq_id + ", voyageid=" + voyageid
+				+ ", vesselid=" + vesselid + "]";
 	}
 
 	
 	
 	
 }
+*/

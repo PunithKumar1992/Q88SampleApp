@@ -1,4 +1,4 @@
-package com.bsol.q88.model;
+/*package com.bsol.q88.model;
 
 import java.io.Serializable;
 
@@ -229,4 +229,4 @@ public class Q88_BunkerStem implements Serializable{
 	
 
 
-}
+}*/
