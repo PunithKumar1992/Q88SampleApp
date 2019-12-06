@@ -1,6 +1,7 @@
 package com.bsol.q88.service;
 
 import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.modelmapper.ModelMapper;
@@ -9,8 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.bsol.q88.dao.Q88TcOutListDao;
-import com.bsol.q88.dto.Q88_TcOutListDTO;
-import com.bsol.q88.dto.Q88_TcoutListReviewDTO;
 import com.bsol.q88.mapper.CustomTcOutListMapper;
 import com.bsol.q88.model.Q88_TcOutList;
 import com.bsol.q88.model.Q88_TcoutListReview;

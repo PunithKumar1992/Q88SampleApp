@@ -6,21 +6,25 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.bsol.q88.model.cpk.Q88_TcOutDtlReviewCPK;
+
 @Entity
 @Table(name = "Q88_TC_TCOUTDTL_REVIEW")
+@IdClass(Q88_TcOutDtlReviewCPK.class)
 public class Q88_TcOutDtlReview implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	
 	
-	  @Id
+	 @Id
 	  @Column(name = "TCOUTDETAIL_SEQID")
-	  private String tcOutDetail_SeqId;
+	  private Integer tcOutDetail_SeqId;
 	  @Id
 	  @Column(name = "TCOUTIDENCRYPTED")
 	  private String tcOutIdEncrypted;
@@ -44,11 +48,11 @@ public class Q88_TcOutDtlReview implements Serializable {
 	  })
 	  private Q88_TcoFixture q88TcFixturereview;
 
-	public String getTcOutDetail_SeqId() {
+	public Integer getTcOutDetail_SeqId() {
 		return tcOutDetail_SeqId;
 	}
 
-	public void setTcOutDetail_SeqId(String tcOutDetail_SeqId) {
+	public void setTcOutDetail_SeqId(Integer tcOutDetail_SeqId) {
 		this.tcOutDetail_SeqId = tcOutDetail_SeqId;
 	}
 
@@ -106,9 +110,8 @@ public class Q88_TcOutDtlReview implements Serializable {
 				+ ", vesselIdEncrypted=" + vesselIdEncrypted + ", reviewStatus=" + reviewStatus + ", reviewedBy="
 				+ reviewedBy + ", reviewDate=" + reviewDate + "]";
 	}
-	  
-	  
-	  
+
+	
 	  
 
 }

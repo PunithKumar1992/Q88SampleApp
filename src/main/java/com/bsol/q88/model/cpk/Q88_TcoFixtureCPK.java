@@ -7,13 +7,13 @@ public class Q88_TcoFixtureCPK implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
 	
-	  private String tcOutDetail_SeqId;
+	  private Integer tcOutDetail_SeqId;
 	  private String tcOutIdEncrypted;
 	  private String vesselIdEncrypted;
-	public String getTcOutDetail_SeqId() {
+	public Integer getTcOutDetail_SeqId() {
 		return tcOutDetail_SeqId;
 	}
-	public void setTcOutDetail_SeqId(String tcOutDetail_SeqId) {
+	public void setTcOutDetail_SeqId(Integer tcOutDetail_SeqId) {
 		this.tcOutDetail_SeqId = tcOutDetail_SeqId;
 	}
 	public String getTcOutIdEncrypted() {

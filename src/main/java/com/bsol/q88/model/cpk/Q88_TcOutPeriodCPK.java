@@ -2,13 +2,20 @@ package com.bsol.q88.model.cpk;
 
 import java.io.Serializable;
 
-public class Q88_TcOutListDetailsCPK implements Serializable{
-
+public class Q88_TcOutPeriodCPK implements Serializable{
+	
 	private static final long serialVersionUID = 1L;
 	
+	private Integer tcOutPeriod_SeqId;
 	private Integer tcOutDetail_SeqId;
 	private String tcOutIdEncrypted;
 	private String vesselIdEncrypted;
+	public Integer getTcOutPeriod_SeqId() {
+		return tcOutPeriod_SeqId;
+	}
+	public void setTcOutPeriod_SeqId(Integer tcOutPeriod_SeqId) {
+		this.tcOutPeriod_SeqId = tcOutPeriod_SeqId;
+	}
 	public Integer getTcOutDetail_SeqId() {
 		return tcOutDetail_SeqId;
 	}
@@ -33,6 +40,7 @@ public class Q88_TcOutListDetailsCPK implements Serializable{
 		int result = 1;
 		result = prime * result + ((tcOutDetail_SeqId == null) ? 0 : tcOutDetail_SeqId.hashCode());
 		result = prime * result + ((tcOutIdEncrypted == null) ? 0 : tcOutIdEncrypted.hashCode());
+		result = prime * result + ((tcOutPeriod_SeqId == null) ? 0 : tcOutPeriod_SeqId.hashCode());
 		result = prime * result + ((vesselIdEncrypted == null) ? 0 : vesselIdEncrypted.hashCode());
 		return result;
 	}
@@ -44,7 +52,7 @@ public class Q88_TcOutListDetailsCPK implements Serializable{
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Q88_TcOutListDetailsCPK other = (Q88_TcOutListDetailsCPK) obj;
+		Q88_TcOutPeriodCPK other = (Q88_TcOutPeriodCPK) obj;
 		if (tcOutDetail_SeqId == null) {
 			if (other.tcOutDetail_SeqId != null)
 				return false;
@@ -55,6 +63,11 @@ public class Q88_TcOutListDetailsCPK implements Serializable{
 				return false;
 		} else if (!tcOutIdEncrypted.equals(other.tcOutIdEncrypted))
 			return false;
+		if (tcOutPeriod_SeqId == null) {
+			if (other.tcOutPeriod_SeqId != null)
+				return false;
+		} else if (!tcOutPeriod_SeqId.equals(other.tcOutPeriod_SeqId))
+			return false;
 		if (vesselIdEncrypted == null) {
 			if (other.vesselIdEncrypted != null)
 				return false;
@@ -62,7 +75,6 @@ public class Q88_TcOutListDetailsCPK implements Serializable{
 			return false;
 		return true;
 	}
-
 	
 	
 }

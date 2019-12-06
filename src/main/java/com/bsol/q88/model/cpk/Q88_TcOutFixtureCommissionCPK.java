@@ -2,13 +2,21 @@ package com.bsol.q88.model.cpk;
 
 import java.io.Serializable;
 
-public class Q88_TcOutListDetailsCPK implements Serializable{
+public class Q88_TcOutFixtureCommissionCPK implements Serializable {
+
 
 	private static final long serialVersionUID = 1L;
 	
-	private Integer tcOutDetail_SeqId;
-	private String tcOutIdEncrypted;
-	private String vesselIdEncrypted;
+	  private Integer tcOutFixture_SeqId;
+	  private Integer tcOutDetail_SeqId;
+	  private String tcOutIdEncrypted;
+	  private String vesselIdEncrypted;
+	public Integer getTcOutFixture_SeqId() {
+		return tcOutFixture_SeqId;
+	}
+	public void setTcOutFixture_SeqId(Integer tcOutFixture_SeqId) {
+		this.tcOutFixture_SeqId = tcOutFixture_SeqId;
+	}
 	public Integer getTcOutDetail_SeqId() {
 		return tcOutDetail_SeqId;
 	}
@@ -32,6 +40,7 @@ public class Q88_TcOutListDetailsCPK implements Serializable{
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((tcOutDetail_SeqId == null) ? 0 : tcOutDetail_SeqId.hashCode());
+		result = prime * result + ((tcOutFixture_SeqId == null) ? 0 : tcOutFixture_SeqId.hashCode());
 		result = prime * result + ((tcOutIdEncrypted == null) ? 0 : tcOutIdEncrypted.hashCode());
 		result = prime * result + ((vesselIdEncrypted == null) ? 0 : vesselIdEncrypted.hashCode());
 		return result;
@@ -44,11 +53,16 @@ public class Q88_TcOutListDetailsCPK implements Serializable{
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Q88_TcOutListDetailsCPK other = (Q88_TcOutListDetailsCPK) obj;
+		Q88_TcOutFixtureCommissionCPK other = (Q88_TcOutFixtureCommissionCPK) obj;
 		if (tcOutDetail_SeqId == null) {
 			if (other.tcOutDetail_SeqId != null)
 				return false;
 		} else if (!tcOutDetail_SeqId.equals(other.tcOutDetail_SeqId))
+			return false;
+		if (tcOutFixture_SeqId == null) {
+			if (other.tcOutFixture_SeqId != null)
+				return false;
+		} else if (!tcOutFixture_SeqId.equals(other.tcOutFixture_SeqId))
 			return false;
 		if (tcOutIdEncrypted == null) {
 			if (other.tcOutIdEncrypted != null)
@@ -62,7 +76,8 @@ public class Q88_TcOutListDetailsCPK implements Serializable{
 			return false;
 		return true;
 	}
+	  
+	
+	  
 
-	
-	
 }

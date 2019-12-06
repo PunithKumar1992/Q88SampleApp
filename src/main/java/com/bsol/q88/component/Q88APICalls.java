@@ -11,25 +11,15 @@ import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
 
 import org.apache.commons.configuration.PropertiesConfiguration;
-import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Component;
 
 import com.bsol.q88.model.Q88_PortList;
-import com.bsol.q88.model.Q88_TcOutList;
 import com.bsol.q88.model.Q88_Voyage;
-import com.bsol.q88.service.Q88PortListService;
-import com.bsol.q88.service.Q88TcOutListService;
-import com.bsol.q88.service.Q88VoyageObjectService;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
@@ -44,13 +34,6 @@ private AccessToken token;
 
 @Autowired
 private RefreshToken refreshtoken;
-
-
-@Autowired
-private Q88VoyageObjectService voyageService;
-
-
-
 
 
 	
@@ -132,7 +115,7 @@ private Q88VoyageObjectService voyageService;
 			 System.out.println("before voyage object");
 			  Q88_Voyage voyage = gson.fromJson(json1.toString(), Q88_Voyage.class);
 			  System.out.println(voyage);
-			voyageService.saveVoyageObjList(voyage);
+			//voyageService.saveVoyageObjList(voyage);
 			//Q88_Voyage q88Voyage = voyageService.getVoyageObject("C33E200DE88DB38F417C143075CF38E1", "CFDED89B095BD54C3C9FA770EF3A2C4E");
 			  
 			//System.out.println(q88Voyage);

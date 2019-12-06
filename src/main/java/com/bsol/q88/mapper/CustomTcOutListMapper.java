@@ -33,10 +33,10 @@ public class CustomTcOutListMapper {
 		tcOutList.setModifiedDate(tcOutListDto.getModifiedDate());
 		tcOutList.setStartDate(tcOutListDto.getStartDate());
 		tcOutList.setTcNumber(tcOutListDto.getTcNumber());
-		tcOutList.setTcout_SeqId(tcOutListDto.getTcout_SeqId());
-		tcOutList.setTcOutIdEncrypted(tcOutListDto.getTcOutIdEncrypted());
+		tcOutList.setTcout_SeqId(tcoutListId);
+		tcOutList.setTcOutIdEncrypted(tcOutIdEncrypted);
 		tcOutList.setVessel(tcOutListDto.getVessel());
-		tcOutList.setVesselIdEncrypted(tcOutListDto.getVesselIdEncrypted());
+		tcOutList.setVesselIdEncrypted(vesselIdEncrypted);
 		return tcOutList;
 	}
 
@@ -47,9 +47,9 @@ public class CustomTcOutListMapper {
 			tcoutListReview.setReviewDate(Review.getReviewDate());
 			tcoutListReview.setReviewedBy(Review.getReviewedBy());
 			tcoutListReview.setReviewStatus(Review.getReviewStatus());
-			tcoutListReview.setTcout_SeqId(tcOutListDto.getTcout_SeqId());
-			tcoutListReview.setTcOutIdEncrypted(tcOutListDto.getTcOutIdEncrypted());
-			tcoutListReview.setVesselIdEncrypted(tcOutListDto.getVesselIdEncrypted());
+			tcoutListReview.setTcout_SeqId(tcoutListId);
+			tcoutListReview.setTcOutIdEncrypted(tcOutIdEncrypted);
+			tcoutListReview.setVesselIdEncrypted(vesselIdEncrypted);
 			return tcoutListReview;
 			
 		}

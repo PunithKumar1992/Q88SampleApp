@@ -2,8 +2,9 @@ package com.bsol.q88.model.cpk;
 
 import java.io.Serializable;
 
-public class Q88_TcOutListDetailsCPK implements Serializable{
-
+public class Q88_TcOutDtlReviewCPK implements Serializable{
+	
+	
 	private static final long serialVersionUID = 1L;
 	
 	private Integer tcOutDetail_SeqId;
@@ -44,7 +45,7 @@ public class Q88_TcOutListDetailsCPK implements Serializable{
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Q88_TcOutListDetailsCPK other = (Q88_TcOutListDetailsCPK) obj;
+		Q88_TcOutDtlReviewCPK other = (Q88_TcOutDtlReviewCPK) obj;
 		if (tcOutDetail_SeqId == null) {
 			if (other.tcOutDetail_SeqId != null)
 				return false;
@@ -62,7 +63,6 @@ public class Q88_TcOutListDetailsCPK implements Serializable{
 			return false;
 		return true;
 	}
-
 	
 	
 }

@@ -13,6 +13,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import com.bsol.q88.model.Q88_TcOutListDetails;
+import com.bsol.q88.service.Q88TcOutListDetailService;
 import com.bsol.q88.service.Q88TcOutListService;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -36,6 +37,9 @@ public class Q88GetTcOutDetailAPI {
 	
 	@Autowired
 	private Q88TcOutListService tcOutListService;
+	
+	@Autowired
+	private Q88TcOutListDetailService tcOutLsdtlService;
 
 	
 	
@@ -84,8 +88,8 @@ public class Q88GetTcOutDetailAPI {
 				json1 = new JSONObject(response.body().string().toString());
 				Gson gson = new GsonBuilder().serializeNulls().create();
 				Q88_TcOutListDetails tcOutDetail = gson.fromJson(json1.toString(), Q88_TcOutListDetails.class);
-				
-				System.out.println("tcOutDetail "+tcOutDetail);
+				tcOutLsdtlService.saveTcOutListDetails(tcOutDetail);
+				System.out.println("Insert is completed");
 				
 			}
 
