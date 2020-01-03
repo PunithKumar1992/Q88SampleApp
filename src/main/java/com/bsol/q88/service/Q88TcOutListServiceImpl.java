@@ -1,19 +1,13 @@
 package com.bsol.q88.service;
 
 import java.util.List;
-
 import javax.transaction.Transactional;
-
-import org.modelmapper.ModelMapper;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.bsol.q88.dao.Q88TcOutListDao;
-import com.bsol.q88.mapper.CustomTcOutListMapper;
 import com.bsol.q88.model.Q88_TcOutList;
-import com.bsol.q88.model.Q88_TcoutListReview;
-import com.bsol.q88.util.dataconvertor.TcOutListDataTransfer;
+import com.bsol.q88.model.Q88_TcOutList_Review;
+import com.bsol.q88.util.dataconvertor.Q88_TcOutListDataTransfer;
 
 
 @Service
@@ -24,17 +18,17 @@ public class Q88TcOutListServiceImpl implements Q88TcOutListService {
 	private Q88TcOutListDao tcoutdao;
 	
 	@Autowired 
-	private TcOutListDataTransfer tcOutListTransfer; 
+	private Q88_TcOutListDataTransfer tcOutListTransfer; 
 
 	@Override
 	@Transactional
 	public void saveTcOutList(Q88_TcOutList tcOutList) {
 		
-		Integer tcoutListId = tcoutdao.getNextTcOutLisId();
-		tcOutList.setTcout_SeqId(tcoutListId);
 		Q88_TcOutList q88tcOutList = tcOutListTransfer.getTcOutList(tcOutList, Q88_TcOutList.class);
-		Q88_TcoutListReview  q88tcOutListReview = tcOutListTransfer.getTcOutList(tcOutList, Q88_TcoutListReview.class);
+		Q88_TcOutList_Review  q88tcOutListReview = tcOutListTransfer.getTcOutList(tcOutList, Q88_TcOutList_Review.class);
+		if(q88tcOutListReview !=null) {
 		q88tcOutList.setReview(q88tcOutListReview);
+		}
 		tcoutdao.save(q88tcOutList);
 	}
 
@@ -43,10 +37,6 @@ public class Q88TcOutListServiceImpl implements Q88TcOutListService {
 		return tcoutdao.findAll();
 	}
 
-	@Override
-	public Q88_TcOutList getVoyageobject( String voyageId , String vesselId) {
-		return tcoutdao.getVoyageobject(voyageId, vesselId);
-	}
 
 	@Override
 	public String getLastRuntime(String api) {

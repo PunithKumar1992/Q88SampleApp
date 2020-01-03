@@ -9,7 +9,6 @@ public interface Q88TcOutListService {
 
 	public void saveTcOutList(Q88_TcOutList tcOutList);
 	public List<Q88_TcOutList> getallTcoutList();
-	public Q88_TcOutList getVoyageobject(String voyageId , String vesselId);
 	public String getLastRuntime(String api);
 	public void updateLastRuntime(String updateTime,String api);
 	public Integer getNextTcOutLisId();

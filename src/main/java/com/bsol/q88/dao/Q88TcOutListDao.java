@@ -1,7 +1,6 @@
 package com.bsol.q88.dao;
 
 import java.util.List;
-
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -12,8 +11,6 @@ import com.bsol.q88.model.Q88_TcOutList;
 @Repository
 public interface Q88TcOutListDao extends JpaRepository<Q88_TcOutList, Integer>{
 	
-	@Query("from Q88_TcOutList where tcOutIdEncrypted =:voyageId and vesselIdEncrypted =:vesselId")
-	public Q88_TcOutList getVoyageobject(String voyageId , String vesselId);
 	
 	@Query(value = "select LAST_RUNTIME  from Q88_APIRUNTIME where API_NAME = :api",nativeQuery=true)
 	public String getLastRuntime(String api);

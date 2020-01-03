@@ -1,29 +1,23 @@
 package com.bsol.q88.model;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinColumns;
 import javax.persistence.OneToOne;
-import javax.persistence.PrePersist;
-import javax.persistence.PrimaryKeyJoinColumn;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.bsol.q88.model.cpk.Q88_TcOutListCPK;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.google.gson.annotations.Expose;
 
 @Entity
-@Table(name = "Q88_TC_OUTLIST")
+@Table(name = "Q88_TCOUTLIST")
 @IdClass(Q88_TcOutListCPK.class)
 public class Q88_TcOutList implements Serializable{
 
@@ -31,8 +25,8 @@ public class Q88_TcOutList implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
 	@Id
-	@Column(name = "TCOUT_SEQID")
-	@Expose private Integer tcout_SeqId;
+	@Column(name = "TRANS_ID")
+	private Integer trans_Id;
 	
 	@Id
 	@Column(name = "TCOUTIDENCRYPTED")
@@ -46,30 +40,37 @@ public class Q88_TcOutList implements Serializable{
 	private String vessel;
 	@Column(name = "CHARTERER")
 	private String charterer; 
-	@Column(name = "CPDATE")
+	@Transient
 	private String cpDate; 
+	@Column(name = "CPDATE")
+	private LocalDateTime cp_Date;
 	@Column(name = "TCNUMBER")
 	private String tcNumber; 
 	@Column(name = "DURATION")
 	private String duration; 
-	@Column(name = "STARTDATE")
+	
+	@Transient
 	private String startDate; 
-	@Column(name = "MODIFIEDDATE")
+	@Column(name = "STARTDATE")
+	private LocalDateTime start_Date;
+	@Transient
 	private String modifiedDate; 
+	@Column(name = "MODIFIEDDATE")
+	private LocalDateTime modified_date;
 	@Column(name = "MODIFIEDBY")
 	private String modifiedBy; 
 	
 	@JsonManagedReference
 	@OneToOne(mappedBy = "q88TcoutListParent", fetch = FetchType.EAGER, cascade = CascadeType.ALL, optional = true)
-	private Q88_TcoutListReview review;
+	private Q88_TcOutList_Review review;
 	
 
-	public Integer getTcout_SeqId() {
-		return tcout_SeqId;
+	public Integer getTrans_Id() {
+		return trans_Id;
 	}
 
-	public void setTcout_SeqId(Integer tcout_SeqId) {
-		this.tcout_SeqId = tcout_SeqId;
+	public void setTrans_Id(Integer trans_Id) {
+		this.trans_Id = trans_Id;
 	}
 
 	public String getTcOutIdEncrypted() {
@@ -112,6 +113,14 @@ public class Q88_TcOutList implements Serializable{
 		this.cpDate = cpDate;
 	}
 
+	public LocalDateTime getCp_Date() {
+		return cp_Date;
+	}
+
+	public void setCp_Date(String cp_Date) {
+		this.cp_Date = LocalDateTime.parse(cp_Date);
+	}
+
 	public String getTcNumber() {
 		return tcNumber;
 	}
@@ -136,12 +145,28 @@ public class Q88_TcOutList implements Serializable{
 		this.startDate = startDate;
 	}
 
+	public LocalDateTime getStart_Date() {
+		return start_Date;
+	}
+
+	public void setStart_Date(String start_Date) {
+		this.start_Date = LocalDateTime.parse(start_Date);
+	}
+
 	public String getModifiedDate() {
 		return modifiedDate;
 	}
 
 	public void setModifiedDate(String modifiedDate) {
 		this.modifiedDate = modifiedDate;
+	}
+
+	public LocalDateTime getModified_date() {
+		return modified_date;
+	}
+
+	public void setModified_date(String modified_date) {
+		this.modified_date = LocalDateTime.parse(modified_date);
 	}
 
 	public String getModifiedBy() {
@@ -152,11 +177,11 @@ public class Q88_TcOutList implements Serializable{
 		this.modifiedBy = modifiedBy;
 	}
 
-	public Q88_TcoutListReview getReview() {
+	public Q88_TcOutList_Review getReview() {
 		return review;
 	}
 	
-	public void setReview(Q88_TcoutListReview review) {
+	public void setReview(Q88_TcOutList_Review review) {
 		if(review == null) {
 			if(this.review !=null) {
 				this.review.setQ88TcoutListParent(null);
@@ -171,12 +196,16 @@ public class Q88_TcOutList implements Serializable{
 
 	@Override
 	public String toString() {
-		return "Q88_TcOutList [tcout_SeqId=" + tcout_SeqId + ", tcOutIdEncrypted=" + tcOutIdEncrypted
+		return "Q88_TcOut_TcOutList [trans_Id=" + trans_Id + ", tcOutIdEncrypted=" + tcOutIdEncrypted
 				+ ", vesselIdEncrypted=" + vesselIdEncrypted + ", vessel=" + vessel + ", charterer=" + charterer
-				+ ", cpDate=" + cpDate + ", tcNumber=" + tcNumber + ", duration=" + duration + ", startDate="
-				+ startDate + ", modifiedDate=" + modifiedDate + ", modifiedBy=" + modifiedBy + ", review=" + review
-				+ "]";
-	} 
+				+ ", cpDate=" + cpDate + ", cp_Date=" + cp_Date + ", tcNumber=" + tcNumber + ", duration=" + duration
+				+ ", startDate=" + startDate + ", start_Date=" + start_Date + ", modifiedDate=" + modifiedDate
+				+ ", modified_date=" + modified_date + ", modifiedBy=" + modifiedBy + ", review=" + review + "]";
+	}
+
+	
+
+	
 	
 	
 	

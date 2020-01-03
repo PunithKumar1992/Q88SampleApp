@@ -24,7 +24,6 @@ public class Q88PortListServiceImpl implements Q88PortListService {
 
 	@Override
 	public void savePortList(Q88_PortList portList) {
-		System.out.println("inside port list save dao");
 		q88portdao.save(portList);
 		
 	}

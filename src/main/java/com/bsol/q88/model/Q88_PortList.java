@@ -3,6 +3,7 @@ package com.bsol.q88.model;
 
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,6 +12,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+
+import org.hibernate.annotations.CreationTimestamp;
 
 import com.bsol.q88.model.cpk.Q88_PortListCPK;
 
@@ -20,11 +24,10 @@ import com.bsol.q88.model.cpk.Q88_PortListCPK;
 public class Q88_PortList implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
-
+	
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE)
-	@Column(name = "PORT_SEQID")
-	private Integer portSeqId;
+	@Column(name = "TRANS_ID")
+	private Integer trans_Id;
 	
 	@Id
 	@Column(name = "PORTID", nullable = false)
@@ -53,16 +56,19 @@ public class Q88_PortList implements Serializable{
 	
 	@Column(name ="ISINACTIVE")
 	private String isInactive ;
+
+	@Transient
+	private String  modifiedDate;
 	
 	@Column(name ="MODIFIEDDATE")
-	private String modifiedDate;
-
-	public Integer getPortSeqId() {
-		return portSeqId;
+	private LocalDateTime  modified_Date;
+	
+	public Integer getTrans_Id() {
+		return trans_Id;
 	}
 
-	public void setPortSeqId(Integer portSeqId) {
-		this.portSeqId = portSeqId;
+	public void setTrans_Id(Integer trans_Id) {
+		this.trans_Id = trans_Id;
 	}
 
 	public Integer getPortId() {
@@ -145,12 +151,27 @@ public class Q88_PortList implements Serializable{
 		this.modifiedDate = modifiedDate;
 	}
 
+	public LocalDateTime getModified_Date() {
+		return modified_Date;
+	}
+
+	public void setModified_Date(String modified_Date) {
+		this.modified_Date = LocalDateTime.parse(modified_Date);
+	}
+
 	@Override
 	public String toString() {
-		return "Q88_PortList [portSeqId=" + portSeqId + ", portId=" + portId + ", name=" + name + ", shortName="
+		return "Q88_PortList [trans_Id=" + trans_Id + ", portId=" + portId + ", name=" + name + ", shortName="
 				+ shortName + ", lat=" + lat + ", lon=" + lon + ", unCode=" + unCode + ", timeZone=" + timeZone
-				+ ", areaName=" + areaName + ", isInactive=" + isInactive + ", modifiedDate=" + modifiedDate + "]";
+				+ ", areaName=" + areaName + ", isInactive=" + isInactive + ", modifiedDate=" + modifiedDate
+				+ ", modified_Date=" + modified_Date + "]";
 	}
+
+	
+
+	
+
+	
 	
 	
 	

@@ -3,12 +3,12 @@ package com.bsol.q88.mapper;
 
 
 import com.bsol.q88.model.Q88_TcOutList;
-import com.bsol.q88.model.Q88_TcoutListReview;
+import com.bsol.q88.model.Q88_TcOutList_Review;
 
 public class CustomTcOutListMapper {
 	
 	private Q88_TcOutList tcOutListDto;
-	private Integer tcoutListId;
+	private Integer trans_Id;
 	private String tcOutIdEncrypted;
 	private String vesselIdEncrypted ;
 	
@@ -18,7 +18,7 @@ public class CustomTcOutListMapper {
 	public CustomTcOutListMapper(Q88_TcOutList tcOutListDto) {
 		this();
 		this.tcOutListDto = tcOutListDto;;
-		this.tcoutListId = tcOutListDto.getTcout_SeqId();
+		this.trans_Id = tcOutListDto.getTrans_Id();
 		this.tcOutIdEncrypted = tcOutListDto.getTcOutIdEncrypted();
 		this.vesselIdEncrypted = tcOutListDto.getVesselIdEncrypted();
 	}
@@ -27,30 +27,34 @@ public class CustomTcOutListMapper {
 	public Q88_TcOutList getTcOutList() {
 		Q88_TcOutList tcOutList = new Q88_TcOutList();
 		tcOutList.setCharterer(tcOutListDto.getCharterer());
-		tcOutList.setCpDate(tcOutListDto.getCpDate());
+		tcOutList.setCp_Date(tcOutListDto.getCpDate());
 		tcOutList.setDuration(tcOutListDto.getDuration());
+		tcOutList.setModified_date(tcOutListDto.getModifiedDate());
 		tcOutList.setModifiedBy(tcOutListDto.getModifiedBy());
-		tcOutList.setModifiedDate(tcOutListDto.getModifiedDate());
-		tcOutList.setStartDate(tcOutListDto.getStartDate());
+		tcOutList.setStart_Date(tcOutListDto.getStartDate());
 		tcOutList.setTcNumber(tcOutListDto.getTcNumber());
-		tcOutList.setTcout_SeqId(tcoutListId);
-		tcOutList.setTcOutIdEncrypted(tcOutIdEncrypted);
+		tcOutList.setTcOutIdEncrypted(tcOutListDto.getTcOutIdEncrypted());
+		tcOutList.setTrans_Id(tcOutListDto.getTrans_Id());
 		tcOutList.setVessel(tcOutListDto.getVessel());
-		tcOutList.setVesselIdEncrypted(vesselIdEncrypted);
+		tcOutList.setVesselIdEncrypted(tcOutListDto.getVesselIdEncrypted());
 		return tcOutList;
 	}
 
-		public Q88_TcoutListReview getTcOutListReview() {
-			Q88_TcoutListReview Review =   this.tcOutListDto.getReview();
-			
-			Q88_TcoutListReview tcoutListReview = new Q88_TcoutListReview();
-			tcoutListReview.setReviewDate(Review.getReviewDate());
-			tcoutListReview.setReviewedBy(Review.getReviewedBy());
-			tcoutListReview.setReviewStatus(Review.getReviewStatus());
-			tcoutListReview.setTcout_SeqId(tcoutListId);
+		public Q88_TcOutList_Review getTcOutListReview() {
+			if(tcOutListDto.getReview()!=null) {
+			Q88_TcOutList_Review review =   this.tcOutListDto.getReview();
+			Q88_TcOutList_Review tcoutListReview = new Q88_TcOutList_Review();
+			tcoutListReview.setReview_Date(review.getReviewDate());
+			tcoutListReview.setReviewedBy(review.getReviewedBy());
+			tcoutListReview.setReviewStatus(review.getReviewStatus());
 			tcoutListReview.setTcOutIdEncrypted(tcOutIdEncrypted);
+			tcoutListReview.setTrans_Id(trans_Id);
 			tcoutListReview.setVesselIdEncrypted(vesselIdEncrypted);
 			return tcoutListReview;
+			}
+			else {
+				return null;
+			}
 			
 		}
 }

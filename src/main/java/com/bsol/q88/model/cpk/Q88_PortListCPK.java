@@ -6,13 +6,14 @@ public class Q88_PortListCPK implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	
-	private Integer portSeqId;
+	private Integer trans_Id;
 	private Integer portId;
-	public Integer getPortSeqId() {
-		return portSeqId;
+	
+	public Integer getTrans_Id() {
+		return trans_Id;
 	}
-	public void setPortSeqId(Integer portSeqId) {
-		this.portSeqId = portSeqId;
+	public void setTrans_Id(Integer trans_Id) {
+		this.trans_Id = trans_Id;
 	}
 	public Integer getPortId() {
 		return portId;
@@ -20,14 +21,16 @@ public class Q88_PortListCPK implements Serializable {
 	public void setPortId(Integer portId) {
 		this.portId = portId;
 	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((portId == null) ? 0 : portId.hashCode());
-		result = prime * result + ((portSeqId == null) ? 0 : portSeqId.hashCode());
+		result = prime * result + ((trans_Id == null) ? 0 : trans_Id.hashCode());
 		return result;
 	}
+	
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -42,13 +45,17 @@ public class Q88_PortListCPK implements Serializable {
 				return false;
 		} else if (!portId.equals(other.portId))
 			return false;
-		if (portSeqId == null) {
-			if (other.portSeqId != null)
+		if (trans_Id == null) {
+			if (other.trans_Id != null)
 				return false;
-		} else if (!portSeqId.equals(other.portSeqId))
+		} else if (!trans_Id.equals(other.trans_Id))
 			return false;
 		return true;
 	}
+	
+	
+	
+	
 	
 	
 }

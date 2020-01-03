@@ -2,23 +2,20 @@ package com.bsol.q88.component;
 
 import java.io.IOException;
 import java.net.SocketTimeoutException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-import java.util.TimeZone;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.time.temporal.ChronoUnit;
 import java.util.concurrent.TimeUnit;
-
 import org.apache.commons.configuration.PropertiesConfiguration;
-import org.apache.commons.lang.time.DateUtils;
 import org.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import com.bsol.q88.model.Q88_Interface_Header;
 import com.bsol.q88.model.Q88_TcOutList;
+import com.bsol.q88.service.Q88InterfaceHeaderService;
 import com.bsol.q88.service.Q88TcOutListService;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -42,6 +39,9 @@ public class Q88GetTcOutListAPI {
 	@Autowired
 	private Q88TcOutListService tcoutService;
 
+	@Autowired
+	private Q88InterfaceHeaderService headerService;
+
 	@Scheduled(cron = "0 */1 * ? * *")
 	void checkTokenExpires() throws Exception {
 
@@ -53,7 +53,6 @@ public class Q88GetTcOutListAPI {
 		} else if (expireResult.equals("after")) {
 			refreshtoken.getAccessTokenByRefreshToken();
 			getTcOutList();
-			
 
 		} else if (expireResult.equals("expired")) {
 			token.getAccessToken();
@@ -63,18 +62,12 @@ public class Q88GetTcOutListAPI {
 	}
 
 	void getTcOutList() throws Exception {
-		
-		Q88_TcOutList tcoutobj  = new Q88_TcOutList();
 
-		int addMinuteTime = 5;
-		String modifiedDate = tcoutService.getLastRuntime("GetTCOutList");
-		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault());
-		dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
-		Date date = dateFormat.parse(modifiedDate);
-		date = DateUtils.addMinutes(date, addMinuteTime);
-		String update = dateFormat.format(date).toString();
-		System.out.println("update " +update);
-		//tcoutService.updateLastRuntime(update, "GetTCOutList");
+		LocalDateTime modifiedDate = headerService.getLastModifiedDate("TcOut/TcOutList");
+		if (modifiedDate == null || modifiedDate.equals("")) {
+			modifiedDate = LocalDateTime.now(ZoneOffset.UTC).truncatedTo(ChronoUnit.SECONDS);
+		}
+
 		JSONArray json1;
 		PropertiesConfiguration properties = new PropertiesConfiguration("src/main/resources/token.properties");
 
@@ -84,27 +77,92 @@ public class Q88GetTcOutListAPI {
 		client.setWriteTimeout(30, TimeUnit.SECONDS);
 		client.setRetryOnConnectionFailure(true);
 		String token = properties.getProperty("q88.token.access_token").toString();
-		String url = "https://webapi.q88.com/TCOut/GetTCOutList?modifiedDate=" + modifiedDate;
-		Request request = new Request.Builder().url(url).addHeader("Authorization", "Bearer " + token).addHeader("Connection", "close").build();
+		String url = "https://webapi.q88.com/TCOut/GetTCOutList?modifiedDate=" + "2019-01-01";
+		LocalDateTime startTime = null;
+		LocalDateTime endTime = null;
+
+		startTime = LocalDateTime.now(ZoneOffset.UTC).truncatedTo(ChronoUnit.SECONDS);
+		Request request = new Request.Builder().url(url).addHeader("Authorization", "Bearer " + token)
+				.addHeader("Connection", "close").build();
 		try {
 
 			Response response = client.newCall(request).execute();
 			if (!response.isSuccessful()) {
 				throw new IOException("Unexpected code " + response);
 			}
-			json1 = new JSONArray(response.body().string().toString());
-			Gson gson = new GsonBuilder().serializeNulls().create();
-			for (int i = 0; i < json1.length(); i++) {
-				Q88_TcOutList tcout = gson.fromJson(json1.getJSONObject(i).toString(), Q88_TcOutList.class);
-				//System.out.println(tcout);
-				tcoutService.saveTcOutList(tcout);
+			if (response.isSuccessful()) {
+				endTime = LocalDateTime.now(ZoneOffset.UTC).truncatedTo(ChronoUnit.SECONDS);
 			}
-		
-			tcoutobj = tcoutService.getVoyageobject("61DAFB33177871D584402E691C8C912D", "3B7021EECE56FE8A78DE13C01882D163");	
-			System.out.println(tcoutobj);
-			
+			json1 = new JSONArray(response.body().string().toString());
+			System.out.println("url " + url);
+			System.out.println("json1 array " + json1);
+			Gson gson = new GsonBuilder().serializeNulls().create();
+
+			int modifiedDateCount = headerService.ModifiedDateCountforFirsTime("TcOut/TcOutList");
+
+			if (modifiedDateCount == 0) {
+				for (int i = 0; i < json1.length(); i++) {
+					LocalDateTime dateIns = LocalDateTime.now(ZoneOffset.UTC).truncatedTo(ChronoUnit.SECONDS);
+					Q88_TcOutList tcout = gson.fromJson(json1.getJSONObject(i).toString(), Q88_TcOutList.class);
+					System.out.println("if  tcout "+tcout);
+					tcout.setModified_date(tcout.getModifiedDate());
+						Integer transId = headerService.getTransId();
+						Q88_Interface_Header header = new Q88_Interface_Header();
+						header.setTrans_Id(transId);
+						header.setApiCall("TcOut/TcOutList");
+						header.setVesselIDEncrypt(tcout.getVesselIdEncrypted());
+						header.setTcOutIdEncrypt(tcout.getTcOutIdEncrypted());
+						header.setCallStart(startTime);
+						header.setCallEnd(endTime);
+						header.setModifiedDate(tcout.getModifiedDate());
+						header.setStatus("Success");
+						header.setRecordProcessed(1);
+						header.setUserIns("DBO");
+						header.setDateIns(dateIns);
+						header.setIs_processed("N");
+						headerService.saveHeader(header);
+
+						tcout.setTrans_Id(transId);
+						tcoutService.saveTcOutList(tcout);
+				
+
+				}
+			}
+			else if(modifiedDateCount !=0) {
+				for(int i =0;i<json1.length();i++) {
+					LocalDateTime dateIns = LocalDateTime.now(ZoneOffset.UTC).truncatedTo(ChronoUnit.SECONDS);
+					Q88_TcOutList tcout = gson.fromJson(json1.getJSONObject(i).toString(), Q88_TcOutList.class);
+					System.out.println("if  tcout "+tcout);
+					tcout.setModified_date(tcout.getModifiedDate());
+					if(tcout.getModified_date().isAfter(modifiedDate)) {
+						System.out.println("tcout Modified Date " +tcout.getModified_date());
+						System.out.println("Last Modified Date "+modifiedDate);
+					Integer transId = headerService.getTransId();
+						Q88_Interface_Header header = new Q88_Interface_Header();
+						header.setTrans_Id(transId);
+						header.setApiCall("TcOut/TcOutList");
+						header.setVesselIDEncrypt(tcout.getVesselIdEncrypted());
+						header.setTcOutIdEncrypt(tcout.getTcOutIdEncrypted());
+						header.setCallStart(startTime);
+						header.setCallEnd(endTime);
+						header.setModifiedDate(tcout.getModifiedDate());
+						header.setStatus("Success");
+						header.setRecordProcessed(1);
+						header.setUserIns("DBO");
+						header.setDateIns(dateIns);
+						header.setIs_processed("N");
+						headerService.saveHeader(header);
+
+						tcout.setTrans_Id(transId);
+						tcoutService.saveTcOutList(tcout);
+					}
+					
+				}
+				
+			}
+
 			System.out.println("inserted ");
-			
+
 		}
 
 		catch (SocketTimeoutException expected) {
@@ -114,6 +172,5 @@ public class Q88GetTcOutListAPI {
 		}
 
 	}
-	
-	
+
 }
