@@ -62,5 +62,26 @@ public class Q88InterfaceHeaderServiceImpl implements Q88InterfaceHeaderService 
 		
 	}
 
+	@Override
+	@Transactional
+	public void updateVesselRecord(String status, String api, Integer trans_id, String vessel_id) {
+		headerdao.updateVesselRecord(status, api, trans_id, vessel_id);
+		
+	}
+
+	@Override
+	@Transactional
+	public void updateVoyageObjNonProcess(String api, String voyageId, Integer trans_id, String reason) {
+		headerdao.updateVoyageObjNonProcess(api, voyageId, trans_id, reason);
+		
+	}
+
+	@Override
+	@Transactional
+	public void updateVslHeadContractDtl(String api, String vesselId, String tcInId, Integer transId) {
+		headerdao.updateVslHeadContractDtl(api, vesselId, tcInId, transId);
+		
+	}
+
 	
 }

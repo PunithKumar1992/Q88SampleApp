@@ -10,6 +10,7 @@ import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import com.bsol.q88.model.cpk.Q88_VoyObj_Fixture_CommissionCPK;
@@ -33,7 +34,8 @@ public class Q88_VoyObj_Fixture_Commission {
 	
 	@Id
 	@Column(name = "COMMISSION_SEQID")
-	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	@SequenceGenerator(name = "FixComm_SeqId", sequenceName = "Q88_VOY_FIXTURE_COMM_SEQID", initialValue = 1000, allocationSize = 1)
+	@GeneratedValue(generator = "FixComm_SeqId")
 	private Integer commission_SeqId;
 	
 	@Column(name = "COMMISSIONTYPE")

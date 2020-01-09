@@ -110,6 +110,7 @@ public class Q88GetPortListAPI {
 						header.setRecordProcessed(1);
 						header.setUserIns("DBO");
 						header.setDateIns(dateIns);
+						header.setIs_processed("Y");
 						headerService.saveHeader(header);
 						
 						port.setTrans_Id(transId);
@@ -129,6 +130,7 @@ public class Q88GetPortListAPI {
 					header.setRecordProcessed(1);
 					header.setUserIns("DBO");
 					header.setDateIns(dateIns);
+					header.setIs_processed("Y");
 					headerService.saveHeader(header);
 					
 					port.setTrans_Id(transId);

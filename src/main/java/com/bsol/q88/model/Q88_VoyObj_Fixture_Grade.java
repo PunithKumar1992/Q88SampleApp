@@ -10,6 +10,7 @@ import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import com.bsol.q88.model.cpk.Q88_VoyObj_Fixture_GradeCPK;
@@ -33,7 +34,8 @@ public class Q88_VoyObj_Fixture_Grade {
 	
 	@Id
 	@Column(name = "GRADE_SEQID")
-	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	@SequenceGenerator(name = "FixGrade_SeqId", sequenceName = "Q88_VOYOBJ_FIXTURE_GRADE_SEQID", initialValue = 1000, allocationSize = 1)
+	@GeneratedValue(generator = "FixGrade_SeqId")
 	private Integer grade_SeqId;
 	
 	@Column(name = "DISPLAYORDER")

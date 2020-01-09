@@ -118,6 +118,7 @@ public class Q88GetTcOutDetailAPI {
 						header.setRecordProcessed(1);
 						header.setUserIns("DBO");
 						header.setDateIns(dateIns);
+						header.setIs_processed("Y");
 						headerService.saveHeader(header);
 						
 						tcOutDetail.setTrans_Id(transId);
@@ -140,6 +141,7 @@ public class Q88GetTcOutDetailAPI {
 					header.setRecordProcessed(1);
 					header.setUserIns("DBO");
 					header.setDateIns(dateIns);
+					header.setIs_processed("Y");
 					headerService.saveHeader(header);
 					
 					tcOutDetail.setTrans_Id(transId);

@@ -12,6 +12,7 @@ import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -36,7 +37,8 @@ public class Q88_VoyObj_Fixture_BillOfLdng {
 	private Integer fixtureLst_SeqId;
 	@Id
 	@Column(name = "FIXTUREBILLOFLDNG_SEQID")
-	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	@SequenceGenerator(name = "FixBill_SeqId", sequenceName = "Q88_VOY_FIXTURE_BILLLDNG_SEQID", initialValue = 1000, allocationSize = 1)
+	@GeneratedValue(generator = "FixBill_SeqId")
 	private Integer fixtureBillOfLdng_SeqId;
 	
 	@Transient

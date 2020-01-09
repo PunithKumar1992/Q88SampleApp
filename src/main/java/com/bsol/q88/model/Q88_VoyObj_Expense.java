@@ -10,6 +10,7 @@ import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import com.bsol.q88.model.cpk.Q88_VoyObj_ExpenseCPK;
@@ -29,7 +30,8 @@ public class Q88_VoyObj_Expense {
 	
 	@Id
 	@Column(name = "EXPENSE_SEQID")
-	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	@SequenceGenerator(name = "Expense_SeqId", sequenceName = "Q88_VOYOBJ_EXPENSE_SEQID", initialValue = 1000, allocationSize = 1)
+	@GeneratedValue(generator = "Expense_SeqId") 	 
 	private Integer expense_SeqId;
 	
 	@Column(name = "AMOUNT")

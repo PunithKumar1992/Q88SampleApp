@@ -15,6 +15,6 @@ public interface Q88VoyObjDao extends JpaRepository<Q88_VoyObj, Integer>{
 	@Query(value = "SELECT Q88_VOYOBJ_LEGLST_SEQID.NEXTVAL FROM dual", nativeQuery =true)
 	public Integer getVoyLegLstSeqId();
 
-	@Query(value = "SELECT Q88_VOYOBJ_OFFHIRE_SEQUENCE.NEXTVAL FROM dual", nativeQuery =true)
+	@Query(value = "SELECT Q88_VOYOBJ_OFFHIRE_SEQID.NEXTVAL FROM dual", nativeQuery =true)
 	public Integer getVoyOffhireSeqId();
 }

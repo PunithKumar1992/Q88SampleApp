@@ -12,6 +12,7 @@ import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -36,7 +37,8 @@ public class Q88_VoyObj_LegLst_BunStem {
 	
 	@Id
 	@Column(name = "BUNKERSTEM_SEQID")
-	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	@SequenceGenerator(name = "BunkerStem_SeqId", sequenceName = "Q88_VOY_LEGLST_BUNSTEM_SEQID", initialValue = 1000, allocationSize = 1)
+	@GeneratedValue(generator = "BunkerStem_SeqId")
 	private Integer bunkerStem_SeqId;
 	
 	@Column(name = "STEMSTATUS")

@@ -18,5 +18,10 @@ public interface Q88InterfaceHeaderService {
 	public void updateTcOutDtlRecords(String status,String api,Integer trans_id, String vessel_id,String tcout_id);
 	public int ModifiedDateCountforFirsTime(String api);
 	public void updateVoyobjRecords(String status,String api,Integer trans_id,String voyageId);
+	public void updateVesselRecord(String status,String api, Integer trans_id, String vessel_id);
+	public void updateVoyageObjNonProcess(String api, String voyageId,Integer trans_id ,String reason);
+	public void updateVslHeadContractDtl(String api, String vesselId,String tcInId,Integer transId);
+	
+
 
 }

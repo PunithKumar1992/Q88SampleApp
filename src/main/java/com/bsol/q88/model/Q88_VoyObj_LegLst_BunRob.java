@@ -10,6 +10,7 @@ import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import com.bsol.q88.model.cpk.Q88_VoyObj_LegLst_BunRobCPK;
@@ -33,7 +34,8 @@ public class Q88_VoyObj_LegLst_BunRob {
 	
 	@Id
 	@Column(name = "BUNROB_SEQID")
-	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	@SequenceGenerator(name = "BunkerRob_SeqId", sequenceName = "Q88_VOY_LEGLST_BUNROB_SEQID", initialValue = 1000, allocationSize = 1)
+	@GeneratedValue(generator = "BunkerRob_SeqId")
 	private Integer bunkerRob_SeqId;
 	
 	@Column(name = "BUNKERGRADENAME")

@@ -10,7 +10,9 @@ import java.util.concurrent.TimeUnit;
 import org.apache.commons.configuration.PropertiesConfiguration;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
 
 import com.bsol.q88.model.Q88_Interface_Header;
 import com.bsol.q88.model.Q88_VoyObj;
@@ -64,6 +66,7 @@ public class Q88VoyObjAPI {
 	void getVoyObj() throws Exception{
 		
 		List<Q88_Interface_Header> voyObjId = headerService.getAllunProcessedRecords("Voyage/VoyageListChanged", "N");
+		System.out.println("voyObjIds  is " +voyObjId);
 		PropertiesConfiguration properties = new PropertiesConfiguration("src/main/resources/token.properties");
 		JSONObject json1;
 		OkHttpClient client = new OkHttpClient();
@@ -91,7 +94,14 @@ public class Q88VoyObjAPI {
 				if (!response.isSuccessful()) {
 					//throw new IOException("Unexpected code " + response);
 				System.out.println("unSuccessfull response " +response);
-					
+				}
+				
+			
+				if(!response.isSuccessful()) {
+				String response1  = response.body().string().toString();
+					if(response.code() == 401 || response1 =="" || response1 == null) {
+						headerService.updateVoyageObjNonProcess("Voyage/VoyageListChanged",interfaceheader.getVoyageId(), interfaceheader.getTrans_Id(),"No Content");
+					}
 				}
 				if (response.isSuccessful()) {
 					System.out.println("Hello");
@@ -116,6 +126,7 @@ public class Q88VoyObjAPI {
 				header.setRecordProcessed(1);
 				header.setUserIns("DBO");
 				header.setDateIns(dateIns);
+				header.setIs_processed("Y");
 				headerService.saveHeader(header);
 				
 				voyObj.setTrans_Id(transId);

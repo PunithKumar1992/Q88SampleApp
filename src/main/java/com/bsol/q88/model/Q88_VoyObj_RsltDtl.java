@@ -13,6 +13,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import com.bsol.q88.model.cpk.Q88_VoyObj_RsltDtlCPK;
@@ -35,7 +36,8 @@ public class Q88_VoyObj_RsltDtl implements Serializable{
 	
 	@Id
 	@Column(name = "VOYOBJ_RESDTL_SEQID")
-	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	@SequenceGenerator(name = "VoyObjRes_SeqId", sequenceName = "Q88_VOYOBJ_RSLTDTL_SEQID", initialValue = 1000, allocationSize = 1)
+	@GeneratedValue(generator = "VoyObjRes_SeqId")
 	private Integer voyObj_ResDtl_SeqId;
 	
 	@Column(name = "CLASSIFICATIONNAME")

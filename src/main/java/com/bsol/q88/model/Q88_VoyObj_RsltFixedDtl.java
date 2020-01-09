@@ -11,6 +11,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import com.bsol.q88.model.cpk.Q88_VoyObj_RsltFixedDtlCPK;
@@ -31,7 +32,8 @@ public class Q88_VoyObj_RsltFixedDtl {
 	
 	@Id
 	@Column(name = "VOYOBJ_RESFIXDTL_SEQID")
-	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	@SequenceGenerator(name = "VoyObjResDtl_SeqId", sequenceName = "Q88_VOYOBJ_RSLTFIXEDDTL_SEQID", initialValue = 1000, allocationSize = 1)
+	@GeneratedValue(generator = "VoyObjResDtl_SeqId")
 	private Integer voyObj_ResFixDtl_SeqId;
 	
 	@Column(name = "CLASSIFICATIONNAME")
