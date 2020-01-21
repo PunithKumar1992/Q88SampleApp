@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.SocketTimeoutException;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.concurrent.TimeUnit;
 
@@ -24,8 +25,7 @@ import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 
-//@Component
-//@EnableScheduling
+@Component
 public class Q88VoyLstChangedAPI {
 
 	@Autowired
@@ -43,7 +43,7 @@ public class Q88VoyLstChangedAPI {
 	@Autowired
 	private Q88InterfaceHeaderService headerService;
 	
-	@Scheduled(cron = "0 */1 * ? * *")
+	
 	void checkTokenExpires() throws Exception {
 
 		String expireResult = checkToken.checkTokenExpires();
@@ -66,8 +66,10 @@ public class Q88VoyLstChangedAPI {
 	
 	void getVoyLstChanged() throws Exception{
 		LocalDateTime modifiedDate = headerService.getLastModifiedDate("Voyage/VoyageListChanged");
+		DateTimeFormatter format = DateTimeFormatter.ofPattern("MM-dd-yyyy HH:mm");
 		if (modifiedDate == null || modifiedDate.equals("")) {
-			modifiedDate = LocalDateTime.now(ZoneOffset.UTC).truncatedTo(ChronoUnit.SECONDS);
+			//modifiedDate = LocalDateTime.now(ZoneOffset.UTC).truncatedTo(ChronoUnit.SECONDS);
+			modifiedDate = LocalDateTime.parse("01-01-2019 00:00",format);
 		}
 		
 		JSONArray json1;
@@ -79,7 +81,8 @@ public class Q88VoyLstChangedAPI {
 		client.setWriteTimeout(30, TimeUnit.SECONDS);
 		client.setRetryOnConnectionFailure(true);
 		String token = properties.getProperty("q88.token.access_token").toString();
-		String url = "https://webapi.q88.com/Voyage/GetVoyageListChangedSince?modifiedDate="+"2019-01-01";
+		String apiVersion = properties.getProperty("q88.APiVersionNumber").toString();
+		String url = "https://webapi.q88.com/Voyage/GetVoyageListChangedSince?modifiedDate="+modifiedDate;
 		LocalDateTime startTime = null;
 		LocalDateTime endTime = null;
 
@@ -121,6 +124,7 @@ public class Q88VoyLstChangedAPI {
 						header.setUserIns("DBO");
 						header.setDateIns(dateIns);
 						header.setIs_processed("N");
+						header.setVersionNumber(apiVersion);
 						headerService.saveHeader(header);
 
 						voyLstChange.setTrans_Id(transId);
@@ -152,6 +156,7 @@ public class Q88VoyLstChangedAPI {
 						header.setUserIns("DBO");
 						header.setDateIns(dateIns);
 						header.setIs_processed("N");
+						header.setVersionNumber(apiVersion);
 						headerService.saveHeader(header);
 
 						voyLstChange.setTrans_Id(transId);

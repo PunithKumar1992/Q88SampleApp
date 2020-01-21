@@ -4,18 +4,17 @@ import java.io.IOException;
 import java.net.SocketTimeoutException;
 import java.util.concurrent.TimeUnit;
 import org.apache.commons.configuration.PropertiesConfiguration;
+import org.json.JSONObject;
 import org.springframework.stereotype.Component;
-
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 
-@Component(value ="ApiVersion")
+@Component(value = "ApiVersion")
 public class ApiVersion {
 
-	
-	public String getApiVersion() throws Exception {
-		
+	public Void getApiVersion() throws Exception {
+
 		PropertiesConfiguration properties = new PropertiesConfiguration("src/main/resources/token.properties");
 
 		OkHttpClient client = new OkHttpClient();
@@ -25,7 +24,7 @@ public class ApiVersion {
 		client.setRetryOnConnectionFailure(true);
 		String token = properties.getProperty("q88.token.access_token").toString();
 		String url = "https://webapi.q88.com/ReferenceData/GetWebApiVersionNumber";
-		
+
 		Request request = new Request.Builder().url(url).addHeader("Authorization", "Bearer " + token)
 				.addHeader("Connection", "close").build();
 		try {
@@ -35,13 +34,13 @@ public class ApiVersion {
 			if (!response.isSuccessful()) {
 				throw new IOException("Unexpected code " + response);
 			}
-			if(response.isSuccessful()) {
-		String apiVersion = response.body().string().toString();
-		return apiVersion;
+			if (response.isSuccessful()) {
+				String response1 = response.body().string().toString();
+				JSONObject json = new JSONObject(response1);
+				properties.setProperty("q88.APiVersionNumber", json.get("versionNumber"));
+				properties.save();
+
 			}
-		
-			
-		
 
 		} catch (SocketTimeoutException expected) {
 			getApiVersion();
@@ -50,12 +49,11 @@ public class ApiVersion {
 		}
 		return null;
 	}
-	
-	
+
 	public static void main(String[] args) throws Exception {
-		
+
 		ApiVersion obj = new ApiVersion();
 		obj.getApiVersion();
-		
+
 	}
 }

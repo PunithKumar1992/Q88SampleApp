@@ -50,6 +50,9 @@ public class Q88_Interface_Header {
 	@Column(name = "IS_PROCESSED")
 	private String is_processed;
 	
+	@Column(name = "VERSIONNUMBER")
+	private String versionNumber;
+	
 	public Integer getTrans_Id() {
 		return trans_Id;
 	}
@@ -147,6 +150,13 @@ public class Q88_Interface_Header {
 	public void setIs_processed(String is_processed) {
 		this.is_processed = is_processed;
 	}
+	
+	public String getVersionNumber() {
+		return versionNumber;
+	}
+	public void setVersionNumber(String versionNumber) {
+		this.versionNumber = versionNumber;
+	}
 	@Override
 	public String toString() {
 		return "Q88_Interface_Header [trans_Id=" + trans_Id + ", apiCall=" + apiCall + ", voyageId=" + voyageId
@@ -154,8 +164,10 @@ public class Q88_Interface_Header {
 				+ ", tcOutIdEncrypt=" + tcOutIdEncrypt + ", callStart=" + callStart + ", callEnd=" + callEnd
 				+ ", modifiedDate=" + modifiedDate + ", status=" + status + ", reason=" + reason + ", recordProcessed="
 				+ recordProcessed + ", userIns=" + userIns + ", dateIns=" + dateIns + ", is_processed=" + is_processed
-				+ "]";
+				+ ", versionNumber=" + versionNumber + "]";
 	}
+	
+	
 	
 	
 	

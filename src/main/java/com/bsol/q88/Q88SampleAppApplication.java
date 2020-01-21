@@ -1,20 +1,20 @@
 package com.bsol.q88;
 
+import org.apache.log4j.Logger;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.scheduling.annotation.EnableScheduling;
-
-import com.bsol.q88.component.AccessToken;
 
 @SpringBootApplication
 @EnableScheduling
 public class Q88SampleAppApplication {
 
+	static Logger logger = Logger.getLogger(Q88SampleAppApplication.class);
 	public static void main(String[] args) throws Exception {
+		
 		SpringApplication.run(Q88SampleAppApplication.class, args);
 		
-	
+		logger.info("Log4j appender configuration is successful !!");
 	}
 
 }

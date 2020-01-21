@@ -9,13 +9,14 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.configuration.PropertiesConfiguration;
-import org.json.JSONArray;
+import org.apache.log4j.Logger;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import com.bsol.q88.Q88SampleAppApplication;
 import com.bsol.q88.model.Q88_HdCntrtDTL;
 import com.bsol.q88.model.Q88_Interface_Header;
 import com.bsol.q88.service.Q88InterfaceHeaderService;
@@ -27,15 +28,17 @@ import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 
 @Component
-@EnableScheduling
 public class Q88VslHeadContractDtl {
 	
 	@Autowired
 	private CheckToken checkToken;
 
+	
+	
+	
 	@Autowired
-	private AccessToken token;
-
+	private AccessToken accesstoken;
+	
 	@Autowired
 	private RefreshToken refreshtoken;
 
@@ -45,12 +48,13 @@ public class Q88VslHeadContractDtl {
 	@Autowired
 	private Q88VslHeadContractDtlService vslHdCntrctDtlService;
 
+	private Logger logger = Logger.getLogger(this.getClass());
 	
 
-	@Scheduled(cron = "0 */1 * ? * *")
 	void checkTokenExpires() throws Exception {
 
 		String expireResult = checkToken.checkTokenExpires();
+		System.out.println("expireResult is " +expireResult);
 
 		if (expireResult.equals("before")) {
 			refreshtoken.getAccessTokenByRefreshToken();
@@ -62,7 +66,7 @@ public class Q88VslHeadContractDtl {
 			getVslHdCntrctDtl();
 
 		} else if (expireResult.equals("expired")) {
-			token.getAccessToken();
+			accesstoken.getAccessToken();
 			getVslHdCntrctDtl();
 
 		}
@@ -70,7 +74,7 @@ public class Q88VslHeadContractDtl {
 
 	
 	void getVslHdCntrctDtl() throws Exception {
-
+	
 		List<Q88_Interface_Header> vslId = headerService.getAllunProcessedRecords("Vessel/GetVesselRegisterDetail", "N");
 		PropertiesConfiguration properties = new PropertiesConfiguration("src/main/resources/token.properties");
 		JSONObject json1;
@@ -80,6 +84,7 @@ public class Q88VslHeadContractDtl {
 		client.setWriteTimeout(30, TimeUnit.SECONDS);
 		client.setRetryOnConnectionFailure(true);
 		String token = properties.getProperty("q88.token.access_token").toString();
+		String apiVersion = properties.getProperty("q88.APiVersionNumber").toString();
 		LocalDateTime startTime = null;
 		LocalDateTime endTime = null;
 
@@ -119,6 +124,7 @@ public class Q88VslHeadContractDtl {
 					header.setUserIns("DBO");
 					header.setDateIns(dateIns);
 					header.setIs_processed("Y");
+					header.setVersionNumber(apiVersion);
 					headerService.saveHeader(header);
 					
 		

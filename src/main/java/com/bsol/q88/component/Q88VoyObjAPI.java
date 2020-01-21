@@ -24,8 +24,7 @@ import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 
-//@Component
-//@EnableScheduling
+@Component
 public class Q88VoyObjAPI {
 
 	@Autowired
@@ -43,7 +42,6 @@ public class Q88VoyObjAPI {
 	@Autowired
 	private Q88InterfaceHeaderService headerService;
 	
-	@Scheduled(cron = "0 */1 * ? * *")
 	void checkTokenExpires() throws Exception {
 
 		String expireResult = checkToken.checkTokenExpires();
@@ -75,6 +73,7 @@ public class Q88VoyObjAPI {
 		client.setWriteTimeout(30, TimeUnit.SECONDS);
 		client.setRetryOnConnectionFailure(true);
 		String token = properties.getProperty("q88.token.access_token").toString();
+		String apiVersion = properties.getProperty("q88.APiVersionNumber").toString();
 		LocalDateTime lastmodifiedDate = headerService.getLastModifiedDate("Voyage/VoyageListChanged");
 		LocalDateTime startTime = null;
 		LocalDateTime endTime = null;
@@ -127,6 +126,7 @@ public class Q88VoyObjAPI {
 				header.setUserIns("DBO");
 				header.setDateIns(dateIns);
 				header.setIs_processed("Y");
+				header.setVersionNumber(apiVersion);
 				headerService.saveHeader(header);
 				
 				voyObj.setTrans_Id(transId);

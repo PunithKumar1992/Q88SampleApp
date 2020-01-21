@@ -25,8 +25,7 @@ import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 
-//@Component
-//@EnableScheduling
+@Component
 public class Q88GetTcOutDetailAPI {
 
 	@Autowired
@@ -44,12 +43,12 @@ public class Q88GetTcOutDetailAPI {
 	@Autowired
 	private Q88InterfaceHeaderService headerService;
 
-	@Scheduled(cron = "0 */1 * ? * *")
 	void checkTokenExpires() throws Exception {
 
 		String expireResult = checkToken.checkTokenExpires();
 
 		if (expireResult.equals("before")) {
+			refreshtoken.getAccessTokenByRefreshToken();
 			getTcOutDetails();
 
 		} else if (expireResult.equals("after")) {
@@ -74,6 +73,7 @@ public class Q88GetTcOutDetailAPI {
 		client.setWriteTimeout(30, TimeUnit.SECONDS);
 		client.setRetryOnConnectionFailure(true);
 		String token = properties.getProperty("q88.token.access_token").toString();
+		String apiVersion = properties.getProperty("q88.APiVersionNumber").toString();
 		LocalDateTime lastmodifiedDate = headerService.getLastModifiedDate("TcOut/TcOutList");
 		LocalDateTime startTime = null;
 		LocalDateTime endTime = null;
@@ -109,8 +109,8 @@ public class Q88GetTcOutDetailAPI {
 						Q88_Interface_Header header = new Q88_Interface_Header();
 						header.setTrans_Id(transId);
 						header.setApiCall("TcOut/TcOutDetail");
-						header.setVesselIDEncrypt(tcOutDetail.getVesselIdEncrypted());
-						header.setTcOutIdEncrypt(tcOutDetail.getTcOutIdEncrypted());
+						header.setVesselIDEncrypt(tcOutDetail.getContract().getVesselIdEncrypted());
+						header.setTcOutIdEncrypt(tcOutDetail.getContract().getTcOutIdEncrypted());
 						header.setCallStart(startTime);
 						header.setCallEnd(endTime);
 						header.setModifiedDate(tcOutDetail.getContract().getModifiedDate());
@@ -119,6 +119,7 @@ public class Q88GetTcOutDetailAPI {
 						header.setUserIns("DBO");
 						header.setDateIns(dateIns);
 						header.setIs_processed("Y");
+						header.setVersionNumber(apiVersion);
 						headerService.saveHeader(header);
 						
 						tcOutDetail.setTrans_Id(transId);
@@ -132,8 +133,8 @@ public class Q88GetTcOutDetailAPI {
 					Q88_Interface_Header header = new Q88_Interface_Header();
 					header.setTrans_Id(transId);
 					header.setApiCall("TcOut/TcOutDetail");
-					header.setVesselIDEncrypt(tcOutDetail.getVesselIdEncrypted());
-					header.setTcOutIdEncrypt(tcOutDetail.getTcOutIdEncrypted());
+					header.setVesselIDEncrypt(tcOutDetail.getContract().getVesselIdEncrypted());
+					header.setTcOutIdEncrypt(tcOutDetail.getContract().getTcOutIdEncrypted());
 					header.setCallStart(startTime);
 					header.setCallEnd(endTime);
 					header.setModifiedDate(tcOutDetail.getContract().getModifiedDate());
@@ -142,6 +143,7 @@ public class Q88GetTcOutDetailAPI {
 					header.setUserIns("DBO");
 					header.setDateIns(dateIns);
 					header.setIs_processed("Y");
+					header.setVersionNumber(apiVersion);
 					headerService.saveHeader(header);
 					
 					tcOutDetail.setTrans_Id(transId);

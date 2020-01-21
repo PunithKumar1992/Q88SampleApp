@@ -27,8 +27,7 @@ import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 
-//@Component
-//@EnableScheduling
+@Component
 public class Q88VslRegDtlApi {
 
 	@Autowired
@@ -46,7 +45,7 @@ public class Q88VslRegDtlApi {
 	@Autowired
 	private Q88VslRegDtlService vslRegdtlService;
 
-	@Scheduled(cron = "0 */1 * ? * *")
+
 	void checkTokenExpires() throws Exception {
 
 		String expireResult = checkToken.checkTokenExpires();
@@ -77,6 +76,7 @@ public class Q88VslRegDtlApi {
 		client.setWriteTimeout(30, TimeUnit.SECONDS);
 		client.setRetryOnConnectionFailure(true);
 		String token = properties.getProperty("q88.token.access_token").toString();
+		String apiVersion = properties.getProperty("q88.APiVersionNumber").toString();
 		LocalDateTime startTime = null;
 		LocalDateTime endTime = null;
 
@@ -117,6 +117,7 @@ public class Q88VslRegDtlApi {
 							header.setUserIns("DBO");
 							header.setDateIns(dateIns);
 							header.setIs_processed("N");
+							header.setVersionNumber(apiVersion);
 							headerService.saveHeader(header);
 						}
 					}
@@ -134,6 +135,7 @@ public class Q88VslRegDtlApi {
 						header.setDateIns(dateIns);
 						header.setReason("No Data for TcIn Id Encrypted");
 						header.setIs_processed("N");
+						header.setVersionNumber(apiVersion);
 						headerService.saveHeader(header);
 					}
 
