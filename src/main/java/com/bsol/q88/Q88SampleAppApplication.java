@@ -18,7 +18,7 @@ public class Q88SampleAppApplication {
 		
 		SpringApplication.run(Q88SampleAppApplication.class, args);
 		
-		logger.info("Q88 Integration application main class is started successfully !!");
+		logger.info("Q88 Integration application main class is started successfully !!!!!");
 	}
 
 }
