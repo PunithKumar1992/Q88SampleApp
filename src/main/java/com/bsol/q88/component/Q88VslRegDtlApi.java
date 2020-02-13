@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.configuration.PropertiesConfiguration;
+import org.apache.log4j.Logger;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -16,7 +17,6 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import com.bsol.q88.model.Q88_Interface_Header;
-import com.bsol.q88.model.Q88_VoyObj;
 import com.bsol.q88.model.Q88_VslRegDtl;
 import com.bsol.q88.model.Q88_VslRegDtl_HeadContractDtl;
 import com.bsol.q88.service.Q88InterfaceHeaderService;
@@ -28,6 +28,7 @@ import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 
 @Component
+@EnableScheduling
 public class Q88VslRegDtlApi {
 
 	@Autowired
@@ -44,18 +45,24 @@ public class Q88VslRegDtlApi {
 
 	@Autowired
 	private Q88VslRegDtlService vslRegdtlService;
+	
+	Logger logger = Logger.getLogger(this.getClass());
 
-
+	
 	void checkTokenExpires() throws Exception {
+		
+		logger.info("Q88VesselRegisterDetails Api Started and checking token");
 
 		String expireResult = checkToken.checkTokenExpires();
 
 		if (expireResult.equals("before")) {
-			refreshtoken.getAccessTokenByRefreshToken();
+			//refreshtoken.getAccessTokenByRefreshToken();
+			token.getAccessToken();
 			getVslRegDtl();
 
 		} else if (expireResult.equals("after")) {
-			refreshtoken.getAccessTokenByRefreshToken();
+			//refreshtoken.getAccessTokenByRefreshToken();
+			token.getAccessToken();
 			getVslRegDtl();
 
 		} else if (expireResult.equals("expired")) {
@@ -144,16 +151,18 @@ public class Q88VslRegDtlApi {
 
 					headerService.updateVesselRecord("Y", "Vessel/GetVesselList", interfaceheader.getTrans_Id(),
 							interfaceheader.getVesselIDEncrypt());
-					System.out.println("Insert is completed");
+					
 
 				}
+				
+				logger.info("Q88GetVesselRegisterDetails api inserting the vessel register details in to staging table is completed");
 
 			}
 
 			catch (SocketTimeoutException expected) {
-				checkTokenExpires();
+				logger.error("Exception raised on Q88VesselRegisterDetails Api Exception " +expected);
 			} catch (Exception e) {
-				e.printStackTrace();
+				logger.error("Exception raised on Q88VesselRegisterDetails Api Exception " +e);
 			}
 
 		}

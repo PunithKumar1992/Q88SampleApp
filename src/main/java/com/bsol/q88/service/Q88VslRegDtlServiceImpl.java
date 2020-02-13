@@ -3,6 +3,7 @@ package com.bsol.q88.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,9 +28,13 @@ public class Q88VslRegDtlServiceImpl implements Q88VslRegDtlService {
 
 	@Autowired
 	private Q88_VslRegDtlDataTransfer vslRegDtlTransfer;
+	
+	Logger logger = Logger.getLogger(this.getClass());
 
 	@Override
 	public void saveVslRegDtl(Q88_VslRegDtl vslregdtl) {
+		
+		logger.info("Q88VesselRegister Details service Save VesselRegister Details");
 
 		CustomVslRegDtlMapper custom = new CustomVslRegDtlMapper(vslregdtl);
 		Q88_VslRegDtl vesselregDtl = vslRegDtlTransfer.getVslRegDtl(vslregdtl, Q88_VslRegDtl.class);

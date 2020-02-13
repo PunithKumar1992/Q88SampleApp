@@ -2,6 +2,8 @@ package com.bsol.q88.mapper;
 
 
 
+import org.apache.log4j.Logger;
+
 import com.bsol.q88.model.Q88_TcOutList;
 import com.bsol.q88.model.Q88_TcOutList_Review;
 
@@ -11,6 +13,8 @@ public class CustomTcOutListMapper {
 	private Integer trans_Id;
 	private String tcOutIdEncrypted;
 	private String vesselIdEncrypted ;
+	
+	Logger logger = Logger.getLogger(this.getClass());
 	
 	private CustomTcOutListMapper() {
 	}
@@ -25,6 +29,7 @@ public class CustomTcOutListMapper {
 	
 	
 	public Q88_TcOutList getTcOutList() {
+		logger.info("inside Q88 TcoutList Custom getTcoutList method");
 		Q88_TcOutList tcOutList = new Q88_TcOutList();
 		tcOutList.setCharterer(tcOutListDto.getCharterer());
 		tcOutList.setCp_Date(tcOutListDto.getCpDate());
@@ -41,6 +46,7 @@ public class CustomTcOutListMapper {
 	}
 
 		public Q88_TcOutList_Review getTcOutListReview() {
+			logger.info("inside Q88 TcoutList Custom getTcoutList Review method");
 			if(tcOutListDto.getReview()!=null) {
 			Q88_TcOutList_Review review =   this.tcOutListDto.getReview();
 			Q88_TcOutList_Review tcoutListReview = new Q88_TcOutList_Review();

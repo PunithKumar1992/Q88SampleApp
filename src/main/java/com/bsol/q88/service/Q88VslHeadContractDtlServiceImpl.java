@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,10 +34,14 @@ public class Q88VslHeadContractDtlServiceImpl implements Q88VslHeadContractDtlSe
 
 	@Autowired
 	private Q88_VslHeadContractDtlTransfer vslHdCntrctTransfer;
+	
+	private Logger logger = Logger.getLogger(this.getClass());
 
 	@Override
 	@Transactional
 	public void saveVslHeadContractDtl(Q88_HdCntrtDTL vslHdCntrctdtl) {
+		
+		logger.info("Q88VesselHeadContract details saveVessel Head Contract Detail method inside");
 		Integer transId = vslHdCntrctdtl.getTrans_Id();
 		String vesslId = vslHdCntrctdtl.getContract().getVesselIdEncrypted();
 		String tcInId = vslHdCntrctdtl.getContract().getTcInIdEncrypted();

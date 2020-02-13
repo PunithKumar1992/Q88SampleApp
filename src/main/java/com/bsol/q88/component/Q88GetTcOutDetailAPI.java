@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.configuration.PropertiesConfiguration;
+import org.apache.log4j.Logger;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -26,6 +27,7 @@ import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 
 @Component
+@EnableScheduling
 public class Q88GetTcOutDetailAPI {
 
 	@Autowired
@@ -42,17 +44,23 @@ public class Q88GetTcOutDetailAPI {
 
 	@Autowired
 	private Q88InterfaceHeaderService headerService;
+	
+	Logger logger = Logger.getLogger(this.getClass());
 
+	
 	void checkTokenExpires() throws Exception {
 
+		logger.info("Q88GetcOutDetails APi Started and checking token ");
 		String expireResult = checkToken.checkTokenExpires();
 
 		if (expireResult.equals("before")) {
-			refreshtoken.getAccessTokenByRefreshToken();
+			//refreshtoken.getAccessTokenByRefreshToken();
+			token.getAccessToken();
 			getTcOutDetails();
 
 		} else if (expireResult.equals("after")) {
-			refreshtoken.getAccessTokenByRefreshToken();
+			//refreshtoken.getAccessTokenByRefreshToken();
+			token.getAccessToken();
 			getTcOutDetails();
 
 		} else if (expireResult.equals("expired")) {
@@ -66,7 +74,7 @@ public class Q88GetTcOutDetailAPI {
 
 		List<Q88_Interface_Header> tcOutEncryptedId = headerService.getAllunProcessedRecords("TcOut/TcOutList", "N");
 		PropertiesConfiguration properties = new PropertiesConfiguration("src/main/resources/token.properties");
-		JSONObject json1;
+		JSONObject responseJsonObject;
 		OkHttpClient client = new OkHttpClient();
 		client.setConnectTimeout(30, TimeUnit.SECONDS);
 		client.setReadTimeout(30, TimeUnit.SECONDS);
@@ -77,8 +85,6 @@ public class Q88GetTcOutDetailAPI {
 		LocalDateTime lastmodifiedDate = headerService.getLastModifiedDate("TcOut/TcOutList");
 		LocalDateTime startTime = null;
 		LocalDateTime endTime = null;
-		
-		System.out.println("tcOutEncryptedIds " +tcOutEncryptedId);
 		
 		
 		for (Q88_Interface_Header interfaceheader : tcOutEncryptedId) {
@@ -97,10 +103,9 @@ public class Q88GetTcOutDetailAPI {
 				if (response.isSuccessful()) {
 					endTime = LocalDateTime.now(ZoneOffset.UTC).truncatedTo(ChronoUnit.SECONDS);
 				}
-				json1 = new JSONObject(response.body().string().toString());
-				System.out.println("json1 is " + json1);
+				responseJsonObject = new JSONObject(response.body().string().toString());
 				Gson gson = new GsonBuilder().serializeNulls().create();
-				Q88_TcOutDtl tcOutDetail = gson.fromJson(json1.toString(), Q88_TcOutDtl.class);
+				Q88_TcOutDtl tcOutDetail = gson.fromJson(responseJsonObject.toString(), Q88_TcOutDtl.class);
 				tcOutDetail.getContract().setModified_Date(tcOutDetail.getContract().getModifiedDate());
 
 				if (lastmodifiedDate != null) {
@@ -125,7 +130,6 @@ public class Q88GetTcOutDetailAPI {
 						tcOutDetail.setTrans_Id(transId);
 						tcOutLsdtlService.saveTcOutListDetails(tcOutDetail);
 						headerService.updateTcOutDtlRecords("Y", "TcOut/TcOutList", interfaceheader.getTrans_Id(), interfaceheader.getVesselIDEncrypt(), interfaceheader.getTcOutIdEncrypt());
-						System.out.println("Insert is completed");
 					}
 
 				} else {
@@ -149,16 +153,16 @@ public class Q88GetTcOutDetailAPI {
 					tcOutDetail.setTrans_Id(transId);
 					tcOutLsdtlService.saveTcOutListDetails(tcOutDetail);
 					headerService.updateTcOutDtlRecords("Y", "TcOut/TcOutList", interfaceheader.getTrans_Id(), interfaceheader.getVesselIDEncrypt(), interfaceheader.getTcOutIdEncrypt());
-					System.out.println("Insert is completed");
 
 				}
-
+				logger.info("Q88GetcOutDetails APi save is completed successfully ");
 			}
 
 			catch (SocketTimeoutException expected) {
 				getTcOutDetails();
+				logger.error("Exception occurred in Q88TcoutDetail Api Exception " +expected);
 			} catch (Exception e) {
-				e.printStackTrace();
+				logger.error("Exception occurred in Q88TcOutDetail Api Exception " +e);
 			}
 
 		}

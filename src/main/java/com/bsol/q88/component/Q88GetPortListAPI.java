@@ -5,18 +5,19 @@ import java.net.SocketTimeoutException;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import org.apache.commons.configuration.PropertiesConfiguration;
+import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import com.bsol.q88.Q88SampleAppApplication;
 import com.bsol.q88.model.Q88_Interface_Header;
 import com.bsol.q88.model.Q88_PortList;
 import com.bsol.q88.service.Q88InterfaceHeaderService;
@@ -28,6 +29,7 @@ import com.squareup.okhttp.Response;
 
 
 @Component
+@EnableScheduling
 public class Q88GetPortListAPI {
 
 	@Autowired
@@ -44,17 +46,21 @@ public class Q88GetPortListAPI {
 
 	@Autowired
 	private Q88InterfaceHeaderService headerService;
+	
+	Logger logger = Logger.getLogger(this.getClass());
 
-
+	
 	void checkTokenExpires() throws Exception {
-
+		logger.info("Q88PortList API Started checking Token expired or not ");
 		String expireResult = checkToken.checkTokenExpires();
-
+		
 		if (expireResult.equals("before")) {
-			refreshtoken.getAccessTokenByRefreshToken();
+			//refreshtoken.getAccessTokenByRefreshToken();
+			token.getAccessToken();
 			getPortLists();
 		} else if (expireResult.equals("after")) {
-			refreshtoken.getAccessTokenByRefreshToken();
+			//refreshtoken.getAccessTokenByRefreshToken();
+			token.getAccessToken();
 			getPortLists();
 		} else if (expireResult.equals("expired")) {
 			token.getAccessToken();
@@ -63,8 +69,9 @@ public class Q88GetPortListAPI {
 	}
 
 	void getPortLists() throws Exception {
-		JSONArray json1;
-
+		logger.info("Q88PortList API request object creation started ");
+		JSONArray responseJsonArray;
+		LocalDateTime modifiedDate = headerService.getLastModifiedDate("ReferenceData/GetPortList");
 		PropertiesConfiguration properties = new PropertiesConfiguration("src/main/resources/token.properties");
 
 		OkHttpClient client = new OkHttpClient();
@@ -90,17 +97,17 @@ public class Q88GetPortListAPI {
 			}
 			if(response.isSuccessful()) {
 			endTime = LocalDateTime.now(ZoneOffset.UTC).truncatedTo(ChronoUnit.SECONDS);
+			logger.info("Q88PortList API response is successfull response " );
 			}
 			// System.out.println("Server: " + response.body().string().toString());
-			json1 = new JSONArray(response.body().string().toString());
+			responseJsonArray = new JSONArray(response.body().string().toString());
 			Gson gson = new Gson();
-			LocalDateTime lastStartTime = headerService.getLastCallTime("ReferenceData/GetPortList");
-			for (int i = 0; i < json1.length(); i++) {
+			for (int i = 0; i < responseJsonArray.length(); i++) {
 				LocalDateTime dateIns = LocalDateTime.now(ZoneOffset.UTC).truncatedTo(ChronoUnit.SECONDS);
-				Q88_PortList port = gson.fromJson(json1.getJSONObject(i).toString(),Q88_PortList.class);
+				Q88_PortList port = gson.fromJson(responseJsonArray.getJSONObject(i).toString(),Q88_PortList.class);
 				port.setModified_Date(port.getModifiedDate());
-				if (lastStartTime != null) {
-					if (port.getModified_Date().isAfter(lastStartTime)) {
+				if (modifiedDate != null) {
+					if (port.getModified_Date().isAfter(modifiedDate)) {
 						Integer transId = headerService.getTransId();
 						Q88_Interface_Header header = new Q88_Interface_Header();
 						header.setTrans_Id(transId);
@@ -108,6 +115,7 @@ public class Q88GetPortListAPI {
 						header.setPortId(port.getPortId());
 						header.setCallStart(startTime);
 						header.setCallEnd(endTime);
+						header.setModifiedDate(port.getModifiedDate());
 						header.setStatus("Success");
 						header.setRecordProcessed(1);
 						header.setUserIns("DBO");
@@ -129,6 +137,7 @@ public class Q88GetPortListAPI {
 					header.setPortId(port.getPortId());
 					header.setCallStart(startTime);
 					header.setCallEnd(endTime);
+					header.setModifiedDate(port.getModifiedDate());
 					header.setStatus("Success");
 					header.setRecordProcessed(1);
 					header.setUserIns("DBO");
@@ -143,20 +152,14 @@ public class Q88GetPortListAPI {
 
 				
 			}
-			System.out.println("Port : completeed");
-			// destination = portService.getAllPorList();
-			// difference = portListFilter(Q88source, destination);
-
-			// System.out.println("difference "+difference);
-			/*
-			 * for (Q88_PortList list : difference) { System.out.println("inside for loop");
-			 * System.out.println(list.getPortId()); portService.savePortList(list); }
-			 */
+			logger.info("Q88PortList API Data insertion into staging table is completed");
+			
 
 		} catch (SocketTimeoutException expected) {
 			getPortLists();
+		logger.error("Exception is occurred in Q88GetPortListApi exception is " +expected);
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error("Exception is occurred in Q88GetPortListApi exception is " +e);
 		}
 
 	}

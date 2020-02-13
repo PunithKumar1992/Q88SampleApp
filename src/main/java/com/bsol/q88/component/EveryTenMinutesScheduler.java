@@ -23,17 +23,20 @@ public class EveryTenMinutesScheduler {
 	@Autowired
 	private Q88VoyObjAPI voyObjApi;
 	
-	 Logger logger = Logger.getLogger(this.getClass());
+	Logger logger = Logger.getLogger(this.getClass());
 	
 	
 	@Scheduled(cron = "0 */10 * ? * *")
 	public void run() throws Exception {
+	 Logger logger = Logger.getLogger(this.getClass());
 	logger.info("Ten minute scheduler is Started ");
 		tcoutListApi.checkTokenExpires();
 		tcoutDtlApi.checkTokenExpires();
 		voyLstChangedApi.checkTokenExpires();
 		voyObjApi.checkTokenExpires();
 		logger.info("Ten minute scheduler is ended ");
+	
+	
 		
 	}
 

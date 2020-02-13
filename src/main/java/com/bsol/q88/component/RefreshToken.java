@@ -1,7 +1,6 @@
 package com.bsol.q88.component;
 
 import java.io.IOException;
-
 import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.log4j.Logger;
 import org.json.JSONObject;
@@ -14,11 +13,14 @@ import com.squareup.okhttp.Request;
 import com.squareup.okhttp.RequestBody;
 import com.squareup.okhttp.Response;
 
-@Component(value = "NewRefreshToken")
+@Component(value = "RefreshToken")
 public class RefreshToken {
-	
+
 	@Autowired
 	private ApiVersion apiVersion;
+	
+	@Autowired
+	private AccessToken token;
 
 	public void getAccessTokenByRefreshToken() throws Exception {
 		Logger logger = Logger.getLogger(this.getClass());
@@ -38,10 +40,12 @@ public class RefreshToken {
 		Request request = new Request.Builder().url("https://webapi.q88.com/Authenticate/Login").post(formBody)
 				.addHeader("Content-Type", "application/x-www-form-urlencoded")
 				.addHeader("Authorization", "Bearer " + access_token).build();
-
+		try {
 		Response response = client.newCall(request).execute();
-		if (!response.isSuccessful())
-			throw new IOException("Unexpected code " + response);
+		
+		  if (!response.isSuccessful())
+			  throw new IOException("Unexpected code " +		  response);
+		 
 		if (response.isSuccessful()) {
 			JSONObject json = new JSONObject(response.body().string().toString());
 			PropertiesConfiguration prop = new PropertiesConfiguration("src/main/resources/token.properties");
@@ -55,6 +59,12 @@ public class RefreshToken {
 			prop.save();
 			apiVersion.getApiVersion();
 			logger.info("Refresh token exceuted successfully");
+		}
+		
+		}
+		catch(Exception e) {
+			logger.debug("Refresh Token is expired so getting the new Access token and Refresh Token");
+			token.getAccessToken();
 		}
 	}
 

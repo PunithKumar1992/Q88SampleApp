@@ -2,6 +2,8 @@ package com.bsol.q88.service;
 
 import java.util.List;
 import javax.transaction.Transactional;
+
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.bsol.q88.dao.Q88TcOutListDao;
@@ -19,10 +21,14 @@ public class Q88TcOutListServiceImpl implements Q88TcOutListService {
 	
 	@Autowired 
 	private Q88_TcOutListDataTransfer tcOutListTransfer; 
+	
+	
+	Logger logger = Logger.getLogger(this.getClass());
 
 	@Override
 	@Transactional
 	public void saveTcOutList(Q88_TcOutList tcOutList) {
+		logger.info("Q88TcoutList save tcout lists object ");
 		
 		Q88_TcOutList q88tcOutList = tcOutListTransfer.getTcOutList(tcOutList, Q88_TcOutList.class);
 		Q88_TcOutList_Review  q88tcOutListReview = tcOutListTransfer.getTcOutList(tcOutList, Q88_TcOutList_Review.class);
@@ -38,17 +44,7 @@ public class Q88TcOutListServiceImpl implements Q88TcOutListService {
 	}
 
 
-	@Override
-	public String getLastRuntime(String api) {
-		return tcoutdao.getLastRuntime(api);
-	}
-
-	@Override
-	@Transactional
-	public void updateLastRuntime(String updateTime, String api) {
-		tcoutdao.updateLastRuntime(updateTime, api);
-		
-	}
+	
 
 	@Override
 	public Integer getNextTcOutLisId() {

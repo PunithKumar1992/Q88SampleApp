@@ -1,5 +1,6 @@
 package com.bsol.q88.component;
 
+import java.io.IOException;
 import java.net.SocketTimeoutException;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
@@ -8,6 +9,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.configuration.PropertiesConfiguration;
+import org.apache.log4j.Logger;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -25,6 +27,7 @@ import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 
 @Component
+@EnableScheduling
 public class Q88VoyObjAPI {
 
 	@Autowired
@@ -42,16 +45,21 @@ public class Q88VoyObjAPI {
 	@Autowired
 	private Q88InterfaceHeaderService headerService;
 	
+	Logger logger = Logger.getLogger(this.getClass());
+	
+	
 	void checkTokenExpires() throws Exception {
-
+		logger.info("Q88VoyObject Api Started and checking token ");
 		String expireResult = checkToken.checkTokenExpires();
 
 		if (expireResult.equals("before")) {
-			refreshtoken.getAccessTokenByRefreshToken();
+			//refreshtoken.getAccessTokenByRefreshToken();
+			token.getAccessToken();
 			getVoyObj();
 
 		} else if (expireResult.equals("after")) {
-			refreshtoken.getAccessTokenByRefreshToken();
+			//refreshtoken.getAccessTokenByRefreshToken();
+			token.getAccessToken();
 			getVoyObj();
 
 		} else if (expireResult.equals("expired")) {
@@ -90,21 +98,17 @@ public class Q88VoyObjAPI {
 				Request request = new Request.Builder().url(url).addHeader("Authorization", "Bearer " + token)
 						.addHeader("Connection", "close").build();
 				Response response = client.newCall(request).execute();
-				if (!response.isSuccessful()) {
-					//throw new IOException("Unexpected code " + response);
-				System.out.println("unSuccessfull response " +response);
-				}
 				
-			
 				if(!response.isSuccessful()) {
 				String response1  = response.body().string().toString();
+				System.out.println("response1 is " +response1);
 					if(response.code() == 401 || response1 =="" || response1 == null) {
 						headerService.updateVoyageObjNonProcess("Voyage/VoyageListChanged",interfaceheader.getVoyageId(), interfaceheader.getTrans_Id(),"No Content");
 					}
+					throw new IOException("Unexpected code " + response);
 				}
 				if (response.isSuccessful()) {
-					System.out.println("Hello");
-					endTime = LocalDateTime.now(ZoneOffset.UTC).truncatedTo(ChronoUnit.SECONDS);
+				endTime = LocalDateTime.now(ZoneOffset.UTC).truncatedTo(ChronoUnit.SECONDS);
 				
 				json1 = new JSONObject(response.body().string().toString());
 				System.out.println("json1 is " + json1);
@@ -132,16 +136,17 @@ public class Q88VoyObjAPI {
 				voyObj.setTrans_Id(transId);
 				voyObjService.saveVoyObj(voyObj);
 				headerService.updateVoyobjRecords("Y", "Voyage/VoyageListChanged", interfaceheader.getTrans_Id(), interfaceheader.getVoyageId());
-				System.out.println("Insert is completed");
+				
 				
 				}
-				
+				logger.info("Q88VoyObject Api inserting Voyage object into staging table is completed ");
 			}
 
 			catch (SocketTimeoutException expected) {
 				checkTokenExpires();
+				logger.error("Exception occured in Q88VoyObject Api Exception " +expected);
 			} catch (Exception e) {
-				e.printStackTrace();
+				logger.error("Exception occured in Q88VoyObject Api Exception " +e);
 			}
 
 		}

@@ -3,6 +3,8 @@ package com.bsol.q88.mapper;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import com.bsol.q88.model.Q88_TcOutDtl_Delivery;
 import com.bsol.q88.model.Q88_TcOutDtl_DeliveryDtl;
 import com.bsol.q88.model.Q88_TcOutDtl_Review;
@@ -21,6 +23,8 @@ public class CustomTcOutListDetailMapper {
 	private String tcOutIdEncrypted;
 	private String vesselIdEncrypted;
 
+	Logger logger = Logger.getLogger(this.getClass());
+	
 	private CustomTcOutListDetailMapper() {
 
 	}
@@ -34,7 +38,7 @@ public class CustomTcOutListDetailMapper {
 	}
 
 	public Q88_TcOutDtl getTcOutListDetail() {
-
+		logger.info("Q88TcOutListDetail Custom getTcoutListDetails method");
 		Q88_TcOutDtl tcOutListDtl = new Q88_TcOutDtl();
 		tcOutListDtl.setTrans_Id(trans_Id);
 		tcOutListDtl.setTcOutIdEncrypted(tcOutIdEncrypted);
@@ -44,6 +48,7 @@ public class CustomTcOutListDetailMapper {
 	}
 
 	public Q88_TCOutDtl_Contract getContract() {
+		logger.info("Q88TcOutListDetail Custom getTcoutListDetails contract method");
 		if (tcOutListDtlDto.getContract() != null) {
 			Q88_TCOutDtl_Contract contract = tcOutListDtlDto.getContract();
 			Q88_TCOutDtl_Contract q88TcOutcontract = new Q88_TCOutDtl_Contract();
@@ -65,6 +70,7 @@ public class CustomTcOutListDetailMapper {
 	}
 
 	public Q88_TcOutDtl_Review getTcOutDtlReview() {
+		logger.info("Q88TcOutListDetail Custom getTcoutListDetails Review method");
 		if (tcOutListDtlDto.getContract().getReview() != null) {
 			Q88_TcOutDtl_Review review = tcOutListDtlDto.getContract().getReview();
 
@@ -83,6 +89,7 @@ public class CustomTcOutListDetailMapper {
 
 	public List<Q88_TcOutDtl_CommissionList> getTcOutFixtureCommission() {
 
+		logger.info("Q88TcOutListDetail Custom getTcoutListDetails TcOutFixtureCommission method");
 		List<Q88_TcOutDtl_CommissionList> commissionlist = tcOutListDtlDto.getCommissionList();
 
 		List<Q88_TcOutDtl_CommissionList> tcOFixtureCommissionList = new ArrayList<Q88_TcOutDtl_CommissionList>();
@@ -110,6 +117,7 @@ public class CustomTcOutListDetailMapper {
 	}
 
 	public Q88_TcOutDtl_Results getTcOutResults() {
+		logger.info("Q88TcOutListDetail Custom getTcoutListDetails TcOutResult method");
 		if (tcOutListDtlDto.getResults() != null) {
 			Q88_TcOutDtl_Results results = tcOutListDtlDto.getResults();
 			Q88_TcOutDtl_Results tcOutResults = new Q88_TcOutDtl_Results();
@@ -132,6 +140,7 @@ public class CustomTcOutListDetailMapper {
 	}
 
 	public List<Q88_TcOutDtl_Duration> getPeriods() {
+		logger.info("Q88TcOutListDetail Custom getTcoutListDetails periods method");
 		List<Q88_TcOutDtl_Duration> periodList = tcOutListDtlDto.getDuration();
 
 		List<Q88_TcOutDtl_Duration> tcOutdurationList = new ArrayList<Q88_TcOutDtl_Duration>();
@@ -158,7 +167,7 @@ public class CustomTcOutListDetailMapper {
 	}
 
 	public List<Q88_TcOutDtl_VoyageList> getTcOutVoyageList() {
-
+		logger.info("Q88TcOutListDetail Custom getTcoutListDetails voyagelist method");
 		List<Q88_TcOutDtl_VoyageList> voyageList = tcOutListDtlDto.getVoyageList();
 
 		List<Q88_TcOutDtl_VoyageList> tcOutVoyageList = new ArrayList<Q88_TcOutDtl_VoyageList>();
@@ -188,6 +197,7 @@ public class CustomTcOutListDetailMapper {
 	}
 
 	public Q88_TcOutDtl_Delivery getDelivery() {
+		logger.info("Q88TcOutListDetail Custom getTcoutListDetails Delivery main method");
 		if (tcOutListDtlDto.getTcOutDeliveryRedelivery() != null) {
 			Q88_TcOutDtl_Delivery q88Delivery = new Q88_TcOutDtl_Delivery();
 			q88Delivery.setTrans_Id(tcOutListDtlDto.getTrans_Id());
@@ -201,6 +211,7 @@ public class CustomTcOutListDetailMapper {
 	}
 
 	public Q88_TcOutDtl_DeliveryDtl getDeliveryDetail() {
+		logger.info("Q88TcOutListDetail Custom getTcoutListDetails Delivery method");
 		if ((tcOutListDtlDto.getTcOutDeliveryRedelivery()) != null) {
 			Q88_TcOutDtl_DeliveryDtl tcOutDeliverydtl = tcOutListDtlDto.getTcOutDeliveryRedelivery().getDelivery();
 
@@ -220,6 +231,8 @@ public class CustomTcOutListDetailMapper {
 	}
 
 	public Q88_TcOutDtl_ReDeliveryDtl getReDeliveryDetail() {
+		
+		logger.info("Q88TcOutListDetail Custom getTcoutListDetails ReDelivery method");
 		if ((tcOutListDtlDto.getTcOutDeliveryRedelivery()) != null) {
 
 			Q88_TcOutDtl_ReDeliveryDtl reDeliverydtl = tcOutListDtlDto.getTcOutDeliveryRedelivery().getRedelivery();

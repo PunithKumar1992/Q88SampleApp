@@ -3,6 +3,7 @@ package com.bsol.q88.mapper;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
@@ -31,6 +32,8 @@ public class CustomVoyObjMapper {
 	private Q88_VoyObj voyObjDto;
 	private Integer trans_Id;
 	private String voyageId;
+	
+	Logger logger = Logger.getLogger(this.getClass());
 
 	public CustomVoyObjMapper() {
 
@@ -42,8 +45,10 @@ public class CustomVoyObjMapper {
 		this.trans_Id = voyObjDto.getTrans_Id();
 		this.voyageId = voyObjDto.getVoyageId();
 	}
+	
 
 	public Q88_VoyObj getVoyObj() {
+		logger.info("Q88CustomVoyageObjectMapper getVoyObject method inside");
 		Q88_VoyObj voyObj = new Q88_VoyObj();
 		voyObj.setTrans_Id(trans_Id);
 		voyObj.setVoyageId(voyageId);
@@ -82,7 +87,7 @@ public class CustomVoyObjMapper {
 			result.setPort(voyObjRes.getPort());
 			result.setRevenue(voyObjRes.getRevenue());
 			result.setSailedIn(voyObjRes.getSailedIn());
-			result.setRevenue(voyObjRes.getRevenue());
+			result.setTce(voyObjRes.getTce());
 			return result;
 		} else {
 			return null;
@@ -126,7 +131,7 @@ public class CustomVoyObjMapper {
 			resultfixed.setPort(voyObjResfixed.getPort());
 			resultfixed.setRevenue(voyObjResfixed.getRevenue());
 			resultfixed.setSailedIn(voyObjResfixed.getSailedIn());
-			resultfixed.setRevenue(voyObjResfixed.getRevenue());
+			resultfixed.setTce(voyObjResfixed.getTce());
 			return resultfixed;
 		} else {
 			return null;

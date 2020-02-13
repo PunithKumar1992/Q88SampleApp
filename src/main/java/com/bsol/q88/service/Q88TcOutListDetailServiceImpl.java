@@ -3,6 +3,8 @@ package com.bsol.q88.service;
 import java.util.List;
 
 import javax.transaction.Transactional;
+
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,10 +31,14 @@ public class Q88TcOutListDetailServiceImpl  implements Q88TcOutListDetailService
 	
 	@Autowired
 	private Q88_TcOutListDetailDataTransfer tcOutListDtltransfer;
+	
+	Logger logger = Logger.getLogger(this.getClass());
 
 	@Override
 	@Transactional
 	public void saveTcOutListDetails(Q88_TcOutDtl tcOutListDtl) {
+		
+		logger.info("Q88TcOutDetail saveTcOutListDetails Method inside ");
 		
 		CustomTcOutListDetailMapper custom = new CustomTcOutListDetailMapper(tcOutListDtl);
 		Q88_TcOutDtl tcOutLsDtl = tcOutListDtltransfer.getTcOutListDetail(tcOutListDtl, Q88_TcOutDtl.class);
@@ -73,6 +79,8 @@ public class Q88TcOutListDetailServiceImpl  implements Q88TcOutListDetailService
 		tcOutLsDtl.setTcOutDeliveryRedelivery(deliveryDtl);
 		}
 		tcOutDtldao.save(tcOutLsDtl);
+		
+		logger.info("Q88TcOutDetail saveTcOutListDetails Method inside save successfull ");
 		
 	}
 

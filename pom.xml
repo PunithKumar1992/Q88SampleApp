@@ -79,11 +79,7 @@
 			<artifactId>okhttp</artifactId>
 			<version>2.7.5</version>
 		</dependency>
-		<dependency>
-			<groupId>com.squareup.okhttp3</groupId>
-			<artifactId>okhttp</artifactId>
-			<version>4.3.1</version>
-		</dependency>
+
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-collections4</artifactId>
@@ -104,11 +100,16 @@
 
 		<dependency>
 			<groupId>log4j</groupId>
-			<artifactId>log4j</artifactId>
+			<artifactId>apache-log4j-extras</artifactId>
 			<version>1.2.17</version>
 		</dependency>
+		<dependency>
+			<groupId>uk.org.simonsite</groupId>
+			<artifactId>log4j-rolling-appender</artifactId>
+			<version>20131024-2017</version>
+		</dependency>
+	
 
-		
 
 
 

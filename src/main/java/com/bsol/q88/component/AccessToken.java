@@ -1,18 +1,16 @@
 package com.bsol.q88.component;
 
 import java.io.IOException;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
 import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
 import com.bsol.q88.Q88SampleAppApplication;
@@ -27,14 +25,12 @@ public class AccessToken {
 
 	@Autowired
 	private ApiVersion apiversion;
-	
+	Logger logger = Logger.getLogger(this.getClass());
 
-	
-	
 	public void getAccessToken() throws Exception {
 		
-		 Logger logger = Logger.getLogger(this.getClass());
-		logger.info("Q88 AccessToken Started");
+		 
+		logger.info("Q88 Integration Application AccessToken Started");
 		OkHttpClient client = new OkHttpClient();
 
 		RequestBody formBody = new FormEncodingBuilder()
@@ -44,9 +40,10 @@ public class AccessToken {
 				.add("password", "Intlseas$123")
 				.add("grant_type", "password")
 				.build();
-		Request request = new Request.Builder().url("https://webapi.q88.com/Authenticate/Login").post(formBody)
+		Request request = new Request.Builder().url("https://webapi.q88.com/Authenticate/Login")
+				.post(formBody)
 				.addHeader("Content-Type", "application/x-www-form-urlencoded").build();
-
+		try {
 		Response response = client.newCall(request).execute();
 		if (!response.isSuccessful())
 			throw new IOException("Unexpected code " + response);
@@ -61,22 +58,24 @@ public class AccessToken {
 			prop.setProperty("q88.token.issued", json.get(".issued").toString());
 			prop.setProperty("q88.token.expires", json.get(".expires").toString());
 			prop.save();
-			logger.info("Q88Access token executed successfuly ");
 			apiversion.getApiVersion();
+			logger.info("Q88 Integration Application Access token executed successfuly ");
 	
 		}
 		
+		}
+		catch(Exception e) {
+			logger.error("exception occurred in Q88 Integration Application AccessToken exception is  " +e);
+		}
+		
 	}
-	
+
 	public static void main(String[] args) throws Exception {
-		AccessToken token = new  AccessToken();
+		AccessToken token = new AccessToken();
 		TimeZone timeZone = TimeZone.getTimeZone("UTC");
 		Calendar calendar = Calendar.getInstance(timeZone);
 		SimpleDateFormat dateformat = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss", Locale.US);
 		dateformat.setTimeZone(timeZone);
-		//System.out.println("Calendar " +calendar.get(Calendar.DAY_OF_MONTH));
-		
-		
 		token.getAccessToken();
 	}
 }

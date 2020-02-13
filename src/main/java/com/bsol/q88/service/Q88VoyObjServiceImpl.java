@@ -2,6 +2,8 @@ package com.bsol.q88.service;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.bsol.q88.dao.Q88VoyObjDao;
@@ -41,9 +43,12 @@ public class Q88VoyObjServiceImpl implements Q88VoyObjService {
 
 	@Autowired
 	private Q88_VoyObjDataTransfer voyObjTransfer;
+	
+	Logger logger = Logger.getLogger(this.getClass());
 
 	@Override
 	public void saveVoyObj(Q88_VoyObj voyObj) {
+		logger.info("Q88VoyageObject Service save method inside ");
 		CustomVoyObjMapper custom = new CustomVoyObjMapper(voyObj);
 		Q88_VoyObj voyObject = voyObjTransfer.getVoyObj(voyObj, Q88_VoyObj.class);
 		Q88_VoyObj_Rslt voyObjRes = voyObjTransfer.getVoyObj(voyObj, Q88_VoyObj_Rslt.class);

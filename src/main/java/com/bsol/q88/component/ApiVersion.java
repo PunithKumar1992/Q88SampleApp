@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.SocketTimeoutException;
 import java.util.concurrent.TimeUnit;
 import org.apache.commons.configuration.PropertiesConfiguration;
+import org.apache.log4j.Logger;
 import org.json.JSONObject;
 import org.springframework.stereotype.Component;
 import com.squareup.okhttp.OkHttpClient;
@@ -12,9 +13,12 @@ import com.squareup.okhttp.Response;
 
 @Component(value = "ApiVersion")
 public class ApiVersion {
+	
+	Logger logger = Logger.getLogger(this.getClass());
 
 	public Void getApiVersion() throws Exception {
-
+		
+	logger.info("Q88 Integration Application Api Version is Started");
 		PropertiesConfiguration properties = new PropertiesConfiguration("src/main/resources/token.properties");
 
 		OkHttpClient client = new OkHttpClient();
@@ -43,9 +47,10 @@ public class ApiVersion {
 			}
 
 		} catch (SocketTimeoutException expected) {
+			logger.error("Exception occurred in Q88 Integration Application Api Version exception " +expected);
 			getApiVersion();
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error("Exception occurred in Q88 Integration Application Api Version exception " +e);
 		}
 		return null;
 	}

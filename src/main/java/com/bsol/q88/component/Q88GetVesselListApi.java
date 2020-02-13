@@ -8,6 +8,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.configuration.PropertiesConfiguration;
+import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -24,6 +25,7 @@ import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 
 @Component
+@EnableScheduling
 public class Q88GetVesselListApi {
 
 	@Autowired
@@ -41,16 +43,22 @@ public class Q88GetVesselListApi {
 	@Autowired
 	private Q88InterfaceHeaderService headerService;
 	
-
+	Logger logger = Logger.getLogger(this.getClass());
+	
+	
 	void checkTokenExpires() throws Exception {
-
+		
+		logger.info("Q88GetVesselList Api Started and checking the token");
 		String expireResult = checkToken.checkTokenExpires();
 
 		if (expireResult.equals("before")) {
+			//refreshtoken.getAccessTokenByRefreshToken();
+			token.getAccessToken();
 			getVesselList();
 
 		} else if (expireResult.equals("after")) {
-			refreshtoken.getAccessTokenByRefreshToken();
+			//refreshtoken.getAccessTokenByRefreshToken();
+			token.getAccessToken();
 			getVesselList();
 			
 
@@ -62,7 +70,7 @@ public class Q88GetVesselListApi {
 	}
 	
 	void getVesselList() throws Exception {
-		JSONArray json1;
+		JSONArray responseJsonArray;
 		PropertiesConfiguration properties = new PropertiesConfiguration("src/main/resources/token.properties");
 
 		OkHttpClient client = new OkHttpClient();
@@ -77,7 +85,8 @@ public class Q88GetVesselListApi {
 		LocalDateTime endTime=null;
 
 		startTime = LocalDateTime.now(ZoneOffset.UTC).truncatedTo(ChronoUnit.SECONDS);
-		Request request = new Request.Builder().url(url).addHeader("Authorization", "Bearer " + token).addHeader("Connection", "close").build();
+		Request request = new Request.Builder().url(url)
+						.addHeader("Authorization", "Bearer " + token).addHeader("Connection", "close").build();
 		try {
 
 			Response response = client.newCall(request).execute();
@@ -90,18 +99,16 @@ public class Q88GetVesselListApi {
 				
 			}
 
-			// System.out.println("Server: " + response.body().string().toString());
-			json1 = new JSONArray(response.body().string().toString());
+			responseJsonArray = new JSONArray(response.body().string().toString());
 			Gson gson = new Gson();
-			LocalDateTime lastStartTime = headerService.getLastCallTime("Vessel/GetVesselList");
-			System.out.println("Json1 "+json1);
-			for (int i = 0; i < json1.length(); i++) {
+			LocalDateTime modifiedDate = headerService.getLastModifiedDate("Vessel/GetVesselList");
+			for (int i = 0; i < responseJsonArray.length(); i++) {
 				LocalDateTime dateIns = LocalDateTime.now(ZoneOffset.UTC).truncatedTo(ChronoUnit.SECONDS);
-				Q88_VesselList vessel = gson.fromJson(json1.getJSONObject(i).toString(), Q88_VesselList.class);
+				Q88_VesselList vessel = gson.fromJson(responseJsonArray.getJSONObject(i).toString(), Q88_VesselList.class);
 				vessel.setModified_Date(vessel.getModifiedDate());
-				System.out.println("lastStartTime " +lastStartTime);
-				if (lastStartTime != null) {
-					if (vessel.getModified_Date().isAfter(lastStartTime)) {
+				logger.info("Modiied date of vessel is " +modifiedDate);
+				if (modifiedDate != null) {
+					if (vessel.getModified_Date().isAfter(modifiedDate)) {
 						
 						Integer transId = headerService.getTransId();
 						Q88_Interface_Header header = new Q88_Interface_Header();
@@ -110,6 +117,7 @@ public class Q88GetVesselListApi {
 						header.setVesselIDEncrypt(vessel.getVesselId());
 						header.setCallStart(startTime);
 						header.setCallEnd(endTime);
+						header.setModifiedDate(vessel.getModifiedDate());
 						header.setStatus("Success");
 						header.setRecordProcessed(1);
 						header.setIs_processed("N");
@@ -123,7 +131,6 @@ public class Q88GetVesselListApi {
 					}
 				}
 				else  {
-					System.out.println("first time");
 					Integer transId = headerService.getTransId();
 					Q88_Interface_Header header = new Q88_Interface_Header();
 					header.setTrans_Id(transId);
@@ -131,6 +138,7 @@ public class Q88GetVesselListApi {
 					header.setVesselIDEncrypt(vessel.getVesselId());
 					header.setCallStart(startTime);
 					header.setCallEnd(endTime);
+					header.setModifiedDate(vessel.getModifiedDate());
 					header.setStatus("Success");
 					header.setRecordProcessed(1);
 					header.setIs_processed("N");
@@ -145,12 +153,12 @@ public class Q88GetVesselListApi {
 				}
 				
 			}
-			System.out.println("Vessel :completed");
+			logger.info("Q88GetVesselList Inserting records into staging table is completed");
 			
 		} catch (SocketTimeoutException expected) {
-			getVesselList();
+			logger.error("Exception raised in Q88GetVesselListAPi Exception " +expected);
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error("Exception raised in Q88GetVesselListAPi Exception " +e);
 		}
 
 		

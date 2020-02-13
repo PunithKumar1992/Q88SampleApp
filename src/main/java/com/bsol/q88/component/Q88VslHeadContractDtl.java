@@ -33,11 +33,8 @@ public class Q88VslHeadContractDtl {
 	@Autowired
 	private CheckToken checkToken;
 
-	
-	
-	
 	@Autowired
-	private AccessToken accesstoken;
+	private AccessToken token;
 	
 	@Autowired
 	private RefreshToken refreshtoken;
@@ -50,23 +47,27 @@ public class Q88VslHeadContractDtl {
 
 	private Logger logger = Logger.getLogger(this.getClass());
 	
-
+	
 	void checkTokenExpires() throws Exception {
+		
+		logger.info("Q88VesselHeadContract Detail Api Started and checking token ");
 
 		String expireResult = checkToken.checkTokenExpires();
 		System.out.println("expireResult is " +expireResult);
 
 		if (expireResult.equals("before")) {
-			refreshtoken.getAccessTokenByRefreshToken();
+			//refreshtoken.getAccessTokenByRefreshToken();
+			token.getAccessToken();
 			getVslHdCntrctDtl();
 		
 
 		} else if (expireResult.equals("after")) {
-			refreshtoken.getAccessTokenByRefreshToken();
+			//refreshtoken.getAccessTokenByRefreshToken();
+			token.getAccessToken();
 			getVslHdCntrctDtl();
 
 		} else if (expireResult.equals("expired")) {
-			accesstoken.getAccessToken();
+			token.getAccessToken();
 			getVslHdCntrctDtl();
 
 		}
@@ -130,16 +131,15 @@ public class Q88VslHeadContractDtl {
 		
 			
 					vslHdCntrctDtlService.saveVslHeadContractDtl(vslHdCntrctDtlObj);
-					System.out.println("Insert is completed");
 					headerService.updateVslHeadContractDtl("Vessel/GetVesselRegisterDetail", interfaceheader.getVesselIDEncrypt(), interfaceheader.getTcInIdEncrypt(), interfaceheader.getTrans_Id());
 				}
-
+				logger.info("Q88VesselHeadContract Detail Api instering vesselhead contract details into staging table is completed");
 			}
 
 			catch (SocketTimeoutException expected) {
-				checkTokenExpires();
+				logger.error("Exception raised in Q88VesselHeadContractDetail Api Exception " +expected);
 			} catch (Exception e) {
-				e.printStackTrace();
+				logger.error("Exception raised in Q88VesselHeadContractDetail Api Exception " +e);
 			}
 			
 

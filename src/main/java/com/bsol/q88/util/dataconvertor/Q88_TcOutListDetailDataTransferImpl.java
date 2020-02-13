@@ -1,5 +1,6 @@
 package com.bsol.q88.util.dataconvertor;
 
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
 
 import com.bsol.q88.mapper.CustomTcOutListDetailMapper;
@@ -14,12 +15,14 @@ import com.bsol.q88.model.Q88_TCOutDtl_Contract;
 
 @Component
 public class Q88_TcOutListDetailDataTransferImpl implements Q88_TcOutListDetailDataTransfer {
+	
+	Logger logger = Logger.getLogger(this.getClass());
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T> T getTcOutListDetail(Q88_TcOutDtl tcOutListDtl, Class<T> type) {
 		CustomTcOutListDetailMapper custom = new CustomTcOutListDetailMapper(tcOutListDtl);
-		
+		logger.info("Q88TcOutListDetail getTcOutListDetails method inside ");
 		 if(type == Q88_TcOutDtl.class) {
 			  return (T) custom.getTcOutListDetail();
 		  }else if(type == Q88_TCOutDtl_Contract.class) {

@@ -9,6 +9,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.configuration.PropertiesConfiguration;
+import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -26,6 +27,7 @@ import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 
 @Component
+@EnableScheduling
 public class Q88GetTcOutListAPI {
 
 	@Autowired
@@ -42,17 +44,24 @@ public class Q88GetTcOutListAPI {
 
 	@Autowired
 	private Q88InterfaceHeaderService headerService;
+	
+	Logger logger = Logger.getLogger(this.getClass());
 
+	
 	void checkTokenExpires() throws Exception {
+		
+		logger.info("Q88 GetTcOutList Api Started and check token ");
 
 		String expireResult = checkToken.checkTokenExpires();
 
 		if (expireResult.equals("before")) {
-			refreshtoken.getAccessTokenByRefreshToken();
+			//refreshtoken.getAccessTokenByRefreshToken();
+			token.getAccessToken();
 			getTcOutList();
 
 		} else if (expireResult.equals("after")) {
-			refreshtoken.getAccessTokenByRefreshToken();
+			//refreshtoken.getAccessTokenByRefreshToken();
+			token.getAccessToken();
 			getTcOutList();
 
 		} else if (expireResult.equals("expired")) {
@@ -71,7 +80,7 @@ public class Q88GetTcOutListAPI {
 			modifiedDate = LocalDateTime.parse("01-01-2019 00:00",format);
 		}
 
-		JSONArray json1;
+		JSONArray responseJsonArray;
 		PropertiesConfiguration properties = new PropertiesConfiguration("src/main/resources/token.properties");
 
 		OkHttpClient client = new OkHttpClient();
@@ -91,23 +100,22 @@ public class Q88GetTcOutListAPI {
 		try {
 
 			Response response = client.newCall(request).execute();
-			if (!response.isSuccessful()) {
-				throw new IOException("Unexpected code " + response);
-			}
+			
+			  if (!response.isSuccessful()) { throw new IOException("Unexpected code " +
+			  response); }
+			 
 			if (response.isSuccessful()) {
 				endTime = LocalDateTime.now(ZoneOffset.UTC).truncatedTo(ChronoUnit.SECONDS);
 			}
-			json1 = new JSONArray(response.body().string().toString());
-			System.out.println("url " + url);
-			System.out.println("json1 array " + json1);
+			responseJsonArray = new JSONArray(response.body().string().toString());
 			Gson gson = new GsonBuilder().serializeNulls().create();
 
 			int modifiedDateCount = headerService.ModifiedDateCountforFirsTime("TcOut/TcOutList");
 
 			if (modifiedDateCount == 0) {
-				for (int i = 0; i < json1.length(); i++) {
+				for (int i = 0; i < responseJsonArray.length(); i++) {
 					LocalDateTime dateIns = LocalDateTime.now(ZoneOffset.UTC).truncatedTo(ChronoUnit.SECONDS);
-					Q88_TcOutList tcout = gson.fromJson(json1.getJSONObject(i).toString(), Q88_TcOutList.class);
+					Q88_TcOutList tcout = gson.fromJson(responseJsonArray.getJSONObject(i).toString(), Q88_TcOutList.class);
 					System.out.println("if  tcout "+tcout);
 					tcout.setModified_date(tcout.getModifiedDate());
 						Integer transId = headerService.getTransId();
@@ -134,9 +142,9 @@ public class Q88GetTcOutListAPI {
 				}
 			}
 			else if(modifiedDateCount !=0) {
-				for(int i =0;i<json1.length();i++) {
+				for(int i =0;i<responseJsonArray.length();i++) {
 					LocalDateTime dateIns = LocalDateTime.now(ZoneOffset.UTC).truncatedTo(ChronoUnit.SECONDS);
-					Q88_TcOutList tcout = gson.fromJson(json1.getJSONObject(i).toString(), Q88_TcOutList.class);
+					Q88_TcOutList tcout = gson.fromJson(responseJsonArray.getJSONObject(i).toString(), Q88_TcOutList.class);
 					System.out.println("if  tcout "+tcout);
 					tcout.setModified_date(tcout.getModifiedDate());
 					if(tcout.getModified_date().isAfter(modifiedDate)) {
@@ -167,14 +175,15 @@ public class Q88GetTcOutListAPI {
 				
 			}
 
-			System.out.println("inserted ");
+		logger.info("Q88GetTcOutList API Data insertion into staging table is completed");
 
 		}
 
 		catch (SocketTimeoutException expected) {
 			getTcOutList();
+			logger.error("Exception occured in Q88GetTcOutList APi Exception is " +expected);
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error("Exception occured in Q88GetTcOutList APi Exception is " +e);
 		}
 
 	}
